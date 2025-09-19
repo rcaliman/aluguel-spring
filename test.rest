@@ -1,0 +1,162 @@
+POST http://localhost:8080/user/new
+    Content-Type: application/json
+
+    {
+        "username": "user2",
+        "password": "user2"
+    }
+
+#########
+# PERSON
+#########
+
+POST http://user:user@localhost:8080/person
+    Content-Type: application/json
+
+    {
+        "name": "João Teste",
+        "contacts": [
+            {
+                "type": "Email",
+                "contact": "teste@gmail.com"
+            }
+        ],
+        "document": "1233747223442434",
+        "cpfCnpj": "22342747433343423",
+        "dateOfBirth": "1990-10-10",
+        "address": "Teste de endereço",
+        "maritalStatus": "Casado(a)",
+        "type": "Locatário(a)"
+    }
+
+###
+PUT http://user:user@localhost:8080/person/19
+    Content-Type: application/json
+
+    {
+        "id": 19,
+        "name": "Rodrigo Caliman",
+        "contacts": [
+            {
+                "type": "Email",
+                "contact": "rcaliman@teste.com"
+            }
+        ],
+        "document": "1442223dda",
+        "cpfCnpj": "223233424dd23aa",
+        "dateOfBirth": "1990-10-10",
+        "address": "Teste de endereço",
+        "maritalStatus": "Casado(a)",
+        "type": "Locatário(a)"
+    }
+
+###
+GET http://user:user@localhost:8080/person/cpf/2323234342423
+    Content-Type: application/json
+
+###
+GET http://user:user@localhost:8080/person/id/19
+    Content-Type: application/json
+
+###
+GET http://user:user@localhost:8080/person/list?sort=id,asc
+    Content-Type: application/json
+
+###
+DELETE http://user:user@localhost:8080/person/6
+
+###########
+# PROPERTY
+###########
+
+POST http://user:user@localhost:8080/property
+    Content-Type: application/json
+
+    {
+        "type":"Loja",
+        "address":"Travessa Jose toledo",
+        "number": "100",
+        "personId": 9,
+        "value": "1000.0",
+        "complement":"teste de complemento",
+        "observation": "teste de observacao",
+        "paymentDay":"20"
+    }
+
+###
+GET http://user:user@localhost:8080/property/11
+    Content-Type: application/json
+
+###
+PUT http://user:user@localhost:8080/property/9
+    Content-Type: application/json
+
+    {
+        "type":"Loja",
+        "address":"Travessa Jose toledo",
+        "number": "200",
+        "personId": 22,
+        "value": "1100.0",
+        "complement":"teste de complemento",
+        "observation": "teste de observacao",
+        "paymentDay":"21"
+    }
+
+###
+GET http://user:user@localhost:8080/property/list
+    Content-Type: application/json
+
+###
+DELETE http://user:user@localhost:8080/property/12
+
+###
+POST http://user:user@localhost:8080/receipt
+    Content-Type: application/json
+
+    {
+        "propertyIds": [9, 10, 11],
+        "landlordId": 21,
+        "locale": "Colatina-ES",
+        "day": "10",
+        "month": "Agosto",
+        "year": "2025"
+    }
+
+#########
+# ENERGY
+#########
+
+GET http://user:user@localhost:8080/energy
+
+###
+POST http://user:user@localhost:8080/energy
+    Content-Type: application/json
+
+    {
+        "counter1": 13842,
+        "counter2": 20307,
+        "counter3": 15046,
+        "kwhValue": 0.926777,
+        "billAmount": 297.64,
+        "date": "2025-09-08"
+    }
+
+###
+# 164	62.21	110.06	125.37	297.64	13842	20307	15046	2025-09-08	0.926777
+###
+PUT http://user:user@localhost:8080/energy/174
+    Content-Type: application/json
+
+    {
+        "id": 174,
+        "counter1": 13842,
+        "counter2": 20307,
+        "counter3": 15046,
+        "amount1": 62.20771704180064,
+        "amount2": 110.05980707395499,
+        "amount3": 125.37247588424437,
+        "kwhValue": 0.926777,
+        "billAmount": 297.64,
+        "date": "2025-09-08",
+        "last": false
+    }
