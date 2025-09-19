@@ -1,4 +1,6 @@
-POST http://localhost:8080/user/new
+@URL_API = http://user:user@localhost:8080/api
+
+POST {{URL_API}}/user/new
     Content-Type: application/json
 
     {
@@ -10,7 +12,7 @@ POST http://localhost:8080/user/new
 # PERSON
 #########
 
-POST http://user:user@localhost:8080/person
+POST {{URL_API}}/person
     Content-Type: application/json
 
     {
@@ -30,7 +32,7 @@ POST http://user:user@localhost:8080/person
     }
 
 ###
-PUT http://user:user@localhost:8080/person/19
+PUT {{URL_API}}/person/19
     Content-Type: application/json
 
     {
@@ -51,25 +53,25 @@ PUT http://user:user@localhost:8080/person/19
     }
 
 ###
-GET http://user:user@localhost:8080/person/cpf/2323234342423
+GET {{URL_API}}/person/cpf/2323234342423
     Content-Type: application/json
 
 ###
-GET http://user:user@localhost:8080/person/id/19
+GET {{URL_API}}/person/id/19
     Content-Type: application/json
 
 ###
-GET http://user:user@localhost:8080/person/list?sort=id,asc
+GET {{URL_API}}/person/list?sort=id,asc
     Content-Type: application/json
 
 ###
-DELETE http://user:user@localhost:8080/person/6
+DELETE {{URL_API}}/person/6
 
 ###########
 # PROPERTY
 ###########
 
-POST http://user:user@localhost:8080/property
+POST {{URL_API}}/property
     Content-Type: application/json
 
     {
@@ -84,11 +86,11 @@ POST http://user:user@localhost:8080/property
     }
 
 ###
-GET http://user:user@localhost:8080/property/11
+GET {{URL_API}}/property/11
     Content-Type: application/json
 
 ###
-PUT http://user:user@localhost:8080/property/9
+PUT {{URL_API}}/property/9
     Content-Type: application/json
 
     {
@@ -103,14 +105,14 @@ PUT http://user:user@localhost:8080/property/9
     }
 
 ###
-GET http://user:user@localhost:8080/property/list
+GET {{URL_API}}/property/list
     Content-Type: application/json
 
 ###
-DELETE http://user:user@localhost:8080/property/12
+DELETE {{URL_API}}/property/12
 
 ###
-POST http://user:user@localhost:8080/receipt
+POST {{URL_API}}/receipt
     Content-Type: application/json
 
     {
@@ -126,10 +128,10 @@ POST http://user:user@localhost:8080/receipt
 # ENERGY
 #########
 
-GET http://user:user@localhost:8080/energy
+GET {{URL_API}}/energy/lasts
 
 ###
-POST http://user:user@localhost:8080/energy
+POST {{URL_API}}/energy
     Content-Type: application/json
 
     {
@@ -144,7 +146,7 @@ POST http://user:user@localhost:8080/energy
 ###
 # 164	62.21	110.06	125.37	297.64	13842	20307	15046	2025-09-08	0.926777
 ###
-PUT http://user:user@localhost:8080/energy/174
+PUT {{URL_API}}/energy/174
     Content-Type: application/json
 
     {

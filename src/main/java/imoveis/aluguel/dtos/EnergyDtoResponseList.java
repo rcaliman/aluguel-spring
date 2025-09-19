@@ -2,7 +2,7 @@ package imoveis.aluguel.dtos;
 
 import java.time.LocalDate;
 
-public record EnergyDtoResponse(
+public record EnergyDtoResponseList(
     Long id, 
     Long counter1, 
     Long counter2, 
@@ -12,7 +12,8 @@ public record EnergyDtoResponse(
     Double amount3, 
     Double kwhValue, 
     Double billAmount, 
-    LocalDate date
+    LocalDate date,
+    Boolean last
 ) {
     
 }

@@ -15,7 +15,7 @@ import imoveis.aluguel.services.ReceiptService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/receipt")
+@RequestMapping("/api/receipt")
 @RequiredArgsConstructor
 public class ReceiptController {
     

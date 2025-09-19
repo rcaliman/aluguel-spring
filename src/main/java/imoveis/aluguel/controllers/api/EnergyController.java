@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import imoveis.aluguel.dtos.EnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoResponse;
+import imoveis.aluguel.dtos.EnergyDtoResponseList;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.mappers.EnergyMapper;
 import imoveis.aluguel.services.EnergyService;
@@ -22,14 +23,14 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/energy")
+@RequestMapping("/api/energy")
 public class EnergyController {
 
     private final EnergyService energyService;
     private final EnergyMapper energyMapper;
 
-    @GetMapping
-    public ResponseEntity<List<EnergyDtoResponse>> listLasts() {
+    @GetMapping("/lasts")
+    public ResponseEntity<List<EnergyDtoResponseList>> listLasts() {
 
         var energies = energyService.listLasts();                 
 
@@ -38,7 +39,7 @@ public class EnergyController {
                             .mapToObj(i -> {
                                 Energy energy = energies.get(i);
                                 boolean isLast = (i == energies.size() - 1);
-                                return energyMapper.toDtoResponse(energy, isLast);
+                                return energyMapper.toDtoResponseList(energy, isLast);
             })
             .toList();
         

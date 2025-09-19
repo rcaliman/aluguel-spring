@@ -23,7 +23,7 @@ import imoveis.aluguel.services.PropertyService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/property")
+@RequestMapping("/api/property")
 @RequiredArgsConstructor
 public class PropertyController {
 
