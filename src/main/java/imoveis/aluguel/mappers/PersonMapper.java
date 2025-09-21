@@ -9,7 +9,7 @@ import imoveis.aluguel.dtos.PersonDtoRequest;
 import imoveis.aluguel.dtos.PersonDtoResponse;
 import imoveis.aluguel.entities.Person;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ContactMapper.class})
 public interface PersonMapper {
     
     PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
