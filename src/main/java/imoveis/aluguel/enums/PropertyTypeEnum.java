@@ -15,7 +15,7 @@ public enum PropertyTypeEnum {
     }
 
     @JsonValue
-    String getDescripton() {
+    public String getDescription() {
         return this.description;
     }
 }

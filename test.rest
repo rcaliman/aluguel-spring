@@ -23,12 +23,12 @@ POST {{URL_API}}/person
                 "contact": "teste@gmail.com"
             }
         ],
-        "document": "1233747223442434",
-        "cpfCnpj": "22342747433343423",
+        "document": "1233337472232434",
+        "cpfCnpj": "22342337474333423",
         "dateOfBirth": "1990-10-10",
         "address": "Teste de endereço",
         "maritalStatus": "Casado(a)",
-        "type": "Locatário(a)"
+        "type": "Locador(a)"
     }
 
 ###
@@ -54,6 +54,10 @@ PUT {{URL_API}}/person/19
 
 ###
 GET {{URL_API}}/person/cpf/2323234342423
+    Content-Type: application/json
+
+###
+GET {{URL_API}}/person?type=LANDLORD
     Content-Type: application/json
 
 ###

@@ -32,17 +32,16 @@ public class EnergyController {
     @GetMapping("/lasts")
     public ResponseEntity<List<EnergyDtoResponseList>> listLasts() {
 
-        var energies = energyService.listLasts();                 
-
+        var energies = energyService.listLasts();
 
         var dtoResponse = IntStream.range(0, energies.size())
-                            .mapToObj(i -> {
-                                Energy energy = energies.get(i);
-                                boolean isLast = (i == energies.size() - 1);
-                                return energyMapper.toDtoResponseList(energy, isLast);
-            })
-            .toList();
-        
+                .mapToObj(i -> {
+                    Energy energy = energies.get(i);
+                    boolean isLast = (i == energies.size() - 1);
+                    return energyMapper.toDtoResponseList(energy, isLast);
+                })
+                .toList();
+
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 
     }
@@ -53,9 +52,9 @@ public class EnergyController {
         var energy = energyMapper.toEnergy(dtoRequest);
         var newEnergy = energyService.calculate(energy);
         var dtoResponse = energyMapper.toDtoResponse(newEnergy);
-        
+
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
-        
+
     }
 
     @PutMapping("/{id}")

@@ -1,11 +1,13 @@
 package imoveis.aluguel.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Person;
+import imoveis.aluguel.enums.PersonTypeEnum;
 import imoveis.aluguel.mappers.PersonMapper;
 import imoveis.aluguel.repositories.PersonRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -90,9 +92,16 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public void deleteById(Long id) {
         var person = personRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Pessoa de id %d não encontrada", id))
+            () -> new EntityNotFoundException(String.format("Pessoa de id %d não encontrada.", id))
         );
         personRepository.delete(person);
+    }
+
+    @Override
+    public List<Person> findByPersonType(PersonTypeEnum type) {
+        return personRepository.findByType(type).orElseThrow(
+            () -> new EntityNotFoundException(String.format("Nenhum %s encontrado.", type))
+        );
     }
 
 }

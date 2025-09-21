@@ -3,7 +3,7 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PersonTypeEnum {
-    LANDLORD("Locador(a)"),
+    LANDLORD("Inquilino(a)"),
     TENANT("Locatário(a)");
 
     private final String description;

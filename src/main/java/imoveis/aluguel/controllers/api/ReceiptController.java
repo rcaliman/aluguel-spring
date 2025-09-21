@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/receipt")
 @RequiredArgsConstructor
 public class ReceiptController {
-    
+
     private final ReceiptService receiptService;
     private final ReceiptMapper receiptMapper;
 
@@ -29,10 +29,9 @@ public class ReceiptController {
         List<ReceiptDtoResponse> listDto = new ArrayList<>();
 
         listReceipts.forEach(
-            receipt -> {
-                listDto.add(receiptMapper.dtoResponse(receipt));
-            }
-        );
+                receipt -> {
+                    listDto.add(receiptMapper.dtoResponse(receipt));
+                });
 
         return listDto;
 

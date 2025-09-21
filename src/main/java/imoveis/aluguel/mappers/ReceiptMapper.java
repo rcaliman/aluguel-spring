@@ -12,7 +12,21 @@ public interface ReceiptMapper {
 
     ReceiptMapper INSTANCE = Mappers.getMapper(ReceiptMapper.class);
 
-    ReceiptDtoResponse dtoResponse(Receipt receipt);
+    default ReceiptDtoResponse dtoResponse(Receipt receipt) {
+        return new ReceiptDtoResponse(
+            receipt.getTenant(),
+            receipt.getValue(), 
+            receipt.getPropertyType().getDescription(), 
+            receipt.getPropertyNumber(), 
+            receipt.getLocale(), 
+            receipt.getDay(), 
+            receipt.getMonth(), 
+            receipt.getYear(), 
+            receipt.getLandlord(), 
+            receipt.getTenantContact()
+        );
+    }
+ 
 
     Receipt toReceipt(ReceiptDtoRequest receiptDto);
     

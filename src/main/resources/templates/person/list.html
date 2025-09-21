@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${pageTitle ?: 'Lista de Pessoas'}">Lista de Pessoas</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 th:text="${pageTitle}"><i class="bi bi-people-fill"></i> Título Padrão</h1>
+
+            <a th:href="${context == 'tenants' ? '/persons/tenants/new' : '/persons/new'}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i>
+                <span th:text="${context == 'tenants' ? 'Novo Locatário' : 'Nova Pessoa'}"></span>
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Tipo</th>
+                        <th>Contatos</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="person : ${persons}">
+                        <td th:text="${person.name}">Nome da Pessoa</td>
+                        <td th:text="${person.cpfCnpj}">000.000.000-00</td>
+                        <td th:text="${person.type.description}">Tipo</td>
+                        <td>
+                            <span th:each="contact, iterStat : ${person.contacts}"
+                                th:text="${contact.contact} + (${iterStat.last} ? '' : ', ')"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{/persons/edit/{id}(id=${person.id})}" class="btn btn-sm btn-primary"
+                                title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a th:href="@{/persons/delete/{id}(id=${person.id})}" class="btn btn-sm btn-danger"
+                                title="Excluir"
+                                onclick="return confirm('Tem certeza que deseja excluir esta pessoa?');">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+
+</html>

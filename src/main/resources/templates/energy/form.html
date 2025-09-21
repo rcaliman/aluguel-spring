@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <title th:text="${energy.id == null} ? 'Nova Leitura de Energia' : 'Editar Leitura de Energia'">Formulário de
+        Energia</title>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <h1 th:text="${energy.id == null} ? 'Adicionar Nova Leitura de Energia' : 'Editar Leitura de Energia'"></h1>
+        <hr />
+
+        <form th:action="@{/energy/save}" th:object="${energy}" method="post">
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="date" class="form-label">Data da Leitura</label>
+                    <input type="date" class="form-control" id="date" name="date"
+                        th:value="${energy.date != null ? #temporals.format(energy.date, 'yyyy-MM-dd') : ''}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="billAmount" class="form-label">Valor Total da Conta (R$)</label>
+                    <input type="number" step="0.01" class="form-control" id="billAmount" th:field="*{billAmount}"
+                        required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="counter1" class="form-label">Leitura Relógio 1</label>
+                    <input type="number" class="form-control" id="counter1" th:field="*{counter1}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="counter2" class="form-label">Leitura Relógio 2</label>
+                    <input type="number" class="form-control" id="counter2" th:field="*{counter2}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="counter3" class="form-label">Leitura Relógio 3</label>
+                    <input type="number" class="form-control" id="counter3" th:field="*{counter3}" required>
+                </div>
+            </div>
+
+            <input type="hidden" th:field="*{kwhValue}" />
+
+            <hr />
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Salvar</button>
+            <a th:href="@{/energy}" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancelar</a>
+        </form>
+    </section>
+</body>
+
+</html>

@@ -101,4 +101,11 @@ public class EnergyServiceImpl implements EnergyService {
         
     }
 
+    @Override
+    public Energy findById(Long id) {
+        return energyRepository.findById(id).orElseThrow(
+            () -> new EntityNotFoundException(String.format("Conta de id %d não encontrada.", id))
+        );
+    }
+
 }

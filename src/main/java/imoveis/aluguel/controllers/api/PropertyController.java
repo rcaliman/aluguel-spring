@@ -53,9 +53,10 @@ public class PropertyController {
         return new ResponseEntity<>(toDtoResponse, HttpStatus.OK);
 
     }
-    
+
     @PutMapping("/{id}")
-    public ResponseEntity<PropertyDtoResponse> update(@PathVariable Long id, @RequestBody PropertyDtoRequest dtoRequest) {
+    public ResponseEntity<PropertyDtoResponse> update(@PathVariable Long id,
+            @RequestBody PropertyDtoRequest dtoRequest) {
 
         var person = personService.findById(dtoRequest.personId());
         var property = propertyMapper.toProperty(dtoRequest);
@@ -66,7 +67,6 @@ public class PropertyController {
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
     }
 
-
     @GetMapping("/list")
     public ResponseEntity<List<PropertyDtoResponse>> list(Sort sort) {
 
@@ -74,22 +74,21 @@ public class PropertyController {
         List<PropertyDtoResponse> listDto = new ArrayList<>();
 
         properties.forEach(property -> {
-                var dtoResponse = propertyMapper.toDtoResponse(property);
-                listDto.add(dtoResponse);
-            }
-        );
+            var dtoResponse = propertyMapper.toDtoResponse(property);
+            listDto.add(dtoResponse);
+        });
 
         return new ResponseEntity<>(listDto, HttpStatus.OK);
 
     }
 
     @DeleteMapping("/{id}")
-        public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
 
         propertyService.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
-    
+
 }
