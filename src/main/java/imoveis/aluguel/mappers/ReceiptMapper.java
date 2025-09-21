@@ -1,6 +1,7 @@
 package imoveis.aluguel.mappers;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
@@ -27,7 +28,12 @@ public interface ReceiptMapper {
         );
     }
  
-
+    @Mapping(target = "landlord", ignore = true)
+    @Mapping(target = "propertyNumber", ignore = true)
+    @Mapping(target = "propertyType", ignore = true)
+    @Mapping(target = "tenant", ignore = true)
+    @Mapping(target = "tenantContact", ignore = true)
+    @Mapping(target = "value", ignore = true)
     Receipt toReceipt(ReceiptDtoRequest receiptDto);
     
 }

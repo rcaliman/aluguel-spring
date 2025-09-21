@@ -16,6 +16,9 @@ public interface PersonMapper {
 
     PersonDtoResponse toDtoResponse(Person person);
     
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "properties", ignore = true)
     Person toPerson(PersonDtoRequest personDto);
 
     @Mapping(target = "id", ignore = true)

@@ -1,7 +1,6 @@
 package imoveis.aluguel.dtos;
 
 import imoveis.aluguel.enums.PropertyTypeEnum;
-import lombok.Builder;
 
 public record PropertyDtoResponse(Long id, PropertyTypeEnum type, String address, String number, PersonDtoResponse person, Double value, String complement, String observation, String paymentDay) {
     
