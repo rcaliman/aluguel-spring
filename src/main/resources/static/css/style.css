@@ -1,0 +1,273 @@
+/* style.css - Estilos modernos e otimizados para o sistema de aluguel de imóveis */
+
+/* 1. VARIÁVEIS GLOBAIS (ROOT) */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --text-light: #f8f9fa;
+    --text-dark: #343a40;
+    --success-color: #27ae60;
+    --border-color: #dee2e6;
+    --border-radius: 8px;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --transition: all 0.3s ease;
+}
+
+/* 2. ESTILOS DE BASE E RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-color);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 3. LAYOUT PRINCIPAL */
+main {
+    flex: 1;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+footer.site-footer {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 1.5rem 0;
+    margin-top: auto;
+    text-align: center;
+    border-top: 4px solid var(--secondary-color);
+}
+
+/* 4. COMPONENTES REUTILIZÁVEIS */
+
+/* Navegação */
+.navbar-dark.bg-dark {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.8rem 1rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.nav-link {
+    font-weight: 500;
+    border-radius: 4px;
+    transition: var(--transition);
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover, .nav-item.active .nav-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Botões */
+.btn {
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 0.6rem 1.5rem;
+}
+
+.btn i {
+    margin-right: 0.5rem;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Cards */
+.card-custom {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background-color: #fff;
+}
+
+.card-custom-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+.card-custom-header.gradient {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.card-custom-body {
+    padding: 2rem;
+}
+
+/* Formulários */
+.form-label {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-control, .form-select {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.input-group-text {
+    background-color: var(--light-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+}
+
+/* Tabelas */
+.table-responsive {
+    border-radius: 0 0 12px 12px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.table th {
+    border: none;
+    padding: 1rem;
+}
+
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
+
+tr.table-active, tr.table-active:hover {
+    background-color: rgba(52, 152, 219, 0.2) !important;
+}
+
+/* Alertas */
+.alert {
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 1rem 1.5rem;
+}
+
+/* Badges */
+.badge.badge-vacant {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+/* 5. ESTILOS DE PÁGINAS ESPECÍFICAS */
+
+/* Página de Login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 450px;
+}
+
+.login-header {
+    text-align: center;
+}
+
+/* Página de Lista de Imóveis */
+.page-header {
+    color: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.form-check-input.property-checkbox {
+    width: 1.3em;
+    height: 1.3em;
+    cursor: pointer;
+    border: 2px solid #adb5bd;
+}
+.form-check-input.property-checkbox:checked {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+.form-check-input.property-checkbox:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Página de Formulário de Imóvel */
+.form-section-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+}
+
+.form-section-title i {
+    margin-right: 0.75rem;
+    color: var(--secondary-color);
+}
+
+/* 6. ÍCONES E UTILITÁRIOS */
+.bi {
+    vertical-align: -0.125em;
+}
+
+/* 7. RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .page-header {
+        text-align: center;
+    }
+    .page-header .btn {
+        margin-top: 1rem;
+        width: 100%;
+    }
+    .login-body, .card-custom-body {
+        padding: 1.5rem;
+    }
+}

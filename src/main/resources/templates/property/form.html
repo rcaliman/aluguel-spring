@@ -8,62 +8,86 @@
 
 <body>
     <section layout:fragment="content">
-        <h1 th:text="${property.id == null} ? 'Adicionar Novo Imóvel' : 'Editar Imóvel'"></h1>
-        <hr />
-
-        <form th:action="@{/properties/save}" th:object="${property}" method="post">
-            <input type="hidden" th:field="*{id}" />
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="address" class="form-label">Endereço</label>
-                    <input type="text" class="form-control" id="address" th:field="*{address}" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="number" class="form-label">Número</label>
-                    <input type="text" class="form-control" id="number" th:field="*{number}">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="complement" class="form-label">Complemento</label>
-                    <input type="text" class="form-control" id="complement" th:field="*{complement}">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card-custom">
+                        <div class="card-custom-header gradient">
+                            <h1 class="h3 mb-0" th:text="${property.id == null} ? 'Adicionar Novo Imóvel' : 'Editar Imóvel'"></h1>
+                            <p class="mb-0 opacity-75">Preencha os dados do imóvel abaixo</p>
+                        </div>
+                        
+                        <div class="card-custom-body">
+                            <form th:action="@{/properties/save}" th:object="${property}" method="post">
+                                <input type="hidden" th:field="*{id}" />
+                                
+                                <h5 class="form-section-title"><i class="bi bi-geo-alt"></i> Endereço</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="address" class="form-label">Endereço</label>
+                                        <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Ex: Rua das Flores" required>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="number" class="form-label">Número</label>
+                                        <input type="text" class="form-control" id="number" th:field="*{number}" placeholder="Nº">
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="complement" class="form-label">Complemento</label>
+                                        <input type="text" class="form-control" id="complement" th:field="*{complement}" placeholder="Apto, Bloco, etc.">
+                                    </div>
+                                </div>
+                                
+                                <h5 class="form-section-title"><i class="bi bi-person-badge"></i> Informações do Contrato</h5>
+                                <div class="row">
+                                    <div class="col-md-5 mb-3">
+                                        <label for="tenant" class="form-label">Inquilino</label>
+                                        <select class="form-select" id="tenant" th:field="*{tenant}">
+                                            <option value="">Selecione (imóvel vago)</option>
+                                            <option th:each="t : ${tenants}" th:value="${t.id}" th:text="${t.name}"></option>
+                                        </select>
+                                        <div class="form-text">Deixe em branco se o imóvel estiver vago.</div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="type" class="form-label">Tipo de Imóvel</label>
+                                        <select class="form-select" id="type" th:field="*{type}" required>
+                                            <option value="">Selecione...</option>
+                                            <option th:each="typeOpt : ${propertyTypes}" th:value="${typeOpt}"
+                                                th:text="${typeOpt.description}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="value" class="form-label">Valor do Aluguel</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">R$</span>
+                                            <input type="number" step="0.01" class="form-control" id="value" th:field="*{value}" placeholder="0,00">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="paymentDay" class="form-label">Dia Vencimento</label>
+                                        <input type="number" class="form-control" id="paymentDay" th:field="*{paymentDay}" min="1" max="31" placeholder="Dia">
+                                    </div>
+                                </div>
+                                
+                                <h5 class="form-section-title"><i class="bi bi-chat-text"></i> Observações</h5>
+                                <div class="mb-4">
+                                    <label for="observation" class="form-label">Observação</label>
+                                    <textarea class="form-control" id="observation" rows="4" th:field="*{observation}" placeholder="Adicione observações relevantes sobre o imóvel..."></textarea>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end gap-3 pt-3 border-top">
+                                    <a th:href="@{/properties}" class="btn btn-outline-secondary">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-circle"></i> Salvar Imóvel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-5 mb-3">
-                    <label for="person" class="form-label">Locatário/Inquilino</label>
-                    <select class="form-select" id="person" th:field="*{person}">
-                        <option value="">Selecione (se houver)</option>
-                        <option th:each="p : ${persons}" th:value="${p.id}" th:text="${p.name}"></option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label for="type" class="form-label">Tipo de Imóvel</label>
-                    <select class="form-select" id="type" th:field="*{type}" required>
-                        <option value="">Selecione...</option>
-                        <option th:each="typeOpt : ${propertyTypes}" th:value="${typeOpt}"
-                            th:text="${typeOpt.description}"></option>
-                    </select>
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label for="value" class="form-label">Valor do Aluguel</label>
-                    <input type="number" step="0.01" class="form-control" id="value" th:field="*{value}">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label for="paymentDay" class="form-label">Dia Vencimento</label>
-                    <input type="number" class="form-control" id="paymentDay" th:field="*{paymentDay}" min="1" max="31">
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label for="observation" class="form-label">Observação</label>
-                <textarea class="form-control" id="observation" rows="3" th:field="*{observation}"></textarea>
-            </div>
-
-            <hr />
-            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Salvar</button>
-            <a th:href="@{/properties}" class="btn btn-secondary"><i class="bi bi-x-circle"></i> Cancelar</a>
-        </form>
+        </div>
     </section>
 </body>
 

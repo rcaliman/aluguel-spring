@@ -8,7 +8,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import imoveis.aluguel.enums.MaritalStatusEnum;
-import imoveis.aluguel.enums.PersonTypeEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,10 +25,10 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@Table(name = "tb_persons")
 @ToString
-public class Person {
-    
+@Table(name = "tb_landlords")
+public class Landlord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +37,7 @@ public class Person {
     private String name;
 
     @Column(nullable = true)
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "landlord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
     @Column(nullable = true)
@@ -56,13 +55,6 @@ public class Person {
 
     @Column(nullable = true, name = "marital_status")
     private MaritalStatusEnum maritalStatus;
-
-    @Column(nullable = true, name = "person_type")
-    private PersonTypeEnum type;
-
-    @Column(nullable = true)
-    @OneToMany(mappedBy = "person", cascade = CascadeType.DETACH, orphanRemoval = false)
-    private List<Property> properties = new ArrayList<>();
 
     @Column(nullable = false, name = "created_at", updatable = false)
     private Instant createdAt;

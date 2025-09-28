@@ -1,12 +1,12 @@
 package imoveis.aluguel.controllers.web;
 
 import imoveis.aluguel.entities.Property;
-import imoveis.aluguel.enums.PersonTypeEnum; // Importar o Enum
 import imoveis.aluguel.enums.PropertyTypeEnum;
-import imoveis.aluguel.services.PersonService;
+import imoveis.aluguel.services.TenantService;
 import imoveis.aluguel.services.PropertyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +22,12 @@ import java.util.List;
 public class PropertyWebController {
 
     private final PropertyService propertyService;
-    private final PersonService personService;
+    private final TenantService tenantService;
 
     @GetMapping
     public String listProperties(Model model) {
 
-        model.addAttribute("properties", propertyService.list(Sort.by("address")));
-        model.addAttribute("landlords", personService.findByPersonType(PersonTypeEnum.TENANT));
+        model.addAttribute("properties", propertyService.list(Sort.by(Direction.DESC, "tenant")));
 
         int currentYear = LocalDate.now().getYear();
         List<Integer> years = IntStream.rangeClosed(currentYear - 5, currentYear + 2)
@@ -45,11 +44,11 @@ public class PropertyWebController {
     public String showCreateForm(Model model) {
 
         model.addAttribute("property", new Property());
-        model.addAttribute("persons", personService.list(Sort.by("name")));
+        model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
 
         return "property/form";
-        
+
     }
 
     @PostMapping("/save")
@@ -70,7 +69,7 @@ public class PropertyWebController {
 
         Property property = propertyService.findById(id);
         model.addAttribute("property", property);
-        model.addAttribute("persons", personService.list(Sort.by("name")));
+        model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
 
         return "property/form";

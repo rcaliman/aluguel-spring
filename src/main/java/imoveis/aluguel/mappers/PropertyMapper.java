@@ -16,7 +16,7 @@ public interface PropertyMapper {
     
     PropertyDtoResponse toDtoResponse(Property property);
     
-    @Mapping(target = "person", ignore = true)
+    @Mapping(target = "tenant", ignore =true)
     @Mapping(target = "createdAt", ignore =true)
     @Mapping(target = "updatedAt", ignore = true)
     Property toProperty(PropertyDtoRequest propertyDto);

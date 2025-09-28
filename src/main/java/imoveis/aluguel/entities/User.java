@@ -2,7 +2,7 @@ package imoveis.aluguel.entities;
 
 import java.time.Instant;
 
-import imoveis.aluguel.enums.HoleEnum;
+import imoveis.aluguel.enums.RoleEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,7 +31,7 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private HoleEnum hole;
+    private RoleEnum role;
 
     @Column(nullable = false, name = "created_at", updatable = false)
     private Instant createdAt;

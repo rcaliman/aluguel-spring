@@ -2,13 +2,13 @@ package imoveis.aluguel.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PersonTypeEnum {
-    LANDLORD("Inquilino(a)"),
-    TENANT("Locatário(a)");
+public enum RoleEnum {
+    ADMIN("Administrador"),
+    OPERATOR("Operador");
 
     private final String description;
 
-    PersonTypeEnum(String description) {
+    RoleEnum(String description) {
         this.description = description;
     }
 
@@ -16,5 +16,4 @@ public enum PersonTypeEnum {
     public String getDescription() {
         return this.description;
     }
-
 }

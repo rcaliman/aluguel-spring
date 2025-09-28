@@ -1,7 +1,7 @@
 package imoveis.aluguel.dtos;
 
-import imoveis.aluguel.enums.HoleEnum;
+import imoveis.aluguel.enums.RoleEnum;
 
-public record UserDtoRequest(String username, String password, HoleEnum hole) {
+public record UserDtoRequest(String username, String password, RoleEnum role) {
     
 }

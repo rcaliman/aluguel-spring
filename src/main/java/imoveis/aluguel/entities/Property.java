@@ -41,10 +41,10 @@ public class Property {
     private String number;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", nullable =  true)
+    @JoinColumn(name = "tenant_id", nullable =  true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
-    private Person person;
+    private Tenant tenant;
 
     @Column(nullable = true)
     private Double value;

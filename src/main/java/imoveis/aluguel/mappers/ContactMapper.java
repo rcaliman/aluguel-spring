@@ -15,10 +15,11 @@ public interface ContactMapper {
     
     ContactDtoResponse toDtoResponse(Contact contact);
 
-    @Mapping(target = "id", ignore = true)        
-    @Mapping(target = "person", ignore = true)   
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "id", ignore = true)         
+    @Mapping(target = "tenant", ignore = true)
+    @Mapping(target = "landlord", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)  
+    @Mapping(target = "updatedAt", ignore = true)  
     Contact toContact(ContactDtoRequest contactDto);
     
 }

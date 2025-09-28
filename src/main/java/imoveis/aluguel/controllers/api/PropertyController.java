@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import imoveis.aluguel.dtos.PropertyDtoRequest;
 import imoveis.aluguel.dtos.PropertyDtoResponse;
 import imoveis.aluguel.mappers.PropertyMapper;
-import imoveis.aluguel.services.PersonService;
 import imoveis.aluguel.services.PropertyService;
+import imoveis.aluguel.services.TenantService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,15 +28,15 @@ import lombok.RequiredArgsConstructor;
 public class PropertyController {
 
     private final PropertyService propertyService;
-    private final PersonService personService;
+    private final TenantService tenantService;
     private final PropertyMapper propertyMapper;
 
     @PostMapping
     public ResponseEntity<PropertyDtoResponse> create(@RequestBody PropertyDtoRequest dtoRequest) {
 
-        var person = personService.findById(dtoRequest.personId());
+        var tenant = tenantService.findById(dtoRequest.tenantId());
         var property = propertyMapper.toProperty(dtoRequest);
-        property.setPerson(person);
+        property.setTenant(tenant);
         var newProperty = propertyService.create(property);
         var dtoResponse = propertyMapper.toDtoResponse(newProperty);
 
@@ -58,9 +58,9 @@ public class PropertyController {
     public ResponseEntity<PropertyDtoResponse> update(@PathVariable Long id,
             @RequestBody PropertyDtoRequest dtoRequest) {
 
-        var person = personService.findById(dtoRequest.personId());
+        var tenant = tenantService.findById(dtoRequest.tenantId());
         var property = propertyMapper.toProperty(dtoRequest);
-        property.setPerson(person);
+        property.setTenant(tenant);
         var updatedProperty = propertyService.update(id, property);
         var dtoResponse = propertyMapper.toDtoResponse(updatedProperty);
 

@@ -4,39 +4,42 @@ POST {{URL_API}}/user/new
     Content-Type: application/json
 
     {
-        "username": "user2",
-        "password": "user2"
+        "username": "user",
+        "password": "user"
     }
 
 #########
-# PERSON
+# TENANT
 #########
 
-POST {{URL_API}}/person
+GET {{URL_API}}/tenant/list?sort=id,asc
+    Content-Type: application/json
+
+###
+POST {{URL_API}}/tenant
     Content-Type: application/json
 
     {
-        "name": "João Teste",
+        "name": "João Teste 2",
         "contacts": [
             {
                 "type": "Email",
                 "contact": "teste@gmail.com"
             }
         ],
-        "document": "1233337472232434",
-        "cpfCnpj": "22342337474333423",
+        "document": "123742d2332434",
+        "cpfCnpj": "22337432d333423",
         "dateOfBirth": "1990-10-10",
         "address": "Teste de endereço",
-        "maritalStatus": "Casado(a)",
-        "type": "Locador(a)"
+        "maritalStatus": "Casado(a)"
     }
 
 ###
-PUT {{URL_API}}/person/19
+PUT {{URL_API}}/tenant/1
     Content-Type: application/json
 
     {
-        "id": 19,
+        "id": 1,
         "name": "Rodrigo Caliman",
         "contacts": [
             {
@@ -53,23 +56,44 @@ PUT {{URL_API}}/person/19
     }
 
 ###
-GET {{URL_API}}/person/cpf/2323234342423
+GET {{URL_API}}/tenant/cpfCnpj/22337432d333423
     Content-Type: application/json
 
 ###
-GET {{URL_API}}/person?type=LANDLORD
+GET {{URL_API}}/tenant/id/1
     Content-Type: application/json
 
 ###
-GET {{URL_API}}/person/id/19
+DELETE {{URL_API}}/tenant/1
+
+############
+# LANDLORD
+############
+POST {{URL_API}}/landlord
+    Content-Type: application/json
+
+    {
+        "name": "João Landlord",
+        "contacts": [
+            {
+                "type": "Email",
+                "contact": "teste@gmail.com"
+            }
+        ],
+        "document": "132372d2434",
+        "cpfCnpj": "2233344d3423",
+        "dateOfBirth": "1990-10-10",
+        "address": "Teste de endereço",
+        "maritalStatus": "Casado(a)"
+    }
+
+###
+GET {{URL_API}}/landlord/cpfCnpj/2233344d3423
     Content-Type: application/json
 
 ###
-GET {{URL_API}}/person/list?sort=id,asc
+GET {{URL_API}}/landlord/8
     Content-Type: application/json
-
-###
-DELETE {{URL_API}}/person/6
 
 ###########
 # PROPERTY
@@ -82,7 +106,7 @@ POST {{URL_API}}/property
         "type":"Loja",
         "address":"Travessa Jose toledo",
         "number": "100",
-        "personId": 9,
+        "tenantId": 2,
         "value": "1000.0",
         "complement":"teste de complemento",
         "observation": "teste de observacao",
@@ -90,18 +114,18 @@ POST {{URL_API}}/property
     }
 
 ###
-GET {{URL_API}}/property/11
+GET {{URL_API}}/property/1
     Content-Type: application/json
 
 ###
-PUT {{URL_API}}/property/9
+PUT {{URL_API}}/property/1
     Content-Type: application/json
 
     {
         "type":"Loja",
         "address":"Travessa Jose toledo",
         "number": "200",
-        "personId": 22,
+        "tenantId": 2,
         "value": "1100.0",
         "complement":"teste de complemento",
         "observation": "teste de observacao",
@@ -113,14 +137,14 @@ GET {{URL_API}}/property/list
     Content-Type: application/json
 
 ###
-DELETE {{URL_API}}/property/12
+DELETE {{URL_API}}/property/2
 
 ###
 POST {{URL_API}}/receipt
     Content-Type: application/json
 
     {
-        "propertyIds": [9, 10, 11],
+        "propertyIds": [1],
         "landlordId": 21,
         "locale": "Colatina-ES",
         "day": "10",

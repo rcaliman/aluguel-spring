@@ -2,8 +2,8 @@ package imoveis.aluguel.dtos;
 
 import java.time.Instant;
 
-import imoveis.aluguel.enums.HoleEnum;
+import imoveis.aluguel.enums.RoleEnum;
 
-public record UserDtoResponse(Long id, String username, String password, HoleEnum hole, Instant createdAt, Instant updatedAt) {
+public record UserDtoResponse(Long id, String username, String password, RoleEnum role, Instant createdAt, Instant updatedAt) {
     
 }

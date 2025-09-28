@@ -29,9 +29,14 @@ public class Contact {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
+    @JoinColumn(name = "tenant_id", nullable = true)
     @JsonIgnore
-    private Person person;
+    private Tenant tenant;
+
+    @ManyToOne
+    @JoinColumn(name = "landlord_id", nullable = true)
+    @JsonIgnore
+    private Landlord landlord;
 
     @Column(nullable = false, name = "contact_type" )
     private ContactTypeEnum type;

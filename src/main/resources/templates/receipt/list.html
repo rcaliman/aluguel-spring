@@ -5,13 +5,52 @@
 <head>
     <title>Recibos Gerados</title>
     <style>
+        /* Estilos para a tela */
+        .printable-page {
+            background: white;
+            border: 1px solid #ddd;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .receipt-copy {
+            padding: 1.5rem 2rem;
+            min-height: 45vh;
+        }
+        
+        .top-copy {
+            border-bottom: 2px dashed #ccc;
+        }
+        
+        .receipt-header h3 {
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .receipt-body p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+        
+        .signature-line {
+            margin-top: 3rem;
+        }
+        
+        .copy-indicator {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: bold;
+        }
+
+        /* Estilos específicos para impressão */
         @media print {
             body * {
                 visibility: hidden;
             }
 
-            #print-area,
-            #print-area * {
+            #print-area, #print-area * {
                 visibility: visible;
             }
 
@@ -22,8 +61,23 @@
                 width: 100%;
             }
 
-            .receipt-card {
-                page-break-inside: avoid;
+            .printable-page {
+                width: 100%;
+                height: 100vh; /* Ocupa a altura total da página de impressão */
+                box-shadow: none;
+                border: none;
+                margin: 0;
+                page-break-after: always; /* Cada 'printable-page' força uma nova página */
+            }
+
+            .receipt-copy {
+                height: 50vh; /* Cada via ocupa metade da página */
+                box-sizing: border-box;
+                padding: 1.5cm;
+            }
+
+            .top-copy {
+                border-bottom: 2px dashed #000;
             }
         }
     </style>
@@ -31,12 +85,16 @@
 
 <body>
     <section layout:fragment="content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1><i class="bi bi-file-earmark-text-fill"></i> Recibos Gerados</h1>
-            <div>
-                <a th:href="@{/properties}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Voltar</a>
-                <button onclick="window.print();" class="btn btn-primary"><i class="bi bi-printer"></i>
-                    Imprimir</button>
+        <div class="page-header no-print">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <h1 class="h3 mb-1"><i class="bi bi-file-earmark-text-fill me-2"></i> Recibos Gerados</h1>
+                    <p class="mb-0 opacity-75">Prontos para impressão</p>
+                </div>
+                <div>
+                    <a th:href="@{/properties}" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Voltar</a>
+                    <button onclick="window.print();" class="btn btn-light"><i class="bi bi-printer"></i> Imprimir Todos</button>
+                </div>
             </div>
         </div>
 
@@ -45,35 +103,59 @@
                 <p class="alert alert-warning">Nenhum recibo foi gerado.</p>
             </div>
 
-            <div class="row row-cols-1 g-4">
-                <div class="col" th:each="receipt : ${receipts}">
-                    <div class="card receipt-card">
-                        <div class="card-header bg-dark text-white">
-                            RECIBO DE ALUGUEL
+            <div class="printable-page" th:each="receipt : ${receipts}">
+                <div class="receipt-copy top-copy">
+                    <div class="receipt-header d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Recibo de Aluguel</h3>
+                        <div class="text-end">
+                            <span class="copy-indicator">1ª VIA - INQUILINO</span><br>
+                            Valor: <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>
                         </div>
-                        <div class="card-body">
-                            <p>
-                                Recebi(emos) de <strong>
-                                    <th:block th:text="${receipt.tenant}" />
-                                </strong>,
-                                a importância de <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>,
-                                referente ao aluguel do imóvel (
-                                <th:block th:text="${receipt.propertyType}" />)
-                                nº <strong th:text="${receipt.propertyNumber}"></strong>,
-                                correspondente ao mês de <strong
-                                    th:text="${receipt.month + '/' + receipt.year}"></strong>.
-                            </p>
-                            <hr>
-                            <p class="text-center">
-                                <strong th:text="${receipt.locale}"></strong>, <span th:text="${receipt.day}"></span> de
-                                <span th:text="${receipt.month}"></span> de <span th:text="${receipt.year}"></span>.
-                            </p>
-                            <hr>
-                            <div class="text-center mt-4">
-                                __________________________________________________<br>
-                                <strong th:text="${receipt.landlord}"></strong><br>
-                                <span>(Locatário)</span>
-                            </div>
+                    </div>
+                    <div class="receipt-body">
+                        <p>
+                            Recebi(emos) de <strong><th:block th:text="${receipt.tenant}" /></strong>,
+                            a importância de <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>,
+                            referente ao aluguel do imóvel (<th:block th:text="${receipt.propertyType}" />)
+                            nº <strong th:text="${receipt.propertyNumber}"></strong>,
+                            correspondente ao período do mês de <strong th:text="${receipt.month + ' de ' + receipt.year}"></strong>.
+                        </p>
+                        <p class="text-center mt-4">
+                            <strong th:text="${receipt.locale}"></strong>, <span th:text="${receipt.day}"></span> de
+                            <span th:text="${receipt.month}"></span> de <span th:text="${receipt.year}"></span>.
+                        </p>
+                        <div class="text-center signature-line">
+                            __________________________________________________<br>
+                            <strong th:text="${receipt.landlord}"></strong><br>
+                            <span>(Locador/Procurador)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="receipt-copy">
+                    <div class="receipt-header d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">Recibo de Aluguel</h3>
+                         <div class="text-end">
+                            <span class="copy-indicator">2ª VIA - PROPRIETÁRIO</span><br>
+                            Valor: <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>
+                        </div>
+                    </div>
+                     <div class="receipt-body">
+                        <p>
+                            Recebi(emos) de <strong><th:block th:text="${receipt.tenant}" /></strong>,
+                            a importância de <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>,
+                            referente ao aluguel do imóvel (<th:block th:text="${receipt.propertyType}" />)
+                            nº <strong th:text="${receipt.propertyNumber}"></strong>,
+                            correspondente ao período do mês de <strong th:text="${receipt.month + ' de ' + receipt.year}"></strong>.
+                        </p>
+                        <p class="text-center mt-4">
+                            <strong th:text="${receipt.locale}"></strong>, <span th:text="${receipt.day}"></span> de
+                            <span th:text="${receipt.month}"></span> de <span th:text="${receipt.year}"></span>.
+                        </p>
+                        <div class="text-center signature-line">
+                            __________________________________________________<br>
+                            <strong th:text="${receipt.landlord}"></strong><br>
+                            <span>(Locador/Procurador)</span>
                         </div>
                     </div>
                 </div>
@@ -81,5 +163,4 @@
         </div>
     </section>
 </body>
-
 </html>

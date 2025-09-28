@@ -5,23 +5,23 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-import imoveis.aluguel.dtos.PersonDtoRequest;
-import imoveis.aluguel.dtos.PersonDtoResponse;
-import imoveis.aluguel.entities.Person;
+import imoveis.aluguel.dtos.TenantDtoRequest;
+import imoveis.aluguel.dtos.TenantDtoResponse;
+import imoveis.aluguel.entities.Tenant;
 
 @Mapper(componentModel = "spring", uses = {ContactMapper.class})
-public interface PersonMapper {
+public interface TenantMapper {
     
-    PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
+    TenantMapper INSTANCE = Mappers.getMapper(TenantMapper.class);
 
-    PersonDtoResponse toDtoResponse(Person person);
+    TenantDtoResponse toDtoResponse(Tenant tenant);
     
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "properties", ignore = true)
-    Person toPerson(PersonDtoRequest personDto);
+    Tenant toTenant(TenantDtoRequest tenantDto);
 
     @Mapping(target = "id", ignore = true)
-    void updateEntity(Person source, @MappingTarget Person target);
+    void updateEntity(Tenant source, @MappingTarget Tenant target);
 
 }
