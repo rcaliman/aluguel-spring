@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import imoveis.aluguel.entities.Landlord;
 import imoveis.aluguel.mappers.LandlordMapper;
 import imoveis.aluguel.repositories.LandLordRepository;
-import imoveis.aluguel.repositories.TenantRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +55,7 @@ public class LandlordServiceImpl implements LandlordService {
     public Landlord update(Long id, Landlord updatedLandlord) {
 
         var landlord = landlordRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("locador de id %d não encontrado", id))
+            () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
         );
         landlordMapper.updateEntity(updatedLandlord, landlord);
         if(landlord.getContacts() != null) {
@@ -75,8 +74,10 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+        Landlord landlord = landlordRepository.findById(id).orElseThrow(
+            () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
+        );
+        landlordRepository.delete(landlord);
     }
     
 }

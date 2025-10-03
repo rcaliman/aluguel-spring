@@ -2,6 +2,7 @@ package imoveis.aluguel.controllers.web;
 
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.dtos.ReceiptDtoResponse;
+import imoveis.aluguel.exceptions.ValidationException;
 import imoveis.aluguel.mappers.ReceiptMapper;
 import imoveis.aluguel.services.ReceiptService;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +23,15 @@ public class ReceiptWebController {
     private final ReceiptMapper receiptMapper;
 
     @PostMapping("/generate")
-    public String generateReceipts(@RequestParam("propertyIds") List<Long> propertyIds,
+    public String generateReceipts(@RequestParam(value = "propertyIds", required = false) List<Long> propertyIds,
                                     @RequestParam("landlordId") Long landlordId,
                                     @RequestParam("month") String month,
                                     @RequestParam("year") String year,
                                     Model model) {
+
+        if(propertyIds == null || propertyIds.isEmpty()) {
+            throw new ValidationException("Nenhum imóvel foi selecionado");
+        }
 
         ReceiptDtoRequest request = new ReceiptDtoRequest(
             propertyIds,

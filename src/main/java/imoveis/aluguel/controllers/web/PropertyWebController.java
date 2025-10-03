@@ -2,6 +2,7 @@ package imoveis.aluguel.controllers.web;
 
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.enums.PropertyTypeEnum;
+import imoveis.aluguel.services.LandlordService; // 1. Importar o serviço de locadores
 import imoveis.aluguel.services.TenantService;
 import imoveis.aluguel.services.PropertyService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +24,15 @@ public class PropertyWebController {
 
     private final PropertyService propertyService;
     private final TenantService tenantService;
+    private final LandlordService landlordService; // 2. Injetar o LandlordService
 
     @GetMapping
     public String listProperties(Model model) {
 
         model.addAttribute("properties", propertyService.list(Sort.by(Direction.DESC, "tenant")));
+        
+        // 3. Buscar e adicionar a lista de locadores ao modelo
+        model.addAttribute("landlords", landlordService.list(Sort.by("name")));
 
         int currentYear = LocalDate.now().getYear();
         List<Integer> years = IntStream.rangeClosed(currentYear - 5, currentYear + 2)

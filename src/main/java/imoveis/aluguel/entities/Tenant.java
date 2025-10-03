@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreRemove;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -28,7 +29,7 @@ import lombok.ToString;
 @Table(name = "tb_tenants")
 @ToString
 public class Tenant {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -65,6 +66,13 @@ public class Tenant {
 
     @Column(nullable = true, name = "updated_at")
     private Instant updatedAt;
+
+    @PreRemove
+    private void preRemove() {
+        for (Property property : properties) {
+            property.setTenant(null);
+        }
+    }
 
     @PrePersist
     protected void onCreate() {

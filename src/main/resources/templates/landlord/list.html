@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Lista de Locadores</title>
+  </head>
+
+  <body>
+    <section layout:fragment="content">
+      <div class="container">
+        <div class="page-header">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+          >
+            <div>
+              <h1 class="h3 mb-1">
+                <i class="bi bi-person-badge-fill me-2"></i> Locadores
+              </h1>
+              <p class="mb-0 opacity-75">
+                Gerencie todos os locadores do sistema
+              </p>
+            </div>
+            <a th:href="@{/landlords/new}" class="btn btn-light">
+              <i class="bi bi-plus-circle"></i>
+              <span>Novo Locador</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="card-custom">
+          <div
+            class="card-custom-header d-flex justify-content-between align-items-center"
+          >
+            <span
+              ><i class="bi bi-list-ul me-2"></i> Locadores Cadastrados</span
+            >
+            <span
+              class="badge bg-light text-dark"
+              th:text="${#lists.size(landlords) + ' locadores'}"
+            ></span>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF/CNPJ</th>
+                  <th>Contatos</th>
+                  <th class="text-center">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="landlord : ${landlords}">
+                  <td th:text="${landlord.name}">Nome do Locador</td>
+                  <td th:text="${landlord.cpfCnpj}">000.000.000-00</td>
+                  <td>
+                    <small
+                      th:each="contact, iterStat : ${landlord.contacts}"
+                      th:text="${contact.contact} + (${iterStat.last} ? '' : ', ')"
+                    ></small>
+                  </td>
+                  <td class="text-center">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <a
+                        th:href="@{/landlords/edit/{id}(id=${landlord.id})}"
+                        class="btn btn-outline-primary"
+                        title="Editar"
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </a>
+                      <a
+                        th:href="@{/landlords/delete/{id}(id=${landlord.id})}"
+                        class="btn btn-outline-danger"
+                        title="Excluir"
+                        onclick="return confirm('Tem certeza que deseja excluir este locador?');"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(landlords)}">
+                  <td colspan="4" class="text-center py-4">
+                    <i
+                      class="bi bi-inbox display-4 text-muted d-block mb-2"
+                    ></i>
+                    <span class="text-muted">Nenhum locador cadastrado</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

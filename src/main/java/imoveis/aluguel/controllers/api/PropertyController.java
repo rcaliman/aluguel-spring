@@ -1,6 +1,5 @@
 package imoveis.aluguel.controllers.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;

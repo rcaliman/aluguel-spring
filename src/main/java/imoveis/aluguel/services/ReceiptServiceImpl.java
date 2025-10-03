@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReceiptServiceImpl implements ReceiptService {
 
-    private final TenantService tenantService;
+    private final LandlordService landlordService;
     private final PropertyService propertyService;
 
     @Override
@@ -23,10 +23,10 @@ public class ReceiptServiceImpl implements ReceiptService {
 
         List<Receipt> receipts = new ArrayList<>();
 
-        var landlord = tenantService.findById(receiptRequest.landlordId());
+        var landlord = landlordService.findById(receiptRequest.landlordId());
 
         List<Property> properties = new ArrayList<>();
-
+        
         if(receiptRequest.propertyIds() != null) {
             receiptRequest.propertyIds().forEach(
                 id -> properties.add(propertyService.findById(id))

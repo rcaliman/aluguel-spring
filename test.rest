@@ -80,8 +80,8 @@ POST {{URL_API}}/landlord
                 "contact": "teste@gmail.com"
             }
         ],
-        "document": "132372d2434",
-        "cpfCnpj": "2233344d3423",
+        "document": "132372d2d434",
+        "cpfCnpj": "2233d344d3423",
         "dateOfBirth": "1990-10-10",
         "address": "Teste de endereço",
         "maritalStatus": "Casado(a)"
@@ -94,6 +94,13 @@ GET {{URL_API}}/landlord/cpfCnpj/2233344d3423
 ###
 GET {{URL_API}}/landlord/1
     Content-Type: application/json
+
+###
+GET {{URL_API}}/landlord/list
+    Content-Type: application/json
+
+###
+DELETE {{URL_API}}/landlord/1
 
 ###########
 # PROPERTY
@@ -113,6 +120,7 @@ POST {{URL_API}}/property
         "paymentDay":"20"
     }
 
+
 ###
 GET {{URL_API}}/property/1
     Content-Type: application/json
@@ -125,7 +133,7 @@ PUT {{URL_API}}/property/1
         "type":"Loja",
         "address":"Travessa Jose toledo",
         "number": "200",
-        "tenantId": 2,
+        "tenantId": 1,
         "value": "1100.0",
         "complement":"teste de complemento",
         "observation": "teste de observacao",
@@ -137,7 +145,7 @@ GET {{URL_API}}/property/list
     Content-Type: application/json
 
 ###
-DELETE {{URL_API}}/property/2
+DELETE {{URL_API}}/property/1
 
 ###
 POST {{URL_API}}/receipt
