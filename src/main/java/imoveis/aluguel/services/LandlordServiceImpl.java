@@ -70,8 +70,7 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     public List<Landlord> list(Sort sort) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'list'");
+        return landlordRepository.findAll(sort);
     }
 
     @Override

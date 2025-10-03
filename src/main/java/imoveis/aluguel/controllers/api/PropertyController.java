@@ -71,12 +71,10 @@ public class PropertyController {
     public ResponseEntity<List<PropertyDtoResponse>> list(Sort sort) {
 
         var properties = propertyService.list(sort);
-        List<PropertyDtoResponse> listDto = new ArrayList<>();
 
-        properties.forEach(property -> {
-            var dtoResponse = propertyMapper.toDtoResponse(property);
-            listDto.add(dtoResponse);
-        });
+        var listDto = properties.stream()
+                .map(propertyMapper::toDtoResponse)
+                .toList();
 
         return new ResponseEntity<>(listDto, HttpStatus.OK);
 

@@ -92,7 +92,7 @@ GET {{URL_API}}/landlord/cpfCnpj/2233344d3423
     Content-Type: application/json
 
 ###
-GET {{URL_API}}/landlord/8
+GET {{URL_API}}/landlord/1
     Content-Type: application/json
 
 ###########
@@ -106,7 +106,7 @@ POST {{URL_API}}/property
         "type":"Loja",
         "address":"Travessa Jose toledo",
         "number": "100",
-        "tenantId": 2,
+        "tenantId": 1,
         "value": "1000.0",
         "complement":"teste de complemento",
         "observation": "teste de observacao",
@@ -145,7 +145,7 @@ POST {{URL_API}}/receipt
 
     {
         "propertyIds": [1],
-        "landlordId": 21,
+        "landlordId": 1,
         "locale": "Colatina-ES",
         "day": "10",
         "month": "Agosto",

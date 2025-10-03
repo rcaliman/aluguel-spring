@@ -1,6 +1,9 @@
 package imoveis.aluguel.controllers.api;
 
+import java.util.List;
+
 import org.springframework.boot.autoconfigure.graphql.GraphQlProperties.Http;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,5 +70,17 @@ public class LandlordController {
 
         return new ResponseEntity<>(dtoResponse, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<LandlordDtoResponse>> list(Sort sort) {
+
+        var listLandlord = landlordService.list(sort);
+        var listDto = listLandlord.stream()
+                        .map(landlordMapper::toDtoResponse)
+                        .toList();
+
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
+        
     }
 }
