@@ -84,8 +84,30 @@ POST {{URL_API}}/landlord
         "cpfCnpj": "2233d344d3423",
         "dateOfBirth": "1990-10-10",
         "address": "Teste de endereço",
-        "maritalStatus": "Casado(a)"
+        "maritalStatus": "Casado(a)",
+        "main": true
     }
+
+###
+PUT {{URL_API}}/landlord/5
+    Content-Type: application/json
+
+{
+    "id": 5,
+    "name": "João Landlord5",
+    "contacts": [
+      {
+        "type": "Email",
+        "contact": "teste@gmail.com"
+      }
+    ],
+    "document": "132372d2d4345",
+    "cpfCnpj": "2233d344d34235",
+    "dateOfBirth": "1990-10-10",
+    "address": "Teste de endereço",
+    "maritalStatus": "Casado(a)",
+    "main": false
+}
 
 ###
 GET {{URL_API}}/landlord/cpfCnpj/2233344d3423
