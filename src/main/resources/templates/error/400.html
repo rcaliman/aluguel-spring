@@ -14,23 +14,26 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-8">
-            <div class="card-custom shadow-sm text-center border-warning mt-5">
+            <div class="card-custom shadow-sm text-center mt-5">
+              
+              <div class="card-custom-header">
+                <h1 class="h3 mb-0">Requisição Inválida</h1>
+              </div>
+
               <div class="card-custom-body p-5">
                 <i
                   class="bi bi-exclamation-triangle-fill display-1 text-warning mb-3"
                 ></i>
-
-                <h1 class="h2 fw-bold mb-2">400 - Requisição Inválida</h1>
 
                 <p class="lead text-muted">
                   Não foi possível processar sua solicitação devido a um erro
                   nos dados enviados.
                 </p>
 
-                <div class="alert alert-warning-custom my-4" role="alert">
+                <div class="alert alert-warning my-4" role="alert">
                   <i class="bi bi-info-circle-fill me-2"></i>
                   <strong th:text="${errorMessage}">
-                    Nenhum imóvel foi selecionado para gerar recibos.
+                    Mensagem de erro específica aqui.
                   </strong>
                 </div>
 
@@ -44,6 +47,7 @@
                   </a>
                 </div>
               </div>
+
             </div>
           </div>
         </div>

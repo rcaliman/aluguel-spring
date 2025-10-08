@@ -6,7 +6,9 @@
   layout:decorate="~{layout}"
 >
   <head>
-    <title th:text="${landlord.id == null} ? 'Novo Locador' : 'Editar Locador'">
+    <title
+      th:text="${landlord.id == null} ? 'Novo Locador' : 'Editar Locador'"
+    >
       Formulário de Locador
     </title>
   </head>
@@ -14,15 +16,31 @@
   <body>
     <section layout:fragment="content">
       <div class="container">
+        <div class="page-header">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+          >
+            <div>
+              <h1
+                class="h3 mb-1"
+                th:text="${landlord.id == null} ? 'Adicionar Novo Locador' : 'Editar Locador'"
+              ></h1>
+              <p class="mb-0 opacity-75">Preencha os dados pessoais abaixo</p>
+            </div>
+            <a th:href="@{/landlords}" class="btn btn-light">
+              <i class="bi bi-arrow-left-circle"></i> Voltar para a Lista
+            </a>
+          </div>
+        </div>
+
         <div class="row justify-content-center">
           <div class="col-lg-10">
             <div class="card-custom">
-              <div class="card-custom-header gradient">
-                <h1
-                  class="h3 mb-0"
-                  th:text="${landlord.id == null} ? 'Adicionar Novo Locador' : 'Editar Locador'"
-                ></h1>
-                <p class="mb-0 opacity-75">Preencha os dados pessoais abaixo</p>
+              <div class="card-custom-header">
+                <span
+                  ><i class="bi bi-pencil-square me-2"></i> Dados do
+                  Locador</span
+                >
               </div>
 
               <div class="card-custom-body">
@@ -37,7 +55,7 @@
                     <i class="bi bi-person-vcard"></i> Identificação
                   </h5>
                   <div class="row">
-                    <div class="col-md-6 mb-3">
+                    <div class="col-12 mb-3">
                       <label for="name" class="form-label">Nome Completo</label>
                       <input
                         type="text"
@@ -48,6 +66,9 @@
                         placeholder="Digite o nome completo"
                       />
                     </div>
+                  </div>
+
+                  <div class="row">
                     <div class="col-md-6 mb-3">
                       <label for="cpfCnpj" class="form-label">CPF/CNPJ</label>
                       <input
@@ -56,62 +77,111 @@
                         id="cpfCnpj"
                         th:field="*{cpfCnpj}"
                         placeholder="Apenas números"
+                        maxlength="18"
+                      />
+                      <div class="invalid-feedback" id="cpfCnpjFeedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="document" class="form-label">Documento (RG)</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="document"
+                        th:field="*{document}"
+                        placeholder="Digite o RG"
                       />
                     </div>
                   </div>
 
                   <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <label for="maritalStatus" class="form-label"
-                        >Estado Civil</label
-                      >
-                      <select
-                        class="form-select"
-                        id="maritalStatus"
-                        th:field="*{maritalStatus}"
-                      >
+                    <div class="col-md-4 mb-3">
+                      <label for="maritalStatus" class="form-label">Estado Civil</label>
+                      <select class="form-select" id="maritalStatus" th:field="*{maritalStatus}">
                         <option value="">Selecione...</option>
                         <option
                           th:each="status : ${maritalStatusOptions}"
-                          th:value="${status}"
-                          th:text="${status.description}"
+                          th:value="${status.name()}"
+                          th:text="${status.displayName}"
                         ></option>
                       </select>
                     </div>
-                    <div class="col-md-6 mb-3">
-                      <label for="dateOfBirth" class="form-label"
-                        >Data de Nascimento</label
-                      >
+                    <div class="col-md-4 mb-3">
+                      <label for="dateOfBirth" class="form-label">Data de Nascimento</label>
                       <input
                         type="date"
                         class="form-control"
                         id="dateOfBirth"
-                        th:field="*{dateOfBirth}"
+                        name="dateOfBirth"
+                        th:value="${landlord.dateOfBirth != null ? #temporals.format(landlord.dateOfBirth, 'yyyy-MM-dd') : ''}"
                       />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="nationality" class="form-label">Nacionalidade</label>
+                        <input type="text" class="form-control" id="nationality" th:field="*{nationality}" placeholder="Ex: Brasileiro(a)">
                     </div>
                   </div>
 
-                  <h5 class="form-section-title">
-                    <i class="bi bi-geo-alt"></i> Contato e Endereço
-                  </h5>
-                  <div class="mb-3">
-                    <label for="address" class="form-label">Endereço</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="address"
-                      th:field="*{address}"
-                      placeholder="Ex: Rua, Nº, Bairro, Cidade - UF"
-                    />
+                  <div class="form-check form-switch mb-4">
+                    <input class="form-check-input" type="checkbox" role="switch" id="main" th:field="*{main}"/>
+                    <label class="form-check-label" for="main"><strong>Marcar como locador principal</strong></label>
                   </div>
+
+                  <h5 class="form-section-title">
+                    <i class="bi bi-geo-alt"></i> Endereço e Contatos
+                  </h5>
+                  
+                  <div class="row">
+                    <div class="col-md-9 mb-3">
+                        <label for="address" class="form-label">Logradouro (Rua, Av.)</label>
+                        <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Ex: Rua das Flores, 123"/>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="location" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" id="location" th:field="*{location}" placeholder="Ex: Centro"/>
+                    </div>
+                  </div>
+                   <div class="row">
+                    <div class="col-md-8 mb-3">
+                        <label for="city" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Ex: Colatina"/>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="state" class="form-label">Estado</label>
+                        <input type="text" class="form-control" id="state" th:field="*{state}" placeholder="Ex: ES"/>
+                    </div>
+                  </div>
+
+
+                  <div id="contacts-container">
+                    <div th:each="contact, iterStat : *{contacts}" class="row contact-row g-2 mb-2">
+                        <input type="hidden" th:field="*{contacts[__${iterStat.index}__].id}"/>
+                        <div class="col-md-4">
+                            <label th:for="${'contacts' + iterStat.index + 'type'}" class="visually-hidden">Tipo</label>
+                            <select class="form-select" th:id="${'contacts' + iterStat.index + 'type'}" th:field="*{contacts[__${iterStat.index}__].type}">
+                                <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
+                                        th:text="${typeOpt.displayName}"></option>
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                             <label th:for="${'contacts' + iterStat.index + 'contact'}" class="visually-hidden">Contato</label>
+                            <input type="text" class="form-control" placeholder="Digite o contato" th:id="${'contacts' + iterStat.index + 'contact'}"
+                                   th:field="*{contacts[__${iterStat.index}__].contact}"/>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="button" class="btn btn-outline-danger remove-contact-btn w-100" title="Remover Contato">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                  </div>
+                  <button type="button" id="add-contact-btn" class="btn btn-outline-primary mt-2">
+                      <i class="bi bi-plus-circle"></i> Adicionar Contato
+                  </button>
 
                   <div
                     class="d-flex justify-content-end gap-3 pt-4 mt-3 border-top"
                   >
-                    <a
-                      th:href="@{/landlords}"
-                      class="btn btn-outline-secondary"
-                    >
+                    <a th:href="@{/landlords}" class="btn btn-outline-secondary">
                       <i class="bi bi-x-circle"></i> Cancelar
                     </a>
                     <button type="submit" class="btn btn-primary">
@@ -124,6 +194,27 @@
           </div>
         </div>
       </div>
+      
+      <template id="contact-template">
+          <div class="row contact-row g-2 mb-2">
+              <div class="col-md-4">
+                  <label for="contactsINDEXtype" class="visually-hidden">Tipo</label>
+                  <select class="form-select" id="contactsINDEXtype" name="contacts[INDEX].type">
+                      <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
+                              th:text="${typeOpt.displayName}" th:selected="${typeOpt.name() == 'CELULAR'}"></option>
+                  </select>
+              </div>
+              <div class="col-md-7">
+                  <label for="contactsINDEXcontact" class="visually-hidden">Contato</label>
+                  <input type="text" class="form-control" id="contactsINDEXcontact" name="contacts[INDEX].contact" placeholder="Digite o contato" required/>
+              </div>
+              <div class="col-md-1">
+                  <button type="button" class="btn btn-outline-danger remove-contact-btn w-100" title="Remover Contato">
+                      <i class="bi bi-trash"></i>
+                  </button>
+              </div>
+          </div>
+      </template>
     </section>
   </body>
 </html>

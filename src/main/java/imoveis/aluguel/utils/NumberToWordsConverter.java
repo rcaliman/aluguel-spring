@@ -1,0 +1,67 @@
+package imoveis.aluguel.utils;
+
+import java.text.DecimalFormat;
+import java.math.BigDecimal;
+
+public class NumberToWordsConverter {
+
+    private static final String[] UNIDADES = { "", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove" };
+    private static final String[] ESPECIAIS = { "dez", "onze", "doze", "treze", "catorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove" };
+    private static final String[] DEZENAS = { "", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa" };
+    private static final String[] CENTENAS = { "", "cento", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos" };
+
+    public static String convert(BigDecimal valor) {
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) == 0) {
+            return "zero reais";
+        }
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        String valorStr = df.format(valor);
+        String[] partes = valorStr.replace(".", ",").split(",");
+        
+        long reais = Long.parseLong(partes[0]);
+        int centavos = Integer.parseInt(partes[1]);
+
+        StringBuilder extenso = new StringBuilder();
+        extenso.append(convertPart(reais));
+        extenso.append(reais == 1 ? " real" : " reais");
+
+        if (centavos > 0) {
+            extenso.append(" e ");
+            extenso.append(convertPart((long) centavos));
+            extenso.append(centavos == 1 ? " centavo" : " centavos");
+        }
+
+        return extenso.toString();
+    }
+
+    private static String convertPart(long n) {
+        if (n == 0) return "";
+        if (n == 100) return "cem";
+
+        if (n >= 1000) {
+            long milhar = n / 1000;
+            long resto = n % 1000;
+            String milharStr = (milhar == 1) ? "mil" : convertPart(milhar) + " mil";
+            return resto > 0 ? milharStr + (resto <= 100 || resto % 100 == 0 ? " e " : " ") + convertPart(resto) : milharStr;
+        }
+
+        if (n >= 100) {
+            long centena = n / 100;
+            long resto = n % 100;
+            return CENTENAS[(int) centena] + (resto > 0 ? " e " + convertPart(resto) : "");
+        }
+
+        if (n >= 20) {
+            long dezena = n / 10;
+            long resto = n % 10;
+            return DEZENAS[(int) dezena] + (resto > 0 ? " e " + convertPart(resto) : "");
+        }
+
+        if (n >= 10) {
+            return ESPECIAIS[(int) (n - 10)];
+        }
+
+        return UNIDADES[(int) n];
+    }
+}

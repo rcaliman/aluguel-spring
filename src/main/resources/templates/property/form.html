@@ -9,12 +9,23 @@
 <body>
     <section layout:fragment="content">
         <div class="container">
+            <div class="page-header">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <h1 class="h3 mb-1" th:text="${property.id == null} ? 'Adicionar Novo Imóvel' : 'Editar Imóvel'"></h1>
+                        <p class="mb-0 opacity-75">Preencha os dados do imóvel abaixo</p>
+                    </div>
+                    <a th:href="@{/properties}" class="btn btn-light">
+                        <i class="bi bi-arrow-left-circle"></i> Voltar para a Lista
+                    </a>
+                </div>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-lg-10">
                     <div class="card-custom">
-                        <div class="card-custom-header gradient">
-                            <h1 class="h3 mb-0" th:text="${property.id == null} ? 'Adicionar Novo Imóvel' : 'Editar Imóvel'"></h1>
-                            <p class="mb-0 opacity-75">Preencha os dados do imóvel abaixo</p>
+                        <div class="card-custom-header">
+                            <i class="bi bi-pencil-square me-2"></i> Dados do Imóvel
                         </div>
                         
                         <div class="card-custom-body">
@@ -24,7 +35,7 @@
                                 <h5 class="form-section-title"><i class="bi bi-geo-alt"></i> Endereço</h5>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label for="address" class="form-label">Endereço</label>
+                                        <label for="address" class="form-label">Logradouro (Rua, Av.)</label>
                                         <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Ex: Rua das Flores" required>
                                     </div>
                                     <div class="col-md-3 mb-3">
@@ -37,9 +48,25 @@
                                     </div>
                                 </div>
                                 
-                                <h5 class="form-section-title"><i class="bi bi-person-badge"></i> Informações do Contrato</h5>
                                 <div class="row">
-                                    <div class="col-md-5 mb-3">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="location" class="form-label">Bairro</label>
+                                        <input type="text" class="form-control" id="location" th:field="*{location}" placeholder="Ex: Centro">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="city" class="form-label">Cidade</label>
+                                        <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Ex: Colatina">
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="state" class="form-label">Estado</label>
+                                        <input type="text" class="form-control" id="state" th:field="*{state}" placeholder="Ex: ES">
+                                    </div>
+                                </div>
+                                
+                                <h5 class="form-section-title"><i class="bi bi-person-badge"></i> Informações do Contrato</h5>
+                                
+                                <div class="row">
+                                    <div class="col-12 mb-3">
                                         <label for="tenant" class="form-label">Inquilino</label>
                                         <select class="form-select" id="tenant" th:field="*{tenant}">
                                             <option value="">Selecione (imóvel vago)</option>
@@ -47,24 +74,38 @@
                                         </select>
                                         <div class="form-text">Deixe em branco se o imóvel estiver vago.</div>
                                     </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label for="type" class="form-label">Tipo de Imóvel</label>
-                                        <select class="form-select" id="type" th:field="*{type}" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="propertyType" class="form-label">Tipo de Imóvel</label>
+                                        <select class="form-select" id="propertyType" th:field="*{propertyType}" required>
                                             <option value="">Selecione...</option>
                                             <option th:each="typeOpt : ${propertyTypes}" th:value="${typeOpt}"
                                                 th:text="${typeOpt.description}"></option>
                                         </select>
                                     </div>
-                                    <div class="col-md-2 mb-3">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="useType" class="form-label">Tipo de Uso</label>
+                                        <select class="form-select" id="useType" th:field="*{useType}">
+                                            <option value="">Selecione...</option>
+                                            <option th:each="useTypeOpt : ${propertyUseTypes}" th:value="${useTypeOpt}"
+                                                th:text="${useTypeOpt.description}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                         <label for="value" class="form-label">Valor do Aluguel</label>
                                         <div class="input-group">
                                             <span class="input-group-text">R$</span>
                                             <input type="number" step="0.01" class="form-control" id="value" th:field="*{value}" placeholder="0,00">
                                         </div>
                                     </div>
-                                    <div class="col-md-2 mb-3">
+                                    <div class="col-md-6 mb-3">
                                         <label for="paymentDay" class="form-label">Dia Vencimento</label>
-                                        <input type="number" class="form-control" id="paymentDay" th:field="*{paymentDay}" min="1" max="31" placeholder="Dia">
+                                        <input type="text" class="form-control" id="paymentDay" th:field="*{paymentDay}" placeholder="Ex: 10">
                                     </div>
                                 </div>
                                 
@@ -90,5 +131,4 @@
         </div>
     </section>
 </body>
-
 </html>

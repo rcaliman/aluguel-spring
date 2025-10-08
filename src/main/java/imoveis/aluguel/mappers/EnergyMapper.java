@@ -11,8 +11,6 @@ import imoveis.aluguel.entities.Energy;
 
 @Mapper(componentModel = "spring")
 public interface EnergyMapper {
-    
-    EnergyMapper INSTANCE = Mappers.getMapper(EnergyMapper.class);
 
     @Mapping(target = "amount1", ignore = true)
     @Mapping(target = "amount2", ignore = true)

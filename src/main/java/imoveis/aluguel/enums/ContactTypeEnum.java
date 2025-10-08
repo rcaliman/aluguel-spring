@@ -4,18 +4,23 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ContactTypeEnum {
     
-    PHONE("Telefone"),
-    EMAIL("Email");
+    CELULAR("celular"),
+    EMAIL("email"),
+    TELEFONE("telefone");
 
-    private final String description;
+    private final String displayName;
 
-    ContactTypeEnum(String description) {
-        this.description = description;
+    ContactTypeEnum(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonValue
-    public String getDescription() {
-        return this.description;
+    public String getDisplayName() {
+        return displayName;
     }
 
+    @Override
+    public String toString() {
+        return this.displayName;
+    }
 }

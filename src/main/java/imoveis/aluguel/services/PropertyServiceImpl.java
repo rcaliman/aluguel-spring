@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.mappers.PropertyLogMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.repositories.TenantRepository;
@@ -21,9 +22,14 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyRepository propertyRepository;
     private final TenantRepository tenantRepository;
     private final PropertyMapper propertyMapper;
+    private final PropertyLogMapper propertyLogMapper;
 
     @Override
     public Property create(Property property) {
+
+        var propertyLog = propertyLogMapper.toPropertyLog(property);
+        property.addPropertyLog(propertyLog);
+        
         return propertyRepository.save(property);
     }
 
@@ -41,20 +47,19 @@ public class PropertyServiceImpl implements PropertyService {
             () -> new EntityNotFoundException(String.format("Imovel de id %d dão encontrado", id))
         );
         
-        // Atualiza os campos simples primeiro (ex: endereço, valor, etc.)
         propertyMapper.updateEntity(updatedProperty, recordedProperty);
 
-        // Lógica segura para atualizar o inquilino, tratando casos de imóvel vago
         Tenant tenantInRequest = updatedProperty.getTenant();
         if (tenantInRequest == null || tenantInRequest.getId() == null) {
-            // Se o formulário enviou um inquilino nulo ou sem ID, o imóvel fica vago
             recordedProperty.setTenant(null);
         } else {
-            // Se enviou um inquilino, busca a entidade completa e a associa
             Tenant newTenant = tenantRepository.findById(tenantInRequest.getId()).orElse(null);
             recordedProperty.setTenant(newTenant);
         }
         
+        var propertyLog = propertyLogMapper.toPropertyLog(recordedProperty);
+        recordedProperty.addPropertyLog(propertyLog);
+
         return propertyRepository.save(recordedProperty);
     }
 

@@ -2,7 +2,8 @@ package imoveis.aluguel.controllers.web;
 
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.enums.PropertyTypeEnum;
-import imoveis.aluguel.services.LandlordService; // 1. Importar o serviço de locadores
+import imoveis.aluguel.enums.PropertyUseTypeEnum; // Import adicionado
+import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.TenantService;
 import imoveis.aluguel.services.PropertyService;
 import lombok.RequiredArgsConstructor;
@@ -24,33 +25,33 @@ public class PropertyWebController {
 
     private final PropertyService propertyService;
     private final TenantService tenantService;
-    private final LandlordService landlordService; // 2. Injetar o LandlordService
+    private final LandlordService landlordService;
 
     @GetMapping
     public String listProperties(Model model) {
 
-        model.addAttribute("properties", propertyService.list(Sort.by(Direction.DESC, "tenant")));
-        
-        // 3. Buscar e adicionar a lista de locadores ao modelo
-        model.addAttribute("landlords", landlordService.list(Sort.by("name")));
-
         int currentYear = LocalDate.now().getYear();
         List<Integer> years = IntStream.rangeClosed(currentYear - 5, currentYear + 2)
-                                            .boxed().collect(Collectors.toList());
+                .boxed().collect(Collectors.toList());
+
+        model.addAttribute("properties", propertyService.list(Sort.by(Direction.DESC, "tenant")));
+        model.addAttribute("landlords", landlordService.list(Sort.by("name")));
         model.addAttribute("years", years);
         model.addAttribute("currentYear", currentYear);
         model.addAttribute("currentMonth", LocalDate.now().getMonthValue());
-
+        model.addAttribute("currentPage", "properties");
 
         return "property/list";
     }
-    
+
     @GetMapping("/new")
     public String showCreateForm(Model model) {
 
         model.addAttribute("property", new Property());
         model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
+        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values()); // LINHA ADICIONADA
+        model.addAttribute("currentPage", "properties");
 
         return "property/form";
 
@@ -73,9 +74,12 @@ public class PropertyWebController {
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Property property = propertyService.findById(id);
+        
         model.addAttribute("property", property);
         model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
+        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values()); // LINHA ADICIONADA
+        model.addAttribute("currentPage", "properties");
 
         return "property/form";
 

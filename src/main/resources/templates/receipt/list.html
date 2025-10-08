@@ -1,166 +1,251 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout}">
-
-<head>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
     <title>Recibos Gerados</title>
     <style>
-        /* Estilos para a tela */
+      /* Estilos para a visualização na tela */
+      .printable-page {
+        background: white;
+        border: 1px solid #ddd;
+        margin-bottom: 2rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .receipt-copy {
+        padding: 2rem;
+      }
+
+      .top-copy {
+        border-bottom: 2px dashed #ccc;
+      }
+
+      .receipt-header h3 {
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .receipt-body p {
+        font-size: 1.2rem;
+        line-height: 1.8;
+      }
+
+      .signature-line {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .copy-indicator {
+        font-size: 0.8rem;
+        color: #888;
+        font-weight: bold;
+        text-align: right;
+      }
+
+      .tenant-contact-info {
+        font-size: 0.9rem;
+        color: #555;
+        text-align: right; /* ALTERADO DE 'center' PARA 'right' */
+        margin-top: 1.5rem;
+      }
+
+      .no-print {
+      }
+
+      /* Estilos específicos para impressão */
+      @media print {
+        body,
+        html {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+        }
+        body * {
+          visibility: hidden;
+        }
+        .no-print {
+          display: none;
+        }
+        #print-area,
+        #print-area * {
+          visibility: visible;
+        }
+        #print-area {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
         .printable-page {
-            background: white;
-            border: 1px solid #ddd;
-            margin-bottom: 2rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+          width: 210mm;
+          height: 297mm;
+          box-shadow: none;
+          border: none;
+          margin: 0;
+          padding: 0;
+          page-break-after: always;
+          display: flex;
+          flex-direction: column;
         }
-
         .receipt-copy {
-            padding: 1.5rem 2rem;
-            min-height: 45vh;
+          height: 148.5mm;
+          box-sizing: border-box;
+          padding: 1.5cm;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          border-bottom: 2px dashed #000;
         }
-        
         .top-copy {
-            border-bottom: 2px dashed #ccc;
+          border-top: 2px dashed #000;
+          border-bottom: 2px dashed #000;
         }
-        
-        .receipt-header h3 {
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
         .receipt-body p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            text-align: justify;
+          font-size: 14pt;
+          line-height: 1.6;
         }
-        
         .signature-line {
-            margin-top: 3rem;
-        }
-        
-        .copy-indicator {
-            font-size: 0.8rem;
-            color: #888;
-            font-weight: bold;
+          margin-top: 1.5cm;
         }
 
-        /* Estilos específicos para impressão */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-
-            #print-area, #print-area * {
-                visibility: visible;
-            }
-
-            #print-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
-
-            .printable-page {
-                width: 100%;
-                height: 100vh; /* Ocupa a altura total da página de impressão */
-                box-shadow: none;
-                border: none;
-                margin: 0;
-                page-break-after: always; /* Cada 'printable-page' força uma nova página */
-            }
-
-            .receipt-copy {
-                height: 50vh; /* Cada via ocupa metade da página */
-                box-sizing: border-box;
-                padding: 1.5cm;
-            }
-
-            .top-copy {
-                border-bottom: 2px dashed #000;
-            }
+        .tenant-contact-info {
+          font-size: 10pt;
+          color: #333;
+          margin-top: 1cm;
+          text-align: right; /* ADICIONADO ALINHAMENTO PARA IMPRESSÃO */
         }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <section layout:fragment="content">
-        <div class="page-header no-print">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <div>
-                    <h1 class="h3 mb-1"><i class="bi bi-file-earmark-text-fill me-2"></i> Recibos Gerados</h1>
-                    <p class="mb-0 opacity-75">Prontos para impressão</p>
-                </div>
-                <div>
-                    <a th:href="@{/properties}" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Voltar</a>
-                    <button onclick="window.print();" class="btn btn-light"><i class="bi bi-printer"></i> Imprimir Todos</button>
-                </div>
-            </div>
+      <div class="page-header no-print">
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap"
+        >
+          <div>
+            <h1 class="h3 mb-1">
+              <i class="bi bi-file-earmark-text-fill me-2"></i> Recibos Gerados
+            </h1>
+            <p class="mb-0 opacity-75">Prontos para impressão</p>
+          </div>
+          <div>
+            <a th:href="@{/properties}" class="btn btn-outline-light"
+              ><i class="bi bi-arrow-left"></i> Voltar</a
+            >
+            <button onclick="window.print();" class="btn btn-light">
+              <i class="bi bi-printer"></i> Imprimir Todos
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="print-area">
+        <div th:if="${#lists.isEmpty(receipts)}" class="no-print">
+          <p class="alert alert-warning">Nenhum recibo foi gerado.</p>
         </div>
 
-        <div id="print-area">
-            <div th:if="${#lists.isEmpty(receipts)}">
-                <p class="alert alert-warning">Nenhum recibo foi gerado.</p>
+        <div class="printable-page" th:each="receipt : ${receipts}">
+          <div class="receipt-copy top-copy">
+            <div>
+              <div
+                class="receipt-header d-flex justify-content-between align-items-center mb-4"
+              >
+                <h3 class="mb-0">Recibo</h3>
+                <div class="copy-indicator">1ª VIA - INQUILINO</div>
+              </div>
+              <div class="receipt-body">
+                <p>
+                  Recebi(emos) de
+                  <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                  importância de
+                  <strong
+                    class="value-in-words"
+                    th:data-value="${receipt.value}"
+                    th:text="${#numbers.formatCurrency(receipt.value)}"
+                  ></strong>
+                  referente ao aluguel do(a) <th:block
+                    th:text="${receipt.propertyType}"
+                  /> nº <strong th:text="${receipt.propertyNumber}"></strong>,
+                  correspondente ao mês de
+                  <strong th:text="${receipt.month}"></strong>. # . # . # . # . # . # . # . # . # . # . # . # . # . #
+                </p>
+              </div>
             </div>
-
-            <div class="printable-page" th:each="receipt : ${receipts}">
-                <div class="receipt-copy top-copy">
-                    <div class="receipt-header d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="mb-0">Recibo de Aluguel</h3>
-                        <div class="text-end">
-                            <span class="copy-indicator">1ª VIA - INQUILINO</span><br>
-                            Valor: <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>
-                        </div>
-                    </div>
-                    <div class="receipt-body">
-                        <p>
-                            Recebi(emos) de <strong><th:block th:text="${receipt.tenant}" /></strong>,
-                            a importância de <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>,
-                            referente ao aluguel do imóvel (<th:block th:text="${receipt.propertyType}" />)
-                            nº <strong th:text="${receipt.propertyNumber}"></strong>,
-                            correspondente ao período do mês de <strong th:text="${receipt.month + ' de ' + receipt.year}"></strong>.
-                        </p>
-                        <p class="text-center mt-4">
-                            <strong th:text="${receipt.locale}"></strong>, <span th:text="${receipt.day}"></span> de
-                            <span th:text="${receipt.month}"></span> de <span th:text="${receipt.year}"></span>.
-                        </p>
-                        <div class="text-center signature-line">
-                            __________________________________________________<br>
-                            <strong th:text="${receipt.landlord}"></strong><br>
-                            <span>(Locador/Procurador)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="receipt-copy">
-                    <div class="receipt-header d-flex justify-content-between align-items-center mb-4">
-                        <h3 class="mb-0">Recibo de Aluguel</h3>
-                         <div class="text-end">
-                            <span class="copy-indicator">2ª VIA - PROPRIETÁRIO</span><br>
-                            Valor: <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>
-                        </div>
-                    </div>
-                     <div class="receipt-body">
-                        <p>
-                            Recebi(emos) de <strong><th:block th:text="${receipt.tenant}" /></strong>,
-                            a importância de <strong th:text="${#numbers.formatCurrency(receipt.value)}"></strong>,
-                            referente ao aluguel do imóvel (<th:block th:text="${receipt.propertyType}" />)
-                            nº <strong th:text="${receipt.propertyNumber}"></strong>,
-                            correspondente ao período do mês de <strong th:text="${receipt.month + ' de ' + receipt.year}"></strong>.
-                        </p>
-                        <p class="text-center mt-4">
-                            <strong th:text="${receipt.locale}"></strong>, <span th:text="${receipt.day}"></span> de
-                            <span th:text="${receipt.month}"></span> de <span th:text="${receipt.year}"></span>.
-                        </p>
-                        <div class="text-center signature-line">
-                            __________________________________________________<br>
-                            <strong th:text="${receipt.landlord}"></strong><br>
-                            <span>(Locador/Procurador)</span>
-                        </div>
-                    </div>
-                </div>
+            <div>
+              <p
+                class="text-center mb-0"
+                th:text="${receipt.locale + ', ' + receipt.day + ' de ' + receipt.month + ' de ' + receipt.year}"
+              ></p>
+              <div class="signature-line">
+                _______________________________________________<br />
+                <strong th:text="${receipt.landlord}"></strong><br />
+                <span>(Locador/Procurador)</span>
+              </div>
+              <div
+                class="tenant-contact-info"
+                th:if="${receipt.tenantContact != null and not #strings.isEmpty(receipt.tenantContact)}"
+              >
+                <span th:text="${receipt.tenantContact}"></span>
+              </div>
             </div>
+          </div>
+
+          <div class="receipt-copy">
+            <div>
+              <div
+                class="receipt-header d-flex justify-content-between align-items-center mb-4"
+              >
+                <h3 class="mb-0">Recibo</h3>
+                <div class="copy-indicator">2ª VIA - PROPRIETÁRIO</div>
+              </div>
+              <div class="receipt-body">
+                <p>
+                  Recebi(emos) de
+                  <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                  importância de
+                  <strong
+                    class="value-in-words"
+                    th:data-value="${receipt.value}"
+                    th:text="${#numbers.formatCurrency(receipt.value)}"
+                  ></strong>
+                  referente ao aluguel do(a) <th:block
+                    th:text="${receipt.propertyType}"
+                  /> nº <strong th:text="${receipt.propertyNumber}"></strong>,
+                  correspondente ao mês de
+                  <strong th:text="${receipt.month}"></strong>. # . # . # . # . # . # . # . # . # . # . # . # . # . #
+                </p>
+              </div>
+            </div>
+            <div>
+              <p
+                class="text-center mb-0"
+                th:text="${receipt.locale + ', ' + receipt.day + ' de ' + receipt.month + ' de ' + receipt.year}"
+              ></p>
+
+              <div class="signature-line">
+                _______________________________________________<br />
+                <strong th:text="${receipt.landlord}"></strong><br />
+                <span>(Locador/Procurador)</span>
+              </div>
+
+              <div
+                class="tenant-contact-info"
+                th:if="${receipt.tenantContact != null and not #strings.isEmpty(receipt.tenantContact)}"
+              >
+                <span th:text="${receipt.tenantContact}"></span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
-</body>
+  </body>
 </html>

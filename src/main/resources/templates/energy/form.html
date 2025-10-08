@@ -10,61 +10,68 @@
 <body>
     <section layout:fragment="content">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="card-custom">
-                        <div class="card-custom-header gradient">
-                            <h1 class="h3 mb-0" th:text="${energy.id == null} ? 'Adicionar Nova Leitura de Energia' : 'Editar Leitura de Energia'"></h1>
-                            <p class="mb-0 opacity-75">Preencha os dados da medição abaixo</p>
-                        </div>
-                        <div class="card-custom-body">
-                            <form th:action="@{/energy/save}" th:object="${energy}" method="post">
-                                <input type="hidden" th:field="*{id}" />
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="date" class="form-label">Data da Leitura</label>
-                                        <input type="date" class="form-control" id="date" name="date"
-                                            th:value="${energy.date != null ? #temporals.format(energy.date, 'yyyy-MM-dd') : ''}" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="billAmount" class="form-label">Valor Total da Conta</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">R$</span>
-                                            <input type="number" step="0.01" class="form-control" id="billAmount" th:field="*{billAmount}" required placeholder="0,00">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <h5 class="form-section-title mt-4"><i class="bi bi-speedometer2"></i> Leituras dos Relógios</h5>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label for="counter1" class="form-label">Relógio 1</label>
-                                        <input type="number" class="form-control" id="counter1" th:field="*{counter1}" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="counter2" class="form-label">Relógio 2</label>
-                                        <input type="number" class="form-control" id="counter2" th:field="*{counter2}" required>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="counter3" class="form-label">Relógio 3</label>
-                                        <input type="number" class="form-control" id="counter3" th:field="*{counter3}" required>
-                                    </div>
-                                </div>
-
-                                <input type="hidden" th:field="*{kwhValue}" />
-
-                                <div class="d-flex justify-content-end gap-3 pt-4 mt-3 border-top">
-                                    <a th:href="@{/energy}" class="btn btn-outline-secondary">
-                                        <i class="bi bi-x-circle"></i> Cancelar
-                                    </a>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-circle"></i> Salvar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+            <div class="page-header">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <h1 class="h3 mb-1" th:text="${energy.id == null} ? 'Nova Leitura de Energia' : 'Editar Leitura de Energia'"></h1>
+                        <p class="mb-0 opacity-75">Preencha os dados da medição abaixo</p>
                     </div>
+                    <a th:href="@{/energies}" class="btn btn-light">
+                        <i class="bi bi-arrow-left-circle"></i> Voltar para a Lista
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-custom">
+                <div class="card-custom-header">
+                    <span><i class="bi bi-input-cursor-text me-2"></i> Dados da Leitura</span>
+                </div>
+                <div class="card-custom-body">
+                    <form th:action="@{/energies/save}" th:object="${energy}" method="post">
+                        <input type="hidden" th:field="*{id}" />
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="date" class="form-label">Data da Leitura</label>
+                                <input type="date" class="form-control" id="date" name="date"
+                                    th:value="${energy.date != null ? #temporals.format(energy.date, 'yyyy-MM-dd') : ''}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="billAmount" class="form-label">Valor Total da Conta</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" step="0.01" class="form-control" id="billAmount" th:field="*{billAmount}" required placeholder="0,00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="form-section-title mt-4"><i class="bi bi-speedometer2"></i> Leituras dos Relógios</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="counter1" class="form-label">Relógio 1</label>
+                                <input type="number" class="form-control" id="counter1" th:field="*{counter1}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="counter2" class="form-label">Relógio 2</label>
+                                <input type="number" class="form-control" id="counter2" th:field="*{counter2}" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="counter3" class="form-label">Relógio 3</label>
+                                <input type="number" class="form-control" id="counter3" th:field="*{counter3}" required>
+                            </div>
+                        </div>
+
+                        <input type="hidden" th:field="*{kwhValue}" />
+
+                        <div class="d-flex justify-content-end gap-3 pt-4 mt-3 border-top">
+                            <a th:href="@{/energies}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Salvar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+<head>
+    <title>Editor de Contrato</title>
+    <style>
+      .toolbar { background-color: #f8f9fa; padding: 0.75rem; border: 1px solid #dee2e6; border-radius: 8px; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+      .container-contrato { background: white; border: 1px solid #ddd; padding: 2rem 2.5rem; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05); font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.6; }
+      .titulo-contrato { text-align: center; font-weight: bold; text-transform: uppercase; font-size: 14pt; margin-bottom: 2rem; }
+      .paragrafo-contrato, .subparagrafo-contrato { text-align: justify; margin-bottom: 1rem; }
+      .subparagrafo-contrato { padding-left: 2rem; }
+      .destacar { font-weight: bold; }
+      .paragrafo-contrato-data { text-align: center; margin-top: 3rem; }
+      .paragrafo-contrato-assinatura { text-align: center; margin-top: 4rem; }
+      .paragrafo-contrato-assinatura-dados { text-align: center; font-weight: bold; }
+      @media print { body * { visibility: hidden; } .no-print { display: none; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; } .container-contrato { border: none; box-shadow: none; } }
+    </style>
+</head>
+
+<body>
+<section layout:fragment="content">
+  <div class="page-header no-print">
+    <div>
+      <h1 class="h3 mb-1">
+        <i class="bi bi-pencil-square me-2"></i> Editor de Contrato
+      </h1>
+      <p class="mb-0 opacity-75">Edite o texto e imprima</p>
+    </div>
+    <a th:href="@{/properties}" class="btn btn-outline-light">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+  </div>
+
+  <div class="toolbar no-print">
+      <button id="boldButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-bold"></i> Negrito</button>
+      <button id="italicButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-italic"></i> Itálico</button>
+      <button id="underlineButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-underline"></i> Sublinhado</button>
+      <div class="ms-auto">
+        <button onclick="window.print();" class="btn btn-primary">
+          <i class="bi bi-printer"></i> Imprimir Contrato
+        </button>
+      </div>
+  </div>
+  
+  <div id="print-area">
+    <div id='textoContrato' class="container-contrato" contentEditable='true'>
+        <div class="titulo-contrato">CONTRATO DE LOCAÇÃO DE IMÓVEL</div>
+        <div class="paragrafo-contrato">
+            Os signatários que contratam nas qualidades indicadas neste instrumento, de um lado, <span class='destacar' th:text="${landlord.name}"></span>, de nacionalidade <span th:text="${landlord.nationality}"></span>, estado civil <span th:text="${landlord.maritalStatus.displayName}"></span>, residente na cidade de <span th:text="${landlord.city + '-' + landlord.state}"></span>, portador(a) do CPF nº <span th:text="${landlord.cpfCnpj}"></span>, doravante denominado simplesmente <span class='destacar'>LOCADOR(A)</span>, e de outro, <span class='destacar' th:text="${tenant.name}"></span>, de nacionalidade <span th:text="${tenant.nationality}"></span>, portador(a) do CPF nº <span th:text="${tenant.cpfCnpj}"></span> e CI nº <span th:text="${tenant.document}"></span>, residente na cidade de <span th:text="${tenant.city + '-' + tenant.state}"></span>, doravante denominado simplesmente <span class='destacar'>LOCATÁRIO(A)</span>, têm entre si justo e contratado o presente instrumento, mediante as cláusulas e condições que seguem:
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA PRIMEIRA</span> - DO OBJETO E PRAZO DE LOCAÇÃO: O(A) LOCADOR(A), sendo legítimo(a) possuidor(a) do imóvel para fins <span th:text="${property.useType.description}"></span> de número <span th:text="${property.number}"></span>, localizado(a) na <span th:text="${property.address}"></span>, na cidade de <span th:text="${property.city + '-' + property.state}"></span>, o dá em locação ao(à) LOCATÁRIO(A) pelo prazo de <span th:text="${period.get('months')}"></span> meses, a contar de <span th:text="${period.get('start')}"></span> até <span th:text="${period.get('stop')}"></span>.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO PRIMEIRO: O objeto da presente locação destina-se exclusivamente a 
+            <th:block th:switch="${property.useType.name()}">
+                <span th:case="'RESIDENTIAL'">fins residenciais.</span>
+                <span th:case="'COMMERCIAL'">fins comerciais.</span>
+            </th:block>
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO SEGUNDO: O presente contrato poderá ser prorrogado por períodos previamente acordados entre as partes.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SEGUNDA</span> - DO VALOR MENSAL DO ALUGUEL: A contraprestação pela locação do imóvel será de <span th:text="${#numbers.formatCurrency(property.value)}"></span> (<span th:text="${valorPorExtenso}"></span>), a ser paga mensalmente até o dia <span th:text="${property.paymentDay}"></span> de cada mês, ficando a cargo do(a) LOCATÁRIO(A), além do aluguel, as despesas de energia elétrica.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: O aluguel será reajustado anualmente, ou na menor periodicidade permitida por lei, de comum acordo entre as partes, tendo como base os índices previstos e acumulados no período do reajuste.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA TERCEIRA</span> - DAS OBRIGAÇÕES GERAIS: O(A) LOCATÁRIO(A) declara ter procedido à vistoria no imóvel locado, recebendo-o em perfeito estado de conservação, e obriga-se a:
+        </div>
+        <div class="subparagrafo-contrato">
+            a) Manter o objeto da locação no mais perfeito estado de conservação e limpeza, para assim restituí-lo ao(à) LOCADOR(A) quando finda ou rescindida a locação, correndo por sua exclusiva conta as despesas necessárias para este fim, sem direito a qualquer ressarcimento.
+        </div>
+        <div class="subparagrafo-contrato">
+            b) Não transferir este contrato, não sublocar, não ceder ou emprestar o imóvel, sob qualquer pretexto. De igual forma, não alterar a destinação da locação.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA QUARTA</span> - DA RESCISÃO CONTRATUAL: A infração de qualquer das obrigações consignadas neste contrato é considerada de natureza grave, acarretando a rescisão contratual e a consequente desocupação do imóvel.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: O presente contrato poderá ser rescindido por qualquer das partes, desde que a parte interessada notifique a outra, expressamente e por escrito, com antecedência mínima de 60 (sessenta) dias.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA QUINTA</span> - DA LEGISLAÇÃO APLICÁVEL: A presente locação será sempre sujeita ao regime do Código Civil Brasileiro e à Lei nº 8.245 de 1991 (Lei do Inquilinato), ficando assegurados às partes todos os direitos e vantagens conferidas pela legislação em vigor.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SEXTA</span> - DA MULTA MORATÓRIA: Em caso de atraso no pagamento dos aluguéis e encargos, ficará o(a) LOCATÁRIO(A) obrigado(a) ao pagamento do valor principal, acrescido de juros de mora de 1% (um por cento) ao mês e multa de 2% (dois por cento), sem prejuízo dos demais acréscimos e penalidades.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA SÉTIMA</span> - DA CLÁUSULA PENAL: As partes obrigam-se a respeitar o presente contrato em todas as suas cláusulas e condições, incorrendo a parte que infringir qualquer disposição contratual em multa no valor de 02 (dois) aluguéis mensais, a ser paga integralmente à parte inocente.
+        </div>
+        <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: O pagamento da multa não exime a parte infratora do cumprimento da obrigação principal nem afasta o direito da parte inocente de requerer a rescisão contratual.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class='destacar'>CLÁUSULA OITAVA</span> - DO FORO: As partes elegem o foro da comarca de Colatina, Estado do Espírito Santo, para dirimir quaisquer lides ou dúvidas oriundas do presente contrato.
+        </div>
+
+        <div class="paragrafo-contrato">
+            <span class="destacar">CLÁUSULA NONA – DAS BENFEITORIAS E REFORMAS:</span> Toda e qualquer reforma, modificação ou benfeitoria a ser introduzida no imóvel pelo(a) LOCATÁRIO(A) dependerá de prévia e expressa autorização por escrito do(a) LOCADOR(A).
+        </div>
+        <div class="paragrafo-contrato">
+            <span class="destacar">PARÁGRAFO PRIMEIRO:</span> As benfeitorias, ainda que autorizadas, que atendam exclusivamente à atividade comercial ou ao negócio do(a) LOCATÁRIO(A) não serão indenizadas em nenhuma hipótese, incorporando-se ao imóvel definitivamente, sem que caiba ao(à) LOCATÁRIO(A) direito a qualquer tipo de ressarcimento ou retenção.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class="destacar">PARÁGRAFO SEGUNDO:</span> As demais reformas ou benfeitorias úteis, uma vez autorizadas pelo(a) LOCADOR(A), só serão passíveis de indenização se esta condição constar expressamente em um acordo prévio e por escrito entre as partes, que deverá detalhar os custos e as condições do ressarcimento.
+        </div>
+        <div class="paragrafo-contrato">
+            <span class="destacar">PARÁGRAFO TERCEIRO:</span> Ficam isentas da necessidade de autorização prévia apenas as benfeitorias de natureza necessária e urgente. O(A) LOCATÁRIO(A) deverá, no entanto, comunicar o(a) LOCADOR(A) sobre sua realização de forma imediata, sob pena de perda do direito ao ressarcimento.
+        </div>
+        <div class="paragrafo-contrato">
+            E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em 02 (duas) vias de igual teor e forma, na presença das testemunhas abaixo.
+        </div>
+        <div
+            class="paragrafo-contrato-data"
+            th:text="${dataAtualPorExtenso}"
+        ></div>
+        <div class="paragrafo-contrato-assinatura">
+            ___________________________________________________________________
+        </div>
+        <div
+            class="paragrafo-contrato-assinatura-dados"
+            th:text="${landlord.name + ' - CPF: ' + landlord.cpfCnpj + ' - LOCADOR(A)'}"
+        ></div>
+        <div class="paragrafo-contrato-assinatura">
+            ___________________________________________________________________
+        </div>
+        <div
+            class="paragrafo-contrato-assinatura-dados"
+            th:text="${tenant.name + ' - CPF: ' + tenant.cpfCnpj + ' - LOCATÁRIO(A)'}"
+        ></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

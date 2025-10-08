@@ -23,13 +23,13 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--light-color);
-    color: var(--text-dark);
-    line-height: 1.6;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: var(--light-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
 }
 
 /* 3. LAYOUT PRINCIPAL */
@@ -40,33 +40,33 @@ main {
 }
 
 footer.site-footer {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    padding: 1.5rem 0;
     margin-top: auto;
-    text-align: center;
+    padding: 1.5rem 0;
+    background-color: var(--primary-color);
     border-top: 4px solid var(--secondary-color);
+    color: var(--text-light);
+    text-align: center;
 }
 
 /* 4. COMPONENTES REUTILIZÁVEIS */
 
 /* Navegação */
 .navbar-dark.bg-dark {
+    padding: 0.8rem 1rem;
     background-color: var(--primary-color) !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 0.8rem 1rem;
 }
 
 .navbar-brand {
-    font-weight: 700;
     font-size: 1.4rem;
+    font-weight: 700;
 }
 
 .nav-link {
+    padding: 0.5rem 1rem !important;
     font-weight: 500;
     border-radius: 4px;
     transition: var(--transition);
-    padding: 0.5rem 1rem !important;
 }
 
 .nav-link:hover, .nav-item.active .nav-link {
@@ -76,10 +76,10 @@ footer.site-footer {
 
 /* Botões */
 .btn {
-    border-radius: var(--border-radius);
-    font-weight: 600;
-    transition: var(--transition);
     padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
 }
 
 .btn i {
@@ -99,18 +99,18 @@ footer.site-footer {
 
 /* Cards */
 .card-custom {
+    margin-bottom: 2rem;
+    background-color: #fff;
     border: none;
     border-radius: 12px;
     box-shadow: var(--box-shadow);
     overflow: hidden;
-    margin-bottom: 2rem;
-    background-color: #fff;
 }
 
 .card-custom-header {
+    padding: 1rem 1.5rem;
     background: var(--primary-color);
     color: white;
-    padding: 1rem 1.5rem;
     font-weight: 600;
 }
 
@@ -124,20 +124,26 @@ footer.site-footer {
 
 /* Formulários */
 .form-label {
-    font-weight: 600;
     color: var(--primary-color);
+    font-weight: 600;
 }
 
 .form-control, .form-select {
-    border-radius: var(--border-radius);
     padding: 0.75rem 1rem;
     border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     transition: var(--transition);
 }
 
 .form-control:focus, .form-select:focus {
     border-color: var(--secondary-color);
     box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+/* ===== NOVO: Estilo para placeholders mais claros ===== */
+.form-control::placeholder {
+    color: #adb5bd; /* Um cinza mais claro e sutil */
+    opacity: 1;    /* Garante a visibilidade em todos os navegadores */
 }
 
 .input-group-text {
@@ -162,8 +168,8 @@ footer.site-footer {
 }
 
 .table th {
-    border: none;
     padding: 1rem;
+    border: none;
 }
 
 .table td {
@@ -179,11 +185,22 @@ tr.table-active, tr.table-active:hover {
     background-color: rgba(52, 152, 219, 0.2) !important;
 }
 
+.table-sm th,
+.table-sm td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Novas classes para substituir estilos inline */
+.th-col-main { width: 70px; }
+.th-col-actions { width: 140px; }
+
+
 /* Alertas */
 .alert {
-    border-radius: var(--border-radius);
-    border: none;
     padding: 1rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
 }
 
 /* Badges */
@@ -212,25 +229,37 @@ tr.table-active, tr.table-active:hover {
     text-align: center;
 }
 
-/* Página de Lista de Imóveis */
+/* Cabeçalho de Página (ex: Lista de Imóveis) */
 .page-header {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
     color: white;
     border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 2rem;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
 }
 
+.page-header h1 {
+    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+}
+
+.page-header p {
+    font-size: 0.9rem;
+}
+
+/* Checkbox customizado */
 .form-check-input.property-checkbox {
     width: 1.3em;
     height: 1.3em;
+    border: 2px solid var(--border-color); /* Usando variável */
     cursor: pointer;
-    border: 2px solid #adb5bd;
 }
+
 .form-check-input.property-checkbox:checked {
     background-color: var(--secondary-color);
     border-color: var(--secondary-color);
 }
+
 .form-check-input.property-checkbox:disabled {
     opacity: 0.7;
     cursor: not-allowed;
@@ -238,14 +267,14 @@ tr.table-active, tr.table-active:hover {
 
 /* Página de Formulário de Imóvel */
 .form-section-title {
-    color: var(--primary-color);
-    font-weight: 600;
+    display: flex;
+    align-items: center;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid var(--secondary-color);
-    display: flex;
-    align-items: center;
+    color: var(--primary-color);
+    font-weight: 600;
 }
 
 .form-section-title i {

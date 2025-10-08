@@ -11,11 +11,9 @@ import imoveis.aluguel.repositories.EnergyRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class EnergyServiceImpl implements EnergyService {
 
     private final EnergyRepository energyRepository;

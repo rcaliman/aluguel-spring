@@ -55,9 +55,11 @@
                         title="Selecionar Todos"
                       />
                     </th>
-                    <th>Endereço</th>
+                    <th width="150">Tipo</th>
+                    <th width="100">Número</th>
                     <th>Inquilino</th>
-                    <th width="120">Tipo</th>
+                    <th>Observação</th>
+                    <th width="120" class="text-center">Dia Pgto.</th>
                     <th width="120" class="text-end">Valor R$</th>
                     <th width="120" class="text-center">Ações</th>
                   </tr>
@@ -74,22 +76,50 @@
                       />
                     </td>
                     <td>
-                      <div th:text="${prop.address + ', ' + prop.number}">
-                        Endereço do Imóvel
+                      <div>
+                        <span
+                          class="badge bg-secondary"
+                          th:text="${prop.propertyType.description}"
+                        ></span>
                       </div>
                       <small
                         class="text-muted"
                         th:if="${prop.complement}"
-                        th:text="'Comp: ' + ${prop.complement}"
+                        th:text="${prop.complement}"
                       ></small>
                     </td>
+                    <!-- ================================================================== -->
+                    <!-- == CÉLULA "NÚMERO" ATUALIZADA COM O ÍCONE DE INFORMAÇÕES      == -->
+                    <!-- ================================================================== -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <a
+                          th:href="@{/infopage/{id}(id=${prop.id})}"
+                          class="me-2 text-info"
+                          title="Ver Detalhes"
+                        >
+                          <i class="bi bi-info-circle-fill"></i>
+                        </a>
+                        <span th:text="${prop.number}"></span>
+                      </div>
+                    </td>
+                    <!-- ================================================================== -->
                     <td>
                       <span
                         th:if="${prop.tenant != null}"
-                        th:text="${prop.tenant.name}"
-                        class="fw-medium"
-                        >Nome do Inquilino</span
+                        class="d-flex align-items-center"
                       >
+                        <a
+                          th:href="@{/contracts/form/{id}(id=${prop.id})}"
+                          class="me-2 text-secondary"
+                          title="Gerar Contrato"
+                        >
+                          <i class="bi bi-file-earmark-text"></i>
+                        </a>
+                        <span th:text="${prop.tenant.name}" class="fw-medium"
+                          >Nome do Inquilino</span
+                        >
+                      </span>
                       <span
                         th:if="${prop.tenant == null}"
                         class="badge badge-vacant"
@@ -97,12 +127,13 @@
                       >
                     </td>
                     <td>
-                      <span
-                        class="badge bg-secondary"
-                        th:text="${prop.type.description}"
-                        >Tipo</span
-                      >
+                      <small
+                        class="text-muted"
+                        th:if="${prop.observation != null and not #strings.isEmpty(prop.observation)}"
+                        th:text="${prop.observation}"
+                      ></small>
                     </td>
+                    <td class="text-center" th:text="${prop.paymentDay}"></td>
                     <td
                       class="fw-bold text-end"
                       th:text="${#numbers.formatCurrency(prop.value)}"
@@ -130,7 +161,7 @@
                     </td>
                   </tr>
                   <tr th:if="${properties.empty}">
-                    <td colspan="7" class="text-center py-4">
+                    <td colspan="8" class="text-center py-4">
                       <i
                         class="bi bi-inbox display-4 text-muted d-block mb-2"
                       ></i>
@@ -142,6 +173,7 @@
             </div>
           </div>
 
+          <!-- SEÇÃO DE GERAÇÃO DE RECIBOS REINTEGRADA -->
           <div class="card-custom">
             <div class="card-custom-header">
               <i class="bi bi-file-earmark-text me-2"></i> Gerar Recibos para
@@ -164,69 +196,35 @@
                       th:each="landlord : ${landlords}"
                       th:value="${landlord.id}"
                       th:text="${landlord.name}"
+                      th:selected="${landlord.main}"
                     ></option>
                   </select>
                 </div>
                 <div class="col-md-2 mb-3 mb-md-0">
                   <label for="month" class="form-label">Mês</label>
                   <select id="month" name="month" class="form-select" required>
-                    <option th:selected="${currentMonth == 1}" value="Janeiro">
-                      Janeiro
-                    </option>
-                    <option
-                      th:selected="${currentMonth == 2}"
-                      value="Fevereiro"
-                    >
-                      Fevereiro
-                    </option>
-                    <option th:selected="${currentMonth == 3}" value="Março">
-                      Março
-                    </option>
-                    <option th:selected="${currentMonth == 4}" value="Abril">
-                      Abril
-                    </option>
-                    <option th:selected="${currentMonth == 5}" value="Maio">
-                      Maio
-                    </option>
-                    <option th:selected="${currentMonth == 6}" value="Junho">
-                      Junho
-                    </option>
-                    <option th:selected="${currentMonth == 7}" value="Julho">
-                      Julho
-                    </option>
-                    <option th:selected="${currentMonth == 8}" value="Agosto">
-                      Agosto
-                    </option>
-                    <option th:selected="${currentMonth == 9}" value="Setembro">
-                      Setembro
-                    </option>
-                    <option th:selected="${currentMonth == 10}" value="Outubro">
-                      Outubro
-                    </option>
-                    <option
-                      th:selected="${currentMonth == 11}"
-                      value="Novembro"
-                    >
-                      Novembro
-                    </option>
-                    <option
-                      th:selected="${currentMonth == 12}"
-                      value="Dezembro"
-                    >
-                      Dezembro
-                    </option>
+                    <option value="Janeiro">Janeiro</option>
+                    <option value="Fevereiro">Fevereiro</option>
+                    <option value="Março">Março</option>
+                    <option value="Abril">Abril</option>
+                    <option value="Maio">Maio</option>
+                    <option value="Junho">Junho</option>
+                    <option value="Julho">Julho</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Setembro">Setembro</option>
+                    <option value="Outubro">Outubro</option>
+                    <option value="Novembro">Novembro</option>
+                    <option value="Dezembro">Dezembro</option>
                   </select>
                 </div>
                 <div class="col-md-2 mb-3 mb-md-0">
                   <label for="year" class="form-label">Ano</label>
-                  <select id="year" name="year" class="form-select" required>
-                    <option
-                      th:each="y : ${years}"
-                      th:value="${y}"
-                      th:text="${y}"
-                      th:selected="${y == currentYear}"
-                    ></option>
-                  </select>
+                  <select
+                    id="year"
+                    name="year"
+                    class="form-select"
+                    required
+                  ></select>
                 </div>
                 <div class="col-md-3">
                   <button
@@ -244,56 +242,5 @@
         </form>
       </div>
     </section>
-
-    <th:block layout:fragment="js">
-      <script>
-        $(document).ready(function () {
-          const checkAll = $("#checkAllTable");
-          const checkboxes = $(".property-checkbox:not(:disabled)");
-          const submitBtn = $("#generateReceiptsBtn"); // Seleciona o botão pelo novo ID
-
-          // Função para destacar linhas selecionadas
-          function updateRowHighlights() {
-            $("tbody tr").removeClass("table-active");
-            checkboxes
-              .filter(":checked")
-              .closest("tr")
-              .addClass("table-active");
-          }
-
-          // Nova função para habilitar/desabilitar o botão de gerar recibos
-          function toggleSubmitButtonState() {
-            // Verifica se existe algum checkbox (que não seja o "checkAll") marcado
-            const anyChecked = checkboxes.filter(":checked").length > 0;
-            // Habilita o botão se anyChecked for true, e desabilita se for false
-            submitBtn.prop("disabled", !anyChecked);
-          }
-
-          // Ação para o checkbox "Selecionar Todos"
-          checkAll.on("click", function () {
-            checkboxes.prop("checked", $(this).is(":checked"));
-            updateRowHighlights();
-            toggleSubmitButtonState(); // Atualiza o estado do botão
-          });
-
-          // Atualiza o estado do "Selecionar Todos" se um checkbox individual for clicado
-          checkboxes.on("change", function () {
-            if (checkboxes.length === checkboxes.filter(":checked").length) {
-              checkAll.prop("checked", true).prop("indeterminate", false);
-            } else if (checkboxes.filter(":checked").length > 0) {
-              checkAll.prop("checked", false).prop("indeterminate", true);
-            } else {
-              checkAll.prop("checked", false).prop("indeterminate", false);
-            }
-            updateRowHighlights();
-            toggleSubmitButtonState(); // Atualiza o estado do botão
-          });
-
-          // Inicializa os destaques e o estado do botão na carga da página
-          updateRowHighlights();
-          toggleSubmitButtonState();
-        });
-      </script>
-    </th:block>
   </body>
 </html>

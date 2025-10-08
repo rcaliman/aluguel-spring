@@ -3,7 +3,6 @@ package imoveis.aluguel.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 import imoveis.aluguel.dtos.TenantDtoRequest;
 import imoveis.aluguel.dtos.TenantDtoResponse;
@@ -12,8 +11,6 @@ import imoveis.aluguel.entities.Tenant;
 @Mapper(componentModel = "spring", uses = {ContactMapper.class})
 public interface TenantMapper {
     
-    TenantMapper INSTANCE = Mappers.getMapper(TenantMapper.class);
-
     TenantDtoResponse toDtoResponse(Tenant tenant);
     
     @Mapping(target = "createdAt", ignore = true)
@@ -22,6 +19,7 @@ public interface TenantMapper {
     Tenant toTenant(TenantDtoRequest tenantDto);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contacts", ignore = true)
     void updateEntity(Tenant source, @MappingTarget Tenant target);
 
 }

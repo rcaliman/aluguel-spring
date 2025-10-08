@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Detalhes do Imóvel</title>
+  </head>
+  <body>
+    <section layout:fragment="content">
+      <div class="container">
+        <div class="page-header">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+          >
+            <div>
+              <h1 class="h3 mb-1">
+                <i class="bi bi-info-circle-fill me-2"></i> Detalhes do Imóvel
+              </h1>
+              <p
+                class="mb-0 opacity-75"
+                th:text="|Informações completas do imóvel ${property.number()}|"
+              >
+                Informações completas do imóvel
+              </p>
+            </div>
+            <a th:href="@{/properties}" class="btn btn-light">
+              <i class="bi bi-arrow-left-circle"></i> Voltar para a Lista
+            </a>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="card-custom mb-4">
+              <div class="card-custom-header gradient">
+                <i class="bi bi-house-fill me-2"></i> Informações do Imóvel
+              </div>
+              <div class="card-custom-body">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Tipo do Imóvel</label>
+                    <p class="fw-bold" th:text="${property.propertyType().description}"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Tipo de Uso</label>
+                    <p class="fw-bold" th:text="${property.useType().description}"></p>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Endereço</label>
+                    <p class="fw-bold" th:text="|${property.address()}, ${property.number()} - ${property.location()}, ${property.city()} - ${property.state()}|"></p>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Complemento</label>
+                    <p class="fw-bold" th:text="${property.complement() ?: 'N/A'}"></p>
+                  </div>
+                   <div class="col-md-6">
+                    <label class="form-label">Dia do Pagamento</label>
+                    <p class="fw-bold" th:text="${property.paymentDay()}"></p>
+                  </div>
+                  <div class="col-12">
+                     <label class="form-label">Valor do Aluguel</label>
+                     <h4 class="text-success fw-bold" th:text="${#numbers.formatCurrency(property.value())}"></h4>
+                  </div>
+                   <div class="col-12" th:if="${property.observation()}">
+                    <label class="form-label">Observação</label>
+                    <p class="fw-bold fst-italic" th:text="|&quot;${property.observation()}&quot;|"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-custom mb-4">
+              <div class="card-custom-header gradient">
+                <i class="bi bi-person-badge-fill me-2"></i> Dados do Inquilino
+              </div>
+              <div class="card-custom-body">
+                <div th:if="${tenant}">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Nome Completo</label>
+                            <p class="fw-bold" th:text="${tenant.name()}"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">CPF/CNPJ</label>
+                            <p class="fw-bold" th:text="${tenant.cpfCnpj()}"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">RG</label>
+                            <p class="fw-bold" th:text="${tenant.document()}"></p>
+                        </div>
+                         <div class="col-md-6">
+                            <label class="form-label">Nacionalidade</label>
+                            <p class="fw-bold" th:text="${tenant.nationality()}"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Estado Civil</label>
+                            <p class="fw-bold" th:text="${tenant.maritalStatus().displayName}"></p>
+                        </div>
+                        <div class="col-12" th:if="${!tenant.contacts().isEmpty()}">
+                            <label class="form-label">Contatos</label>
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="contact : ${tenant.contacts()}">
+                                    <i class="bi" th:classappend="${contact.type().name() == 'EMAIL' ? 'bi-envelope-fill' : 'bi-phone-fill'}"></i>
+                                    <strong class="me-2" th:text="|${contact.type().displayName}:|"></strong>
+                                    <span th:text="${contact.contact()}"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${tenant == null}" class="text-center py-3">
+                    <i class="bi bi-person-x-fill display-5 text-muted"></i>
+                    <p class="mt-2 text-muted">Imóvel atualmente vago.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="card-custom">
+              <div class="card-custom-header">
+                <i class="bi bi-clock-history me-2"></i> Histórico de Alterações
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm mb-0">
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Inquilino</th>
+                      <th class="text-end">Valor R$</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="log : ${propertyLog}">
+                       <td>
+                        <small th:text="${#temporals.format(log.createdAt(), 'dd/MM/yyyy HH:mm')}"></small>
+                       </td>
+                       <td>
+                        <span th:text="${log.tenantName()}"></span>
+                       </td>
+                       <td class="text-end fw-bold" th:text="${#numbers.formatCurrency(log.value())}"></td>
+                    </tr>
+                     <tr th:if="${propertyLog.isEmpty()}">
+                        <td colspan="3" class="text-center py-4 text-muted">
+                            Nenhum registro encontrado.
+                        </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

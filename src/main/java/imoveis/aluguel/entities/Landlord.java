@@ -36,7 +36,6 @@ public class Landlord {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
     @OneToMany(mappedBy = "landlord", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
@@ -53,8 +52,23 @@ public class Landlord {
     @Column(nullable = true)
     private String address;
 
+    @Column(nullable = true)
+    private String location;
+
+    @Column(nullable = true)
+    private String state;
+
+    @Column(nullable = true)
+    private String city;
+
     @Column(nullable = true, name = "marital_status")
     private MaritalStatusEnum maritalStatus;
+
+    @Column(nullable = true, name = "nationality")
+    private String nationality;
+
+    @Column(nullable = true, name = "main")
+    private Boolean main;
 
     @Column(nullable = false, name = "created_at", updatable = false)
     private Instant createdAt;

@@ -41,14 +41,14 @@ public class ReceiptServiceImpl implements ReceiptService {
                 var receipt = Receipt.builder()
                                 .tenant(property.getTenant().getName())
                                 .value(property.getValue())
-                                .propertyType(property.getType())
+                                .propertyType(property.getPropertyType())
                                 .propertyNumber(property.getNumber())
                                 .locale(receiptRequest.locale())
-                                .day(receiptRequest.day())
+                                .day(property.getPaymentDay())
                                 .month(receiptRequest.month())
                                 .year(receiptRequest.year())
                                 .landlord(landlord.getName())
-                                .tenantContact(contact.toString())
+                                .tenantContact(contact.getContact().toString())
                                 .build();
             
                 receipts.add(receipt);

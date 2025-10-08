@@ -23,8 +23,16 @@ public class LandlordServiceImpl implements LandlordService {
     @Transactional
     public Landlord create(Landlord landlord) {
 
+        if(landlord.getMain()) {
+            landlordRepository.setAllMainToFalse();
+        }
+
         landlord.getContacts().forEach(
-            contact -> contact.setLandlord(landlord)
+            contact -> {
+                contact.setId(null);
+                contact.setTenant(null);
+                contact.setLandlord(landlord);
+            }
         );
         return landlordRepository.save(landlord);
 
@@ -57,14 +65,30 @@ public class LandlordServiceImpl implements LandlordService {
         var landlord = landlordRepository.findById(id).orElseThrow(
             () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
         );
-        landlordMapper.updateEntity(updatedLandlord, landlord);
-        if(landlord.getContacts() != null) {
-            landlord.getContacts().forEach(
-                contact -> contact.setLandlord(landlord)
+
+        if(updatedLandlord.getMain()) {
+            landlordRepository.setAllMainToFalse();
+        }
+
+        landlord.getContacts().clear();
+        landlordRepository.flush(); 
+
+        if(updatedLandlord.getContacts() != null) {
+            updatedLandlord.getContacts().forEach(
+                contact -> {
+                    contact.setId(null);
+                    contact.setTenant(null);
+
+                    contact.setLandlord(landlord);
+                    landlord.getContacts().add(contact);
+                }
             );
         }
 
-        return landlordRepository.save(landlord);
+        landlordMapper.updateEntity(updatedLandlord, landlord);
+
+        return landlordRepository.saveAndFlush(landlord);
+
     }
 
     @Override
@@ -73,6 +97,7 @@ public class LandlordServiceImpl implements LandlordService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         Landlord landlord = landlordRepository.findById(id).orElseThrow(
             () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))

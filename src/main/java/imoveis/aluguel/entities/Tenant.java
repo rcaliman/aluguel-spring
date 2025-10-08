@@ -37,7 +37,6 @@ public class Tenant {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = true)
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contact> contacts = new ArrayList<>();
 
@@ -54,8 +53,20 @@ public class Tenant {
     @Column(nullable = true)
     private String address;
 
+    @Column(nullable = true)
+    private String location;
+
+    @Column(nullable = true)
+    private String state;
+
+    @Column(nullable = true)
+    private String city;
+
     @Column(nullable = true, name = "marital_status")
     private MaritalStatusEnum maritalStatus;
+
+    @Column(nullable = true, name = "nationality")
+    private String nationality;
 
     @Column(nullable = true)
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.DETACH, orphanRemoval = false)

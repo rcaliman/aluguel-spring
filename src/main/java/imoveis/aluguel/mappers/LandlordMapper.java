@@ -18,5 +18,6 @@ public interface LandlordMapper {
     LandlordDtoResponse toDtoResponse(Landlord landlord);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contacts", ignore = true)
     void updateEntity(Landlord source,@MappingTarget Landlord target);
 }

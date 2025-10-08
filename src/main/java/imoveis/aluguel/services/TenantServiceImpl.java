@@ -26,7 +26,11 @@ public class TenantServiceImpl implements TenantService {
 
         if(tenant.getContacts() != null) {
             tenant.getContacts().forEach(
-                contact -> contact.setTenant(tenant)
+                contact -> {
+                    contact.setId(null);
+                    contact.setLandlord(null);
+                    contact.setTenant(tenant);
+                }
             );
         }
         
@@ -64,18 +68,23 @@ public class TenantServiceImpl implements TenantService {
             () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id))
         );
 
-        tenantMapper.updateEntity(updatedTenant, tenant);
-
         tenant.getContacts().clear();
+        tenantRepository.flush();
 
         if(updatedTenant.getContacts() != null) {
             updatedTenant.getContacts().forEach(
                 contact -> {
+                    contact.setId(null);
+                    contact.setLandlord(null);
+                    
                     contact.setTenant(tenant);
                     tenant.getContacts().add(contact);
                 }
             );
         }
+
+        tenantMapper.updateEntity(updatedTenant, tenant);
+
 
         return tenantRepository.save(tenant);
 

@@ -37,7 +37,6 @@ public class ReceiptWebController {
             propertyIds,
             landlordId,
             "Colatina",
-            null,
             month,
             year
         );
@@ -47,8 +46,10 @@ public class ReceiptWebController {
                                                 .toList();
 
         model.addAttribute("receipts", receipts);
+        model.addAttribute("currentPage", "receipts");
 
         return "receipt/list";
+
     }
     
 }
