@@ -1,10 +1,17 @@
 package imoveis.aluguel.services;
 
-import imoveis.aluguel.entities.Contact;
-import imoveis.aluguel.entities.Tenant;
-import imoveis.aluguel.mappers.TenantMapper;
-import imoveis.aluguel.repositories.TenantRepository;
-import jakarta.persistence.EntityNotFoundException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,13 +21,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import imoveis.aluguel.entities.Contact;
+import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.mappers.TenantMapper;
+import imoveis.aluguel.repositories.TenantRepository;
 
 @ExtendWith(MockitoExtension.class)
 class TenantServiceImplTest {
@@ -90,12 +95,12 @@ class TenantServiceImplTest {
     }
 
     @Test
-    @DisplayName("findById - Deve lançar EntityNotFoundException se o inquilino não for encontrado")
+    @DisplayName("findById - Deve lançar NotFoundException se o inquilino não for encontrado")
     void findById_WhenNotFound_ShouldThrowException() {
         
         when(tenantRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             tenantService.findById(99L);
         });
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import imoveis.aluguel.entities.Landlord;
 
-public interface LandLordRepository extends JpaRepository<Landlord, Long> {
+public interface LandlordRepository extends JpaRepository<Landlord, Long> {
 
     Optional<Landlord> findByCpfCnpj(String cpfCnpj);
 

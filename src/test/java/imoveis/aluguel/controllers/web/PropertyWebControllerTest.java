@@ -154,4 +154,47 @@ class PropertyWebControllerTest {
         verify(propertyService).deleteById(1L);
 
     }
+
+    @Test
+    @DisplayName("GET /properties - Deve usar o sort padrão quando um sort inválido for provido")
+    void listProperties_ShouldUseDefaultSort_WhenSortFieldIsInvalid() throws Exception {
+        when(propertyService.list(anyString())).thenReturn(Collections.emptyList());
+        when(landlordService.list(any())).thenReturn(Collections.emptyList());
+
+        mockMvc.perform(get("/properties").param("sortField", "invalidSortField"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("property/list"));
+
+        verify(propertyService).list("invalidSortField");
+    }
+
+    @Test
+    @DisplayName("POST /properties/save (Create) - Deve chamar o serviço de criação e redirecionar com os dados")
+    void saveProperty_ForCreate_ShouldCallCreateAndRedirectWithData() throws Exception {
+        mockMvc.perform(post("/properties/save").with(csrf())
+                .param("address", "Nova Rua, 123")
+                .param("propertyType", PropertyTypeEnum.APARTAMENTO.name())
+                .param("value", "1500.00"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/properties"));
+
+        verify(propertyService).create(any(Property.class));
+    }
+
+    @Test
+    @DisplayName("POST /properties/save (Update) - Deve chamar o serviço de atualização e redirecionar com os dados")
+    void saveProperty_ForUpdate_ShouldCallUpdateAndRedirectWithData() throws Exception {
+        Property propertyToUpdate = new Property();
+        propertyToUpdate.setId(1L);
+
+        mockMvc.perform(post("/properties/save").with(csrf())
+                .flashAttr("property", propertyToUpdate)
+                .param("address", "Rua Atualizada, 456")
+                .param("propertyType", PropertyTypeEnum.APARTAMENTO.name())
+                .param("value", "2000.00"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/properties"));
+
+        verify(propertyService).update(eq(1L), any(Property.class));
+    }
 }

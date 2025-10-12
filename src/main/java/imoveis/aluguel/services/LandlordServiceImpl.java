@@ -6,9 +6,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Landlord;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.LandlordMapper;
-import imoveis.aluguel.repositories.LandLordRepository;
-import jakarta.persistence.EntityNotFoundException;
+import imoveis.aluguel.repositories.LandlordRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LandlordServiceImpl implements LandlordService {
 
-    private final LandLordRepository landlordRepository;
+    private final LandlordRepository landlordRepository;
     private final LandlordMapper landlordMapper;
 
     @Override
@@ -40,7 +40,7 @@ public class LandlordServiceImpl implements LandlordService {
     public Landlord findByCpfCnpj(String cpfCnpj) {
 
         var landlord = landlordRepository.findByCpfCnpj(cpfCnpj).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Locador de cpf %s não encontrado", cpfCnpj)));
+                () -> new NotFoundException(String.format("Locador de cpf %s não encontrado", cpfCnpj)));
 
         return landlord;
 
@@ -50,7 +50,7 @@ public class LandlordServiceImpl implements LandlordService {
     public Landlord findById(Long id) {
 
         var landlord = landlordRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
 
         return landlord;
 
@@ -61,7 +61,7 @@ public class LandlordServiceImpl implements LandlordService {
     public Landlord update(Long id, Landlord updatedLandlord) {
 
         var landlord = landlordRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
 
         if (updatedLandlord.getMain()) {
             landlordRepository.setAllMainToFalse();
@@ -98,7 +98,7 @@ public class LandlordServiceImpl implements LandlordService {
     public void deleteById(Long id) {
 
         Landlord landlord = landlordRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
 
         landlordRepository.delete(landlord);
 

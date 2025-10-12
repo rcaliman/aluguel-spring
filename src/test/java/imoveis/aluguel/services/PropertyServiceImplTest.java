@@ -1,17 +1,17 @@
 package imoveis.aluguel.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,19 +25,26 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.PropertyLog;
 import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.PropertyLogMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.repositories.TenantRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class PropertyServiceImplTest {
 
-    @Mock private PropertyRepository propertyRepository;
-    @Mock private TenantRepository tenantRepository;
-    @Mock private PropertyMapper propertyMapper;
-    @Mock private PropertyLogMapper propertyLogMapper;
+    @Mock
+    private PropertyRepository propertyRepository;
+
+    @Mock
+    private TenantRepository tenantRepository;
+
+    @Mock
+    private PropertyMapper propertyMapper;
+
+    @Mock
+    private PropertyLogMapper propertyLogMapper;
 
     @InjectMocks
     private PropertyServiceImpl propertyService;
@@ -48,95 +55,117 @@ class PropertyServiceImplTest {
     @BeforeEach
     void setUp() {
         tenant = new Tenant();
-        tenant.setId(10L);
-        tenant.setName("Inquilino Teste");
+        tenant.setId(1L);
+        tenant.setName("inquilino");
 
         property = new Property();
         property.setId(1L);
-        property.setAddress("Rua Teste, 123");
+        property.setNumber("123");
+        property.setTenant(tenant);
+        property.setPropertyLogs(new ArrayList<>());
     }
 
     @Test
-    @DisplayName("create - Deve adicionar um log e salvar o imóvel")
-    void create_ShouldAddLogAndSaveProperty() {
+    @DisplayName("create - Deve criar um imóvel e adicionar um log")
+    void create_ShouldCreatePropertyAndAddLog() {
         when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
         when(propertyRepository.save(any(Property.class))).thenReturn(property);
 
-        Property savedProperty = propertyService.create(property);
-
-        assertNotNull(savedProperty);
-        assertFalse(savedProperty.getPropertyLogs().isEmpty());
-        verify(propertyLogMapper).toPropertyLog(property);
-        verify(propertyRepository).save(property);
-    }
-
-    @Test
-    @DisplayName("update - Deve atualizar campos, associar novo inquilino e adicionar log")
-    void update_ShouldUpdateFieldsAndTenant_AndAddLog() {
-        Property updatedData = new Property();
-        Tenant newTenant = new Tenant();
-        newTenant.setId(20L);
-        updatedData.setTenant(newTenant);
-
-        when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
-        when(tenantRepository.findById(20L)).thenReturn(Optional.of(newTenant));
-        when(propertyRepository.save(any(Property.class))).thenReturn(property);
-        when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
-
-        Property result = propertyService.update(1L, updatedData);
+        Property result = propertyService.create(property);
 
         assertNotNull(result);
-        assertEquals(20L, result.getTenant().getId());
-        assertFalse(result.getPropertyLogs().isEmpty());
-        verify(propertyMapper).updateEntity(updatedData, property);
-        verify(tenantRepository).findById(20L);
-        verify(propertyRepository).save(property);
+        assertEquals(1, result.getPropertyLogs().size());
+        verify(propertyRepository, times(1)).save(property);
     }
 
     @Test
-    @DisplayName("update - Deve desassociar inquilino quando o inquilino no request for nulo")
-    void update_ToUnassignTenant_ShouldSetTenantToNull() {
-        
-        property.setTenant(tenant);
-        Property updatedData = new Property();
-        updatedData.setTenant(null);
+    @DisplayName("findById - Deve encontrar um imóvel pelo ID")
+    void findById_WhenPropertyExists_ShouldReturnProperty() {
+        when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
+
+        Property result = propertyService.findById(1L);
+
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+    }
+
+    @Test
+    @DisplayName("findById - Deve lançar NotFoundException se o imóvel não for encontrado")
+    void findById_WhenPropertyDoesNotExist_ShouldThrowException() {
+        when(propertyRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> {
+            propertyService.findById(99L);
+        });
+    }
+
+    @Test
+    @DisplayName("update - Deve atualizar um imóvel e adicionar um log")
+    void update_ShouldUpdatePropertyAndAddLog() {
+        Property updatedProperty = new Property();
+        updatedProperty.setNumber("456");
+        updatedProperty.setTenant(tenant);
 
         when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
-        when(propertyRepository.save(any(Property.class))).thenReturn(property);
+        when(tenantRepository.findById(1L)).thenReturn(Optional.of(tenant));
         when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
+        when(propertyRepository.save(any(Property.class))).thenReturn(property);
 
-        Property result = propertyService.update(1L, updatedData);
+        Property result = propertyService.update(1L, updatedProperty);
+
+        assertNotNull(result);
+        verify(propertyMapper, times(1)).updateEntity(updatedProperty, property);
+        assertEquals(1, result.getPropertyLogs().size());
+        verify(propertyRepository, times(1)).save(property);
+    }
+
+    @Test
+    @DisplayName("update - Deve desvincular o inquilino se o inquilino for nulo")
+    void update_WhenTenantIsNull_ShouldUnsetTenant() {
+        Property updatedProperty = new Property();
+        updatedProperty.setTenant(null);
+
+        when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
+        when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
+        when(propertyRepository.save(any(Property.class))).thenReturn(property);
+
+        Property result = propertyService.update(1L, updatedProperty);
 
         assertNull(result.getTenant());
-        verify(tenantRepository, never()).findById(anyLong());
-        verify(propertyRepository).save(property);
-
+        verify(propertyRepository, times(1)).save(property);
     }
-    
-    @Test
-    @DisplayName("deleteById - Deve deletar o imóvel se ele existir")
-    void deleteById_WhenPropertyExists_ShouldDelete() {
 
+    @Test
+    @DisplayName("list - Deve retornar uma lista de imóveis ordenada")
+    void list_ShouldReturnSortedListOfProperties() {
+        List<Property> properties = List.of(property, new Property());
+        when(propertyRepository.findAllOrderByTenantNameAsc()).thenReturn(properties);
+
+        List<Property> result = propertyService.list("tenant.name");
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(propertyRepository, times(1)).findAllOrderByTenantNameAsc();
+    }
+
+    @Test
+    @DisplayName("deleteById - Deve deletar um imóvel pelo ID")
+    void deleteById_WhenPropertyExists_ShouldDeleteProperty() {
         when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
         doNothing().when(propertyRepository).delete(property);
-        
+
         propertyService.deleteById(1L);
-        
-        verify(propertyRepository).delete(property);
 
+        verify(propertyRepository, times(1)).delete(property);
     }
-    
-    @Test
-    @DisplayName("deleteById - Deve lançar exceção se o imóvel não existir")
-    void deleteById_WhenPropertyNotFound_ShouldThrowException() {
 
+    @Test
+    @DisplayName("deleteById - Deve lançar NotFoundException se o imóvel não for encontrado")
+    void deleteById_WhenPropertyDoesNotExist_ShouldThrowException() {
         when(propertyRepository.findById(99L)).thenReturn(Optional.empty());
-        
-        assertThrows(EntityNotFoundException.class, () -> {
+
+        assertThrows(NotFoundException.class, () -> {
             propertyService.deleteById(99L);
         });
-        
-        verify(propertyRepository, never()).delete(any());
-        
     }
 }

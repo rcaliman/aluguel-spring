@@ -105,4 +105,47 @@ class TenantWebControllerTest {
 
         verify(tenantService, times(1)).deleteById(1L);
     }
+
+    @Test
+    @DisplayName("GET /tenants/edit/{id} - Deve exibir o formulário de edição com os dados do inquilino")
+    void showEditForm_WhenTenantExists_ShouldReturnFormView() throws Exception {
+        Tenant tenant = new Tenant();
+        tenant.setId(1L);
+        tenant.setName("Inquilino Existente");
+
+        when(tenantService.findById(1L)).thenReturn(tenant);
+
+        mockMvc.perform(get("/tenants/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tenant/form"))
+                .andExpect(model().attribute("tenant", tenant));
+    }
+
+    @Test
+    @DisplayName("POST /tenants/save (Create) - Deve chamar o serviço de criação e redirecionar com os dados")
+    void saveTenant_ForCreate_ShouldCallCreateAndRedirectWithData() throws Exception {
+        mockMvc.perform(post("/tenants/save").with(csrf())
+                .param("name", "Novo Inquilino")
+                .param("cpfCnpj", "123.456.789-00"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/tenants"));
+
+        verify(tenantService).create(any(Tenant.class));
+    }
+
+    @Test
+    @DisplayName("POST /tenants/save (Update) - Deve chamar o serviço de atualização e redirecionar com os dados")
+    void saveTenant_ForUpdate_ShouldCallUpdateAndRedirectWithData() throws Exception {
+        Tenant tenantToUpdate = new Tenant();
+        tenantToUpdate.setId(1L);
+
+        mockMvc.perform(post("/tenants/save").with(csrf())
+                .flashAttr("tenant", tenantToUpdate)
+                .param("name", "Inquilino Atualizado")
+                .param("cpfCnpj", "123.456.789-00"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/tenants"));
+
+        verify(tenantService).update(eq(1L), any(Tenant.class));
+    }
 }

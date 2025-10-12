@@ -35,12 +35,12 @@ import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.MaritalStatusEnum;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.enums.PropertyUseTypeEnum;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.LandlordMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.mappers.TenantMapper;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.ServletException; // Adicione esta importação no topo do arquivo
 
 @WebMvcTest(ContractWebController.class)
@@ -195,7 +195,7 @@ class ContractWebControllerTest {
 
         Throwable cause = exception.getCause();
 
-        assertThat(cause).isInstanceOf(EntityNotFoundException.class);
+        assertThat(cause).isInstanceOf(NotFoundException.class);
         assertThat(cause.getMessage()).contains("Imóvel não possui inquilino associado");
 
     }

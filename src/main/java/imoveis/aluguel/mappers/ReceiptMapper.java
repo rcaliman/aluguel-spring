@@ -17,7 +17,7 @@ public interface ReceiptMapper {
                     NumberToWordsConverter.convert(receipt.getValue()),
                     receipt.getPropertyType().getDisplayName(), 
                     receipt.getPropertyNumber(), 
-                    receipt.getComplement(), 
+                    receipt.getObservation(), 
                     receipt.getLocale(),
                     receipt.getDay(), 
                     receipt.getMonth(), 

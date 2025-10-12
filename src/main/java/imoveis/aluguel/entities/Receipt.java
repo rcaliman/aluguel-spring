@@ -18,7 +18,7 @@ public class Receipt {
     private String day;
     private String month;
     private String nextMonth;
-    private String complement;
+    private String observation;
     private String year;
     private String nextYear;
     private String landlord;

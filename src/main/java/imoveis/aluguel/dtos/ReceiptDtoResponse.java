@@ -5,7 +5,7 @@ public record ReceiptDtoResponse(
         String value, 
         String propertyType, 
         String propertyNumber, 
-        String complement,
+        String observation,
         String locale,
         String day, 
         String month, 

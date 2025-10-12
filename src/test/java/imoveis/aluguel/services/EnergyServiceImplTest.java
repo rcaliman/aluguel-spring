@@ -1,7 +1,14 @@
 package imoveis.aluguel.services;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -17,8 +24,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import imoveis.aluguel.entities.Energy;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.repositories.EnergyRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class EnergyServiceImplTest {
@@ -122,12 +129,12 @@ class EnergyServiceImplTest {
     }
 
     @Test
-    @DisplayName("edit - Deve lançar EntityNotFoundException se a leitura não existir")
+    @DisplayName("edit - Deve lançar NotFoundException se a leitura não existir")
     void edit_WhenReadingNotFound_ShouldThrowException() {
 
         when(energyRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             energyService.edit(new Energy(), 99L);
         });
 

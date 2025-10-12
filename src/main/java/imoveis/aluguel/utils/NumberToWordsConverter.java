@@ -94,15 +94,4 @@ public class NumberToWordsConverter {
 
     }
 
-    // Método para testes
-    public static void main(String[] args) {
-        System.out.println("1.100,00: " + convert(1100.00));  // mil e cem reais
-        System.out.println("1.050,00: " + convert(1050.00));  // mil e cinquenta reais
-        System.out.println("1.001,00: " + convert(1001.00));  // mil e um reais
-        System.out.println("1.200,00: " + convert(1200.00));  // mil e duzentos reais
-        System.out.println("1.234,00: " + convert(1234.00));  // mil duzentos e trinta e quatro reais
-        System.out.println("2.500,50: " + convert(2500.50));  // dois mil e quinhentos reais e cinquenta centavos
-        System.out.println("100,00: " + convert(100.00));     // cem reais
-        System.out.println("200,00: " + convert(200.00));     // duzentos reais
-    }
 }

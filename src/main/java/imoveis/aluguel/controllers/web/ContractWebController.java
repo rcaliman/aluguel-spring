@@ -1,6 +1,5 @@
 package imoveis.aluguel.controllers.web;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -26,14 +25,14 @@ import imoveis.aluguel.dtos.LandlordDtoResponse;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.PropertyTypeEnum;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.LandlordMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.mappers.TenantMapper;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import imoveis.aluguel.utils.NumberToWordsConverter;
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/contracts")
 @Controller
@@ -77,7 +76,7 @@ public class ContractWebController {
         var tenant = property.getTenant();
 
         if (tenant == null) {
-            throw new EntityNotFoundException("Imóvel não possui inquilino associado para gerar o contrato.");
+            throw new NotFoundException("Imóvel não possui inquilino associado para gerar o contrato.");
         }
 
         var period = period(dtoRequest.startYear(), dtoRequest.startMonth(), dtoRequest.endYear(),

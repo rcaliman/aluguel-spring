@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Energy;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.repositories.EnergyRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -89,7 +89,7 @@ public class EnergyServiceImpl implements EnergyService {
     public Energy edit(Energy editedEnergy, Long id) {
 
         Energy existingEnergy = energyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Conta de id %d não encontrada.", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Conta de id %d não encontrada.", id)));
 
         var calculatedEnergy = calculateAmounts(editedEnergy, true);
 
@@ -110,7 +110,7 @@ public class EnergyServiceImpl implements EnergyService {
     public Energy findById(Long id) {
 
         return energyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Conta de id %d não encontrada.", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Conta de id %d não encontrada.", id)));
 
     }
 

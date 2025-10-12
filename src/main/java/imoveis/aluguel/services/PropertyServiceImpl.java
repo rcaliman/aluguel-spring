@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.PropertyLogMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.repositories.TenantRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -33,14 +33,14 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Property findById(Long id) {
         return propertyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Imovel de id %d não encontrado", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Imovel de id %d não encontrado", id)));
     }
 
     @Override
     @Transactional
     public Property update(Long id, Property updatedProperty) {
         Property recordedProperty = propertyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Imovel de id %d não encontrado", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Imovel de id %d não encontrado", id)));
 
         propertyMapper.updateEntity(updatedProperty, recordedProperty);
 
@@ -75,7 +75,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Transactional
     public void deleteById(Long id) {
         Property property = propertyRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Imóvel de id %d não encontrado.", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Imóvel de id %d não encontrado.", id)));
         propertyRepository.delete(property);
     }
 }

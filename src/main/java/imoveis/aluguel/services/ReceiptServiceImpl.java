@@ -53,7 +53,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                                     .nextMonth(nextMonth)
                                     .year(receiptRequest.year())
                                     .nextYear(nextYear)
-                                    .complement(property.getComplement())
+                                    .observation(property.getObservation())
                                     .landlord(landlord.getName())
                                     .tenantContact(contact)
                                 .build();

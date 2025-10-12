@@ -23,7 +23,6 @@ public class EnergyTitleServiceImpl implements EnergyTitleService {
     public EnergyTitle findLast() {
 
         return energyTitleRepository.findTopByOrderByIdDesc();
-
     }
 
 }

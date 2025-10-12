@@ -1,9 +1,15 @@
 package imoveis.aluguel.services;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,16 +28,16 @@ import org.springframework.security.test.context.support.WithMockUser;
 
 import imoveis.aluguel.entities.Contact;
 import imoveis.aluguel.entities.Landlord;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.LandlordMapper;
-import imoveis.aluguel.repositories.LandLordRepository;
-import jakarta.persistence.EntityNotFoundException;
+import imoveis.aluguel.repositories.LandlordRepository;
 
 @ExtendWith(MockitoExtension.class)
 @WithMockUser
 class LandlordServiceImplTest {
 
     @Mock
-    private LandLordRepository landlordRepository;
+    private LandlordRepository landlordRepository;
 
     @Mock
     private LandlordMapper landlordMapper;
@@ -112,12 +118,12 @@ class LandlordServiceImplTest {
     }
 
     @Test
-    @DisplayName("Deve lançar EntityNotFoundException ao tentar atualizar locador inexistente")
+    @DisplayName("Deve lançar NotFoundException ao tentar atualizar locador inexistente")
     void update_WhenLandlordNotFound_ShouldThrowException() {
 
         when(landlordRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             landlordService.update(99L, new Landlord());
         });
 
@@ -138,12 +144,12 @@ class LandlordServiceImplTest {
     }
 
     @Test
-    @DisplayName("Deve lançar EntityNotFoundException ao buscar ID inexistente")
+    @DisplayName("Deve lançar NotFoundException ao buscar ID inexistente")
     void findById_WhenLandlordNotFound_ShouldThrowException() {
 
         when(landlordRepository.findById(99L)).thenReturn(Optional.empty());
 
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             landlordService.findById(99L);
         });
 
@@ -181,12 +187,12 @@ class LandlordServiceImplTest {
     }
 
     @Test
-    @DisplayName("Deve lançar EntityNotFoundException ao tentar deletar locador inexistente")
+    @DisplayName("Deve lançar NotFoundException ao tentar deletar locador inexistente")
     void deleteById_WhenLandlordNotFound_ShouldThrowException() {
 
         when(landlordRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             landlordService.deleteById(99L);
         });
 

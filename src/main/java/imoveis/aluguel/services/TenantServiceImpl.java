@@ -6,9 +6,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.TenantMapper;
 import imoveis.aluguel.repositories.TenantRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +39,7 @@ public class TenantServiceImpl implements TenantService {
     public Tenant findByCpfCnpj(String cpfCnpj) {
 
         var tenant = tenantRepository.findByCpfCnpj(cpfCnpj)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("CPF/CNPJ %d não encontrado", cpfCnpj)));
+                .orElseThrow(() -> new NotFoundException(String.format("CPF/CNPJ %d não encontrado", cpfCnpj)));
 
         return tenant;
 
@@ -49,7 +49,7 @@ public class TenantServiceImpl implements TenantService {
     public Tenant findById(Long id) {
 
         var tenant = tenantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Inquilino de id %d não encontrada", id)));
 
         return tenant;
 
@@ -60,7 +60,7 @@ public class TenantServiceImpl implements TenantService {
     public Tenant update(Long id, Tenant updatedTenant) {
 
         Tenant tenant = tenantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id)));
+                .orElseThrow(() -> new NotFoundException(String.format("Inquilino de id %d não encontrada", id)));
 
         tenant.getContacts().clear();
         tenantRepository.flush();
@@ -93,7 +93,7 @@ public class TenantServiceImpl implements TenantService {
     public void deleteById(Long id) {
 
         var tenant = tenantRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada.", id)));
+                () -> new NotFoundException(String.format("Inquilino de id %d não encontrada.", id)));
         tenantRepository.delete(tenant);
 
     }
