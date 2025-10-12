@@ -29,7 +29,7 @@ public class LandlordWebController {
         model.addAttribute("currentPage", "landlords");
 
         return "landlord/list";
-        
+
     }
 
     @GetMapping("/new")

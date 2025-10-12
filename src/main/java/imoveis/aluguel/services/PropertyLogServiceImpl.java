@@ -20,5 +20,5 @@ public class PropertyLogServiceImpl implements PropertyLogService {
         return propertyLogRepository.findAllByPropertyIdOrderByIdDesc(id);
 
     }
-    
+
 }

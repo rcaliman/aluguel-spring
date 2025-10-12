@@ -82,7 +82,7 @@
                                         <select class="form-select" id="propertyType" th:field="*{propertyType}" required>
                                             <option value="">Selecione...</option>
                                             <option th:each="typeOpt : ${propertyTypes}" th:value="${typeOpt}"
-                                                th:text="${typeOpt.description}"></option>
+                                                th:text="${typeOpt.displayName}"></option>
                                         </select>
                                     </div>
                                     <div class="col-md-6 mb-3">
@@ -90,7 +90,7 @@
                                         <select class="form-select" id="useType" th:field="*{useType}">
                                             <option value="">Selecione...</option>
                                             <option th:each="useTypeOpt : ${propertyUseTypes}" th:value="${useTypeOpt}"
-                                                th:text="${useTypeOpt.description}"></option>
+                                                th:text="${useTypeOpt.displayName}"></option>
                                         </select>
                                     </div>
                                 </div>

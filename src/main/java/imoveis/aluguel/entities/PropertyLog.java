@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +31,8 @@ public class PropertyLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true, name="property_type")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true, name = "property_type")
     private PropertyTypeEnum propertyType;
 
     @Column(nullable = true)
@@ -38,7 +41,7 @@ public class PropertyLog {
     @Column(nullable = true)
     private String address;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "rental_value")
     private Double value;
 
     @Column(nullable = true)

@@ -8,11 +8,11 @@ import imoveis.aluguel.dtos.TenantDtoRequest;
 import imoveis.aluguel.dtos.TenantDtoResponse;
 import imoveis.aluguel.entities.Tenant;
 
-@Mapper(componentModel = "spring", uses = {ContactMapper.class})
+@Mapper(componentModel = "spring", uses = { ContactMapper.class })
 public interface TenantMapper {
-    
+
     TenantDtoResponse toDtoResponse(Tenant tenant);
-    
+
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "properties", ignore = true)

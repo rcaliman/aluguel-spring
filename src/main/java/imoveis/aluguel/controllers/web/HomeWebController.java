@@ -15,6 +15,6 @@ public class HomeWebController {
         model.addAttribute("currentPage", "home");
 
         return "home";
-        
+
     }
 }

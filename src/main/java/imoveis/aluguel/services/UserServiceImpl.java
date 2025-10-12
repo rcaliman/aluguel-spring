@@ -19,11 +19,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User saveUser(User user) {
-        if(user.getRole() == null) {
-            user.setRole(RoleEnum.OPERATOR);
+
+        if (user.getRole() == null) {
+            user.setRole(RoleEnum.OPERADOR);
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(user);
+
     }
-    
+
 }

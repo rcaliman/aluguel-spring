@@ -13,5 +13,5 @@ public interface EnergyService {
     Energy edit(Energy editedEnergy, Long id);
 
     Energy findById(Long id);
-    
+
 }

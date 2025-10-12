@@ -49,5 +49,5 @@ public class Energy {
 
     @Column(name = "date", nullable = true)
     private LocalDate date;
-    
+
 }

@@ -81,11 +81,11 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="propertyType" class="form-label">Tipo de Imóvel</label>
-                  <input type="text" class="form-control" id="propertyType" name="propertyType" th:value="${property.propertyType().description}" readonly />
+                  <input type="text" class="form-control" id="propertyType" name="propertyType" th:value="${property.propertyType().displayName}" readonly />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="useType" class="form-label">Tipo de Uso</label>
-                  <input type="text" class="form-control" id="useType" name="useType" th:value="${property.useType() != null ? property.useType().description : ''}" readonly />
+                  <input type="text" class="form-control" id="useType" name="useType" th:value="${property.useType() != null ? property.useType().displayName : ''}" readonly />
                 </div>
               </div>
               <div class="row">

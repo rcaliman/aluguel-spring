@@ -24,26 +24,17 @@ public class ReceiptWebController {
 
     @PostMapping("/generate")
     public String generateReceipts(@RequestParam(value = "propertyIds", required = false) List<Long> propertyIds,
-                                    @RequestParam("landlordId") Long landlordId,
-                                    @RequestParam("month") String month,
-                                    @RequestParam("year") String year,
-                                    Model model) {
+            @RequestParam("landlordId") Long landlordId, @RequestParam("month") String month,
+            @RequestParam("year") String year, Model model) {
 
-        if(propertyIds == null || propertyIds.isEmpty()) {
+        if (propertyIds == null || propertyIds.isEmpty()) {
             throw new ValidationException("Nenhum imóvel foi selecionado");
         }
 
-        ReceiptDtoRequest request = new ReceiptDtoRequest(
-            propertyIds,
-            landlordId,
-            "Colatina",
-            month,
-            year
-        );
+        ReceiptDtoRequest request = new ReceiptDtoRequest(propertyIds, landlordId, month, year);
 
-        List<ReceiptDtoResponse> receipts = receiptService.receipts(request).stream()
-                                                .map(receiptMapper::dtoResponse)
-                                                .toList();
+        List<ReceiptDtoResponse> receipts = receiptService.receipts(request).stream().map(receiptMapper::dtoResponse)
+                .toList();
 
         model.addAttribute("receipts", receipts);
         model.addAttribute("currentPage", "receipts");
@@ -51,5 +42,5 @@ public class ReceiptWebController {
         return "receipt/list";
 
     }
-    
+
 }

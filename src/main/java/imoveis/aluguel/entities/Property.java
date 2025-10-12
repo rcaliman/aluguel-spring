@@ -14,6 +14,8 @@ import imoveis.aluguel.enums.PropertyUseTypeEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,9 +38,11 @@ public class Property {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "property_type", nullable = false)
     private PropertyTypeEnum propertyType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "use_type", nullable = true)
     private PropertyUseTypeEnum useType;
 
@@ -61,12 +65,12 @@ public class Property {
     private String complement;
 
     @ManyToOne
-    @JoinColumn(name = "tenant_id", nullable =  true)
+    @JoinColumn(name = "tenant_id", nullable = true)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JsonIgnore
     private Tenant tenant;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "rental_value")
     private Double value;
 
     @Column(nullable = true)
@@ -99,4 +103,5 @@ public class Property {
         this.propertyLogs.add(log);
         log.setProperty(this);
     }
+
 }

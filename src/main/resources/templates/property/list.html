@@ -55,12 +55,67 @@
                         title="Selecionar Todos"
                       />
                     </th>
-                    <th width="150">Tipo</th>
-                    <th width="100">Número</th>
-                    <th>Inquilino</th>
+                    <th width="150">
+                      <a
+                        class="text-decoration-none text-dark"
+                        th:href="@{/properties(sortField='propertyType')}"
+                      >
+                        Tipo
+                        <span
+                          th:if="${sortField == 'propertyType'}"
+                          class="ms-1 bi-sort-up"
+                        ></span>
+                      </a>
+                    </th>
+                    <th width="100">
+                      <a
+                        class="text-decoration-none text-dark"
+                        th:href="@{/properties(sortField='number')}"
+                      >
+                        Número
+                        <span
+                          th:if="${sortField == 'number'}"
+                          class="ms-1 bi-sort-up"
+                        ></span>
+                      </a>
+                    </th>
+                    <th>
+                      <a
+                        class="text-decoration-none text-dark"
+                        th:href="@{/properties(sortField='tenant.name')}"
+                      >
+                        Inquilino
+                        <span
+                          th:if="${sortField == 'tenant.name'}"
+                          class="ms-1 bi-sort-up"
+                        ></span>
+                      </a>
+                    </th>
                     <th>Observação</th>
-                    <th width="120" class="text-center">Dia Pgto.</th>
-                    <th width="120" class="text-end">Valor R$</th>
+                    <th width="120" class="text-center">
+                      <a
+                        class="text-decoration-none text-dark"
+                        th:href="@{/properties(sortField='paymentDay')}"
+                      >
+                        Dia Pgto.
+                        <span
+                          th:if="${sortField == 'paymentDay'}"
+                          class="ms-1 bi-sort-up"
+                        ></span>
+                      </a>
+                    </th>
+                    <th width="120" class="text-end">
+                      <a
+                        class="text-decoration-none text-dark"
+                        th:href="@{/properties(sortField='value')}"
+                      >
+                        Valor R$
+                        <span
+                          th:if="${sortField == 'value'}"
+                          class="ms-1 bi-sort-up"
+                        ></span>
+                      </a>
+                    </th>
                     <th width="120" class="text-center">Ações</th>
                   </tr>
                 </thead>
@@ -79,7 +134,7 @@
                       <div>
                         <span
                           class="badge bg-secondary"
-                          th:text="${prop.propertyType.description}"
+                          th:text="${prop.propertyType.displayName}"
                         ></span>
                       </div>
                       <small

@@ -23,17 +23,14 @@ public class TenantServiceImpl implements TenantService {
     @Transactional
     public Tenant create(Tenant tenant) {
 
-
-        if(tenant.getContacts() != null) {
-            tenant.getContacts().forEach(
-                contact -> {
-                    contact.setId(null);
-                    contact.setLandlord(null);
-                    contact.setTenant(tenant);
-                }
-            );
+        if (tenant.getContacts() != null) {
+            tenant.getContacts().forEach(contact -> {
+                contact.setId(null);
+                contact.setLandlord(null);
+                contact.setTenant(tenant);
+            });
         }
-        
+
         return tenantRepository.save(tenant);
 
     }
@@ -41,9 +38,8 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant findByCpfCnpj(String cpfCnpj) {
 
-        var tenant = tenantRepository.findByCpfCnpj(cpfCnpj).orElseThrow(
-            () -> new EntityNotFoundException(String.format("CPF/CNPJ %d não encontrado", cpfCnpj))
-        );
+        var tenant = tenantRepository.findByCpfCnpj(cpfCnpj)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("CPF/CNPJ %d não encontrado", cpfCnpj)));
 
         return tenant;
 
@@ -52,39 +48,34 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant findById(Long id) {
 
-        var tenant = tenantRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id))
-        );
+        var tenant = tenantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id)));
 
         return tenant;
-        
+
     }
-    
+
     @Override
     @Transactional
     public Tenant update(Long id, Tenant updatedTenant) {
 
-        Tenant tenant = tenantRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id))
-        );
+        Tenant tenant = tenantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada", id)));
 
         tenant.getContacts().clear();
         tenantRepository.flush();
 
-        if(updatedTenant.getContacts() != null) {
-            updatedTenant.getContacts().forEach(
-                contact -> {
-                    contact.setId(null);
-                    contact.setLandlord(null);
-                    
-                    contact.setTenant(tenant);
-                    tenant.getContacts().add(contact);
-                }
-            );
+        if (updatedTenant.getContacts() != null) {
+            updatedTenant.getContacts().forEach(contact -> {
+                contact.setId(null);
+                contact.setLandlord(null);
+
+                contact.setTenant(tenant);
+                tenant.getContacts().add(contact);
+            });
         }
 
         tenantMapper.updateEntity(updatedTenant, tenant);
-
 
         return tenantRepository.save(tenant);
 
@@ -92,16 +83,19 @@ public class TenantServiceImpl implements TenantService {
 
     @Override
     public List<Tenant> list(Sort sort) {
+
         return tenantRepository.findAll(sort);
+
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
+
         var tenant = tenantRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada.", id))
-        );
+                () -> new EntityNotFoundException(String.format("Inquilino de id %d não encontrada.", id)));
         tenantRepository.delete(tenant);
+
     }
 
 }

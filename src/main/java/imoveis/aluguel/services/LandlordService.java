@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 import imoveis.aluguel.entities.Landlord;
 
 public interface LandlordService {
-    
+
     Landlord create(Landlord landlord);
 
     Landlord findByCpfCnpj(String cpfCnpj);
@@ -19,5 +19,5 @@ public interface LandlordService {
     List<Landlord> list(Sort sort);
 
     void deleteById(Long id);
-    
+
 }

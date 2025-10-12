@@ -3,17 +3,17 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoleEnum {
-    ADMIN("administrador"),
-    OPERATOR("operador");
+    ADMIN("administrador"), OPERADOR("operador");
 
-    private final String description;
+    private final String displayName;
 
-    RoleEnum(String description) {
-        this.description = description;
+    RoleEnum(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonValue
-    public String getDescription() {
-        return this.description;
+    public String getDisplayName() {
+        return this.displayName;
     }
+
 }

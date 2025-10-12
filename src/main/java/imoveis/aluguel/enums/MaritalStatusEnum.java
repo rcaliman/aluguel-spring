@@ -3,11 +3,8 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum MaritalStatusEnum {
-    
-    SOLTEIRO("solteiro(a)"),
-    CASADO("casado(a)"),
-    DIVORCIADO("divorciado(a)"),
-    VIUVO("viúvo(a)"),
+
+    SOLTEIRO("solteiro(a)"), CASADO("casado(a)"), DIVORCIADO("divorciado(a)"), VIUVO("viúvo(a)"),
     UNIAO_ESTAVEL("união estável");
 
     private final String displayName;
@@ -25,4 +22,5 @@ public enum MaritalStatusEnum {
     public String toString() {
         return this.displayName;
     }
+
 }

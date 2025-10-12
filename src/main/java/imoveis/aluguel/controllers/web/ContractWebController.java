@@ -33,6 +33,7 @@ import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import imoveis.aluguel.utils.NumberToWordsConverter;
 
 @RequestMapping("/contracts")
 @Controller
@@ -57,8 +58,7 @@ public class ContractWebController {
         Tenant tenant = property.getTenant();
 
         List<LandlordDtoResponse> landlords = landlordService.list(Sort.by("name")).stream()
-                .map(landlordMapper::toDtoResponse)
-                .toList();
+                .map(landlordMapper::toDtoResponse).toList();
 
         model.addAttribute("property", propertyMapper.toDtoResponse(property));
         model.addAttribute("tenant", tenantMapper.toDtoResponse(tenant));
@@ -66,6 +66,7 @@ public class ContractWebController {
         model.addAttribute("propertyTypeEnum", PropertyTypeEnum.values());
 
         return "contract/form";
+
     }
 
     @PostMapping("/editor")
@@ -81,45 +82,33 @@ public class ContractWebController {
 
         var period = period(dtoRequest.startYear(), dtoRequest.startMonth(), dtoRequest.endYear(),
                 dtoRequest.endMonth(), property.getPaymentDay());
-        
-        String valorPorExtenso = imoveis.aluguel.utils.NumberToWordsConverter.convert(BigDecimal.valueOf(property.getValue()));
-        
-        // --- LÓGICA ATUALIZADA: USA OS DADOS DO FORMULÁRIO E DO IMÓVEL PARA A DATA ---
-        String dataContratoPorExtenso = getDataContratoPorExtenso(
-            landlord.getCity(), 
-            landlord.getState(),
-            property.getPaymentDay(),
-            dtoRequest.startMonth(),
-            dtoRequest.startYear()
-        );
+
+        String dataContratoPorExtenso = getDataContratoPorExtenso(landlord.getCity(), landlord.getState(),
+                property.getPaymentDay(), dtoRequest.startMonth(), dtoRequest.startYear());
+
+        String valorPorExtenso = NumberToWordsConverter.convert(property.getValue());
 
         model.addAttribute("landlord", landlord);
         model.addAttribute("tenant", tenant);
         model.addAttribute("property", property);
         model.addAttribute("period", period);
+        model.addAttribute("dataAtualPorExtenso", dataContratoPorExtenso);
         model.addAttribute("valorPorExtenso", valorPorExtenso);
-        model.addAttribute("dataAtualPorExtenso", dataContratoPorExtenso); // Nome do atributo mantido por consistência com o HTML
 
         return "contract/editor";
+
     }
 
-    private Map<String, String> period(String startYear, String startMonth, String endYear, String endMonth, String day) {
-        
+    private Map<String, String> period(String startYear, String startMonth, String endYear, String endMonth,
+            String day) {
+
         HashMap<String, String> period = new HashMap<>();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        
-        var start = LocalDate.of(
-                            Integer.parseInt(startYear), 
-                            Integer.parseInt(startMonth), 
-                            Integer.parseInt(day)
-        );
-        
-        var stop = LocalDate.of(
-                            Integer.parseInt(endYear), 
-                            Integer.parseInt(endMonth), 
-                            Integer.parseInt(day)
-        );
+
+        var start = LocalDate.of(Integer.parseInt(startYear), Integer.parseInt(startMonth), Integer.parseInt(day));
+
+        var stop = LocalDate.of(Integer.parseInt(endYear), Integer.parseInt(endMonth), Integer.parseInt(day));
 
         var months = ChronoUnit.MONTHS.between(start, stop);
 
@@ -128,19 +117,20 @@ public class ContractWebController {
         period.put("months", Long.toString(months));
 
         return period;
+
     }
 
-    // --- MÉTODO ATUALIZADO PARA USAR OS DADOS DO CONTRATO ---
     private String getDataContratoPorExtenso(String cidade, String estado, String dia, String mesNumero, String ano) {
-        // Converte o número do mês para o objeto Month do Java
+
         Month monthEnum = Month.of(Integer.parseInt(mesNumero));
-        // Obtém o nome completo do mês em português
+
         String mesNome = monthEnum.getDisplayName(TextStyle.FULL, Locale.of("pt", "BR"));
-        
+
         String local = (cidade != null && !cidade.isEmpty() && estado != null && !estado.isEmpty())
-                       ? cidade + "-" + estado
-                       : "Sua Cidade-UF"; // Fallback
+                ? cidade + "-" + estado
+                : "Sua Cidade-UF";
 
         return local + ", " + dia + " de " + mesNome + " de " + ano;
+
     }
 }

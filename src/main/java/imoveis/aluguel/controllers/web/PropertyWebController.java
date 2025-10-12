@@ -1,22 +1,27 @@
 package imoveis.aluguel.controllers.web;
 
-import imoveis.aluguel.entities.Property;
-import imoveis.aluguel.enums.PropertyTypeEnum;
-import imoveis.aluguel.enums.PropertyUseTypeEnum; // Import adicionado
-import imoveis.aluguel.services.LandlordService;
-import imoveis.aluguel.services.TenantService;
-import imoveis.aluguel.services.PropertyService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.List;
+
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import imoveis.aluguel.entities.Property;
+import imoveis.aluguel.enums.PropertyTypeEnum;
+import imoveis.aluguel.enums.PropertyUseTypeEnum;
+import imoveis.aluguel.services.LandlordService;
+import imoveis.aluguel.services.PropertyService;
+import imoveis.aluguel.services.TenantService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/properties")
@@ -28,13 +33,15 @@ public class PropertyWebController {
     private final LandlordService landlordService;
 
     @GetMapping
-    public String listProperties(Model model) {
+    public String listProperties(Model model,
+                                    @RequestParam(defaultValue = "tenant.name") String sortField
+                                    ) {
 
         int currentYear = LocalDate.now().getYear();
         List<Integer> years = IntStream.rangeClosed(currentYear - 5, currentYear + 2)
                 .boxed().collect(Collectors.toList());
 
-        model.addAttribute("properties", propertyService.list(Sort.by(Direction.DESC, "tenant")));
+        model.addAttribute("properties", propertyService.list(sortField));
         model.addAttribute("landlords", landlordService.list(Sort.by("name")));
         model.addAttribute("years", years);
         model.addAttribute("currentYear", currentYear);
@@ -42,6 +49,7 @@ public class PropertyWebController {
         model.addAttribute("currentPage", "properties");
 
         return "property/list";
+
     }
 
     @GetMapping("/new")
@@ -50,7 +58,7 @@ public class PropertyWebController {
         model.addAttribute("property", new Property());
         model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
-        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values()); // LINHA ADICIONADA
+        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values());
         model.addAttribute("currentPage", "properties");
 
         return "property/form";

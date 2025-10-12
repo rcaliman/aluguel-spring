@@ -2,8 +2,6 @@ package imoveis.aluguel.services;
 
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
-
 import imoveis.aluguel.entities.Property;
 
 public interface PropertyService {
@@ -14,8 +12,9 @@ public interface PropertyService {
 
     Property update(Long id, Property updatedProperty);
 
-    List<Property> list(Sort sort);
+    List<Property> list(String sortField);
 
     void deleteById(Long id);
-    
+
+
 }

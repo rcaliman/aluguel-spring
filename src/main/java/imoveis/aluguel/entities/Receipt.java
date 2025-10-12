@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class Receipt {
-    
+
     private String tenant;
     private Double value;
     private PropertyTypeEnum propertyType;
@@ -17,7 +17,10 @@ public class Receipt {
     private String locale;
     private String day;
     private String month;
+    private String nextMonth;
+    private String complement;
     private String year;
+    private String nextYear;
     private String landlord;
     private String tenantContact;
 

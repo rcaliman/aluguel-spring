@@ -18,5 +18,5 @@ public interface UserMapper {
 
     @Mapping(target = "role", ignore = true)
     UserDtoResponse dtoResponse(User user);
-    
+
 }

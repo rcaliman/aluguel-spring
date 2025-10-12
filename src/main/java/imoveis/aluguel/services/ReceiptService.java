@@ -8,5 +8,5 @@ import imoveis.aluguel.entities.Receipt;
 public interface ReceiptService {
 
     List<Receipt> receipts(ReceiptDtoRequest receiptRequest);
-    
+
 }

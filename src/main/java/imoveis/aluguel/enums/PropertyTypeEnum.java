@@ -3,19 +3,17 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PropertyTypeEnum {
-    RETAIL_SPACE("loja"),
-    COMERCIAL_SPACE("sala comercial"),
-    STUDIO("quitinete"),
-    APARTMENT("apartamento");
 
-    private final String description;
+    LOJA("loja"), SALA_COMERCIAL("sala comercial"), QUITINETE("quitinete"), APARTAMENTO("apartamento"), CONDOMINIO("condomínio");
 
-    PropertyTypeEnum(String description) {
-        this.description = description;
+    private final String displayName;
+
+    PropertyTypeEnum(String displayName) {
+        this.displayName = displayName;
     }
 
     @JsonValue
-    public String getDescription() {
-        return this.description;
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

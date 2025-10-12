@@ -1,6 +1,5 @@
 package imoveis.aluguel.controllers.web;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/infopage")
-public class InfoPageController {
+public class InfoPageWebController {
 
     private final PropertyService propertyService;
     private final PropertyMapper propertyMapper;
@@ -28,7 +27,7 @@ public class InfoPageController {
     private final PropertyLogMapper propertyLogMapper;
 
     @GetMapping("/{id}")
-    public String info(@PathVariable Long id, Model model){
+    public String info(@PathVariable Long id, Model model) {
 
         var property = propertyService.findById(id);
         var propertyDtoResponse = propertyMapper.toDtoResponse(property);
@@ -37,9 +36,7 @@ public class InfoPageController {
         var tenantDtoResponse = tenantMapper.toDtoResponse(tenant);
 
         var propertyLog = propertyLogService.findAllByPropertyId(property.getId());
-        var propertyLogDtoResponse = propertyLog.stream()
-                                            .map(propertyLogMapper::toDtoResponse)
-                                            .toList();
+        var propertyLogDtoResponse = propertyLog.stream().map(propertyLogMapper::toDtoResponse).toList();
 
         model.addAttribute("property", propertyDtoResponse);
         model.addAttribute("tenant", tenantDtoResponse);
@@ -49,5 +46,4 @@ public class InfoPageController {
 
     }
 
-    
 }

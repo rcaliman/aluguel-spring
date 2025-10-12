@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Receipt;
+import imoveis.aluguel.utils.DateUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,39 +27,44 @@ public class ReceiptServiceImpl implements ReceiptService {
         var landlord = landlordService.findById(receiptRequest.landlordId());
 
         List<Property> properties = new ArrayList<>();
-        
-        if(receiptRequest.propertyIds() != null) {
-            receiptRequest.propertyIds().forEach(
-                id -> properties.add(propertyService.findById(id))
-            );
+
+        if (receiptRequest.propertyIds() != null) {
+            receiptRequest.propertyIds().forEach(id -> properties.add(propertyService.findById(id)));
         }
 
         properties.forEach(
-            
-            property -> {
-                var contact = propertyService.findById(property.getId()).getTenant().getContacts().getFirst();
-                
-                var receipt = Receipt.builder()
-                                .tenant(property.getTenant().getName())
-                                .value(property.getValue())
-                                .propertyType(property.getPropertyType())
-                                .propertyNumber(property.getNumber())
-                                .locale(receiptRequest.locale())
-                                .day(property.getPaymentDay())
-                                .month(receiptRequest.month())
-                                .year(receiptRequest.year())
-                                .landlord(landlord.getName())
-                                .tenantContact(contact.getContact().toString())
+
+                property -> {
+
+                    var tenant = property.getTenant();
+                    var contact = tenant.getContacts().isEmpty() ? "" : tenant.getContacts().getFirst().toString();
+                    var nextMonth = DateUtil.getNextMonth(receiptRequest.month());
+                    var nextYear = String.valueOf(Integer.valueOf(receiptRequest.year()) + 1);
+                    var locale = landlord.getCity() + " " + landlord.getState();
+
+                    var receipt = Receipt.builder()
+                                    .tenant(tenant.getName())
+                                    .value(property.getValue())
+                                    .propertyType(property.getPropertyType())
+                                    .propertyNumber(property.getNumber())
+                                    .locale(locale)
+                                    .day(property.getPaymentDay())
+                                    .month(receiptRequest.month())
+                                    .nextMonth(nextMonth)
+                                    .year(receiptRequest.year())
+                                    .nextYear(nextYear)
+                                    .complement(property.getComplement())
+                                    .landlord(landlord.getName())
+                                    .tenantContact(contact)
                                 .build();
-            
-                receipts.add(receipt);
-            }
-        );
+
+                    receipts.add(receipt);
+                });
 
         Collections.sort(receipts, (r1, r2) -> r1.getTenant().compareTo(r2.getTenant()));
 
         return receipts;
 
     }
-    
+
 }

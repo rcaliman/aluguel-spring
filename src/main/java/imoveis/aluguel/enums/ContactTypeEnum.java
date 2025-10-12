@@ -3,10 +3,8 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ContactTypeEnum {
-    
-    CELULAR("celular"),
-    EMAIL("email"),
-    TELEFONE("telefone");
+
+    CELULAR("celular"), EMAIL("email"), TELEFONE("telefone");
 
     private final String displayName;
 
@@ -23,4 +21,5 @@ public enum ContactTypeEnum {
     public String toString() {
         return this.displayName;
     }
+
 }

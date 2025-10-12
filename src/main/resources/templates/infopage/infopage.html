@@ -41,32 +41,32 @@
               <div class="card-custom-body">
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">Tipo do Imóvel</label>
-                    <p class="fw-bold" th:text="${property.propertyType().description}"></p>
+                    <label class="form-label">Tipo do Imóvel:</label>
+                    <p class="fw-normal" th:text="${property.propertyType().displayName}"></p>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Tipo de Uso</label>
-                    <p class="fw-bold" th:text="${property.useType().description}"></p>
+                    <label class="form-label">Tipo de Uso:</label>
+                    <p class="fw-normal" th:text="${property.useType().displayName}"></p>
                   </div>
                   <div class="col-12">
-                    <label class="form-label">Endereço</label>
-                    <p class="fw-bold" th:text="|${property.address()}, ${property.number()} - ${property.location()}, ${property.city()} - ${property.state()}|"></p>
+                    <label class="form-label">Endereço:</label>
+                    <p class="fw-normal" th:text="|${property.address()}, ${property.number()} - ${property.location()}, ${property.city()} - ${property.state()}|"></p>
                   </div>
                   <div class="col-md-6">
-                    <label class="form-label">Complemento</label>
-                    <p class="fw-bold" th:text="${property.complement() ?: 'N/A'}"></p>
+                    <label class="form-label">Complemento:</label>
+                    <p class="fw-normal" th:text="${property.complement() ?: 'N/A'}"></p>
                   </div>
                    <div class="col-md-6">
-                    <label class="form-label">Dia do Pagamento</label>
-                    <p class="fw-bold" th:text="${property.paymentDay()}"></p>
+                    <label class="form-label">Dia do Pagamento:</label>
+                    <p class="fw-normal" th:text="${property.paymentDay()}"></p>
                   </div>
                   <div class="col-12">
-                     <label class="form-label">Valor do Aluguel</label>
-                     <h4 class="text-success fw-bold" th:text="${#numbers.formatCurrency(property.value())}"></h4>
+                     <label class="form-label">Valor do Aluguel:</label>
+                     <h4 class="text-success fw-normal" th:text="${#numbers.formatCurrency(property.value())}"></h4>
                   </div>
                    <div class="col-12" th:if="${property.observation()}">
-                    <label class="form-label">Observação</label>
-                    <p class="fw-bold fst-italic" th:text="|&quot;${property.observation()}&quot;|"></p>
+                    <label class="form-label">Observação:</label>
+                    <p class="fw-normal fst-italic" th:text="${property.observation()}"></p>
                   </div>
                 </div>
               </div>
@@ -80,27 +80,27 @@
                 <div th:if="${tenant}">
                     <div class="row g-3">
                         <div class="col-12">
-                            <label class="form-label">Nome Completo</label>
-                            <p class="fw-bold" th:text="${tenant.name()}"></p>
+                            <label class="form-label">Nome Completo:</label>
+                            <p class="fw-normal" th:text="${tenant.name()}"></p>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">CPF/CNPJ</label>
-                            <p class="fw-bold" th:text="${tenant.cpfCnpj()}"></p>
+                            <label class="form-label">CPF/CNPJ:</label>
+                            <p class="fw-normal" th:text="${tenant.cpfCnpj()}"></p>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">RG</label>
-                            <p class="fw-bold" th:text="${tenant.document()}"></p>
+                            <label class="form-label">RG:</label>
+                            <p class="fw-normal" th:text="${tenant.document()}"></p>
                         </div>
                          <div class="col-md-6">
-                            <label class="form-label">Nacionalidade</label>
-                            <p class="fw-bold" th:text="${tenant.nationality()}"></p>
+                            <label class="form-label">Nacionalidade:</label>
+                            <p class="fw-normal" th:text="${tenant.nationality()}"></p>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Estado Civil</label>
-                            <p class="fw-bold" th:text="${tenant.maritalStatus().displayName}"></p>
+                            <label class="form-label">Estado Civil:</label>
+                            <p class="fw-normal" th:text="${tenant.maritalStatus()?.displayName ?: 'Não informado'}"></p>
                         </div>
                         <div class="col-12" th:if="${!tenant.contacts().isEmpty()}">
-                            <label class="form-label">Contatos</label>
+                            <label class="form-label">Contatos:</label>
                             <ul class="list-group">
                                 <li class="list-group-item" th:each="contact : ${tenant.contacts()}">
                                     <i class="bi" th:classappend="${contact.type().name() == 'EMAIL' ? 'bi-envelope-fill' : 'bi-phone-fill'}"></i>

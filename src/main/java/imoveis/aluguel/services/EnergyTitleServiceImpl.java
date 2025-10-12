@@ -21,7 +21,9 @@ public class EnergyTitleServiceImpl implements EnergyTitleService {
 
     @Override
     public EnergyTitle findLast() {
+
         return energyTitleRepository.findTopByOrderByIdDesc();
+
     }
-    
+
 }

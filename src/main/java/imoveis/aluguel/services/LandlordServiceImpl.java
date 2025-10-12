@@ -23,17 +23,15 @@ public class LandlordServiceImpl implements LandlordService {
     @Transactional
     public Landlord create(Landlord landlord) {
 
-        if(landlord.getMain()) {
+        if (landlord.getMain()) {
             landlordRepository.setAllMainToFalse();
         }
 
-        landlord.getContacts().forEach(
-            contact -> {
-                contact.setId(null);
-                contact.setTenant(null);
-                contact.setLandlord(landlord);
-            }
-        );
+        landlord.getContacts().forEach(contact -> {
+            contact.setId(null);
+            contact.setTenant(null);
+            contact.setLandlord(landlord);
+        });
         return landlordRepository.save(landlord);
 
     }
@@ -42,47 +40,44 @@ public class LandlordServiceImpl implements LandlordService {
     public Landlord findByCpfCnpj(String cpfCnpj) {
 
         var landlord = landlordRepository.findByCpfCnpj(cpfCnpj).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Locador de cpf %s não encontrado", cpfCnpj))
-        );
+                () -> new EntityNotFoundException(String.format("Locador de cpf %s não encontrado", cpfCnpj)));
 
         return landlord;
+
     }
 
     @Override
     public Landlord findById(Long id) {
 
-        var landlord = landlordRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
-        );
-        
+        var landlord = landlordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
+
         return landlord;
+
     }
 
     @Override
     @Transactional
     public Landlord update(Long id, Landlord updatedLandlord) {
 
-        var landlord = landlordRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
-        );
+        var landlord = landlordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
 
-        if(updatedLandlord.getMain()) {
+        if (updatedLandlord.getMain()) {
             landlordRepository.setAllMainToFalse();
         }
 
         landlord.getContacts().clear();
-        landlordRepository.flush(); 
+        landlordRepository.flush();
 
-        if(updatedLandlord.getContacts() != null) {
-            updatedLandlord.getContacts().forEach(
-                contact -> {
-                    contact.setId(null);
-                    contact.setTenant(null);
+        if (updatedLandlord.getContacts() != null) {
+            updatedLandlord.getContacts().forEach(contact -> {
+                contact.setId(null);
+                contact.setTenant(null);
 
-                    contact.setLandlord(landlord);
-                    landlord.getContacts().add(contact);
-                }
-            );
+                contact.setLandlord(landlord);
+                landlord.getContacts().add(contact);
+            });
         }
 
         landlordMapper.updateEntity(updatedLandlord, landlord);
@@ -93,16 +88,20 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     public List<Landlord> list(Sort sort) {
+
         return landlordRepository.findAll(sort);
+
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        Landlord landlord = landlordRepository.findById(id).orElseThrow(
-            () -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id))
-        );
+
+        Landlord landlord = landlordRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Locador de id %d não encontrado", id)));
+
         landlordRepository.delete(landlord);
+
     }
-    
+
 }

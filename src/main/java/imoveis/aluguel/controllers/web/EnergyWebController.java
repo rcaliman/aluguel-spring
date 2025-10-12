@@ -32,40 +32,41 @@ public class EnergyWebController {
 
         energyTitles = setDefaultTitles(energyTitles);
 
-        List<EnergyDtoResponseList> dtoList = IntStream.range(0, energies.size())
-                .mapToObj(i -> {
-                    Energy energy = energies.get(i);
-                    boolean isLast = (i == energies.size() - 1);
-                    return energyMapper.toDtoResponseList(energy, isLast);
-                })
-                .toList();
+        List<EnergyDtoResponseList> dtoList = IntStream.range(0, energies.size()).mapToObj(i -> {
+            Energy energy = energies.get(i);
+            boolean isLast = (i == energies.size() - 1);
+            return energyMapper.toDtoResponseList(energy, isLast);
+        }).toList();
 
         model.addAttribute("energyReadings", dtoList);
         model.addAttribute("energyTitles", energyTitles);
         model.addAttribute("currentPage", "energies");
 
-
         return "energy/list";
+
     }
 
     private EnergyTitle setDefaultTitles(EnergyTitle energyTitles) {
-        if(energyTitles == null) {
+
+        if (energyTitles == null) {
             energyTitles = new EnergyTitle();
             energyTitles.setTitleAmount1("conta 1");
             energyTitles.setTitleAmount2("conta 2");
             energyTitles.setTitleAmount3("conta 3");
         } else {
-            if(energyTitles.getTitleAmount1() == null || energyTitles.getTitleAmount2().isBlank()) {
+            if (energyTitles.getTitleAmount1() == null || energyTitles.getTitleAmount1().isBlank()) {
                 energyTitles.setTitleAmount1("conta 1");
             }
-            if(energyTitles.getTitleAmount2() == null || energyTitles.getTitleAmount2().isBlank()) {
+            if (energyTitles.getTitleAmount2() == null || energyTitles.getTitleAmount2().isBlank()) {
                 energyTitles.setTitleAmount2("conta 2");
             }
-            if(energyTitles.getTitleAmount3() == null || energyTitles.getTitleAmount3().isBlank()) {
+            if (energyTitles.getTitleAmount3() == null || energyTitles.getTitleAmount3().isBlank()) {
                 energyTitles.setTitleAmount3("conta 3");
             }
         }
+
         return energyTitles;
+
     }
 
     @GetMapping("/new")
@@ -94,6 +95,7 @@ public class EnergyWebController {
     public String saveEnergy(@ModelAttribute EnergyDtoRequest dtoRequest) {
 
         var energy = energyMapper.toEnergy(dtoRequest);
+
         if (energy.getId() == null) {
             energyService.calculate(energy);
         } else {
@@ -101,7 +103,7 @@ public class EnergyWebController {
         }
 
         return "redirect:/energies";
-        
+
     }
 
     @GetMapping("/titleform")
@@ -116,9 +118,9 @@ public class EnergyWebController {
 
     @PostMapping("/savetitle")
     public String saveEnergyTitle(@ModelAttribute EnergyTitle energyTitle) {
-        
+
         energyTitleService.save(energyTitle);
-        
+
         return "redirect:/energies";
 
     }

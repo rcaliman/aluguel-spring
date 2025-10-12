@@ -33,7 +33,7 @@ public class Contact {
     @Enumerated(EnumType.STRING)
     @Column(name = "contact_type", nullable = false)
     private ContactTypeEnum type;
-    
+
     @Column(nullable = false)
     private String contact;
 
@@ -41,7 +41,7 @@ public class Contact {
     @JoinColumn(name = "tenant_id")
     @JsonBackReference("tenant-contacts")
     private Tenant tenant;
-    
+
     @ManyToOne
     @JoinColumn(name = "landlord_id")
     @JsonBackReference("landlord-contacts")
@@ -49,7 +49,7 @@ public class Contact {
 
     @Column(name = "created_at", updatable = false, nullable = false)
     private Instant createdAt;
-    
+
     @Column(name = "updated_at")
     private Instant updatedAt;
 
@@ -61,5 +61,10 @@ public class Contact {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = Instant.now();
+    }
+    
+    @Override
+    public String toString() {
+        return this.contact;
     }
 }
