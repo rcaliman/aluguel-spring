@@ -27,5 +27,11 @@ public class EnergyTitle {
 
     @Column(name = "title_amount_3")
     private String titleAmount3;
+
+    @Column(name = "title_amount_4")
+    private String titleAmount4;
+
+    @Column(name = "title_amount_5")
+    private String titleAmount5;
     
 }

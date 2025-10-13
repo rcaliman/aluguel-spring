@@ -45,15 +45,15 @@ class EnergyServiceImplTest {
         previousEnergy = new Energy();
 
         previousEnergy.setId(1L);
-        previousEnergy.setCounter1(1000L);
-        previousEnergy.setCounter2(2000L);
-        previousEnergy.setCounter3(3000L);
+        previousEnergy.setCounter1(1000.0);
+        previousEnergy.setCounter2(2000.0);
+        previousEnergy.setCounter3(3000.0);
 
         newEnergy = new Energy();
 
-        newEnergy.setCounter1(1100L);
-        newEnergy.setCounter2(2200L);
-        newEnergy.setCounter3(3300L);
+        newEnergy.setCounter1(1100.0);
+        newEnergy.setCounter2(2200.0);
+        newEnergy.setCounter3(3300.0);
         newEnergy.setBillAmount(600.0);
         newEnergy.setDate(LocalDate.now());
     }
@@ -97,17 +97,17 @@ class EnergyServiceImplTest {
 
         Energy readingBeforePrevious = new Energy();
         readingBeforePrevious.setId(1L);
-        readingBeforePrevious.setCounter1(1000L);
-        readingBeforePrevious.setCounter2(2000L);
-        readingBeforePrevious.setCounter3(3000L);
+        readingBeforePrevious.setCounter1(1000.0);
+        readingBeforePrevious.setCounter2(2000.0);
+        readingBeforePrevious.setCounter3(3000.0);
 
         Energy existingEnergy = new Energy();
         existingEnergy.setId(2L);
 
         Energy editedData = new Energy();
-        editedData.setCounter1(1100L);
-        editedData.setCounter2(2200L);
-        editedData.setCounter3(3300L);
+        editedData.setCounter1(1100.0);
+        editedData.setCounter2(2200.0);
+        editedData.setCounter3(3300.0);
         editedData.setBillAmount(1200.0);
 
         when(energyRepository.findById(2L)).thenReturn(Optional.of(existingEnergy));
@@ -122,7 +122,7 @@ class EnergyServiceImplTest {
         assertEquals(200.0, result.getAmount1());
         assertEquals(400.0, result.getAmount2());
         assertEquals(600.0, result.getAmount3());
-        assertEquals(1100L, result.getCounter1());
+        assertEquals(1100.0, result.getCounter1());
 
         verify(energyRepository, times(1)).save(existingEnergy);
 

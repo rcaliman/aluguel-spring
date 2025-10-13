@@ -35,7 +35,9 @@ import imoveis.aluguel.dtos.EnergyDtoResponseList;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;
 import imoveis.aluguel.mappers.EnergyMapper;
+import imoveis.aluguel.mappers.CommercialEnergyMapper;
 import imoveis.aluguel.services.EnergyService;
+import imoveis.aluguel.services.CommercialEnergyService;
 import imoveis.aluguel.services.EnergyTitleService;
 
 @WebMvcTest(EnergyWebController.class)
@@ -60,6 +62,16 @@ class EnergyWebControllerTest {
             return mock(EnergyMapper.class);
         }
 
+        @Bean
+        public CommercialEnergyService commercialEnergyService() {
+            return mock(CommercialEnergyService.class);
+        }
+
+        @Bean
+        public CommercialEnergyMapper commercialEnergyMapper() {
+            return mock(CommercialEnergyMapper.class);
+        }
+
     }
 
     @Autowired
@@ -70,11 +82,15 @@ class EnergyWebControllerTest {
     private EnergyTitleService energyTitleService;
     @Autowired
     private EnergyMapper energyMapper;
+    @Autowired
+    private CommercialEnergyService commercialEnergyService;
+    @Autowired
+    private CommercialEnergyMapper commercialEnergyMapper;
 
     @BeforeEach
     void setup() {
 
-        reset(energyService, energyTitleService, energyMapper);
+        reset(energyService, energyTitleService, energyMapper, commercialEnergyService, commercialEnergyMapper);
 
     }
 
@@ -91,9 +107,9 @@ class EnergyWebControllerTest {
         when(energyTitleService.findLast()).thenReturn(null);
 
         when(energyMapper.toDtoResponseList(energy1, false))
-                .thenReturn(new EnergyDtoResponseList(1L, 0L, 0L, 0L, null, null, null, null, null, null, false));
+                .thenReturn(new EnergyDtoResponseList(1L, 0.0, 0.0, 0.0, null, null, null, null, null, null, false));
         when(energyMapper.toDtoResponseList(energy2, true))
-                .thenReturn(new EnergyDtoResponseList(2L, 0L, 0L, 0L, null, null, null, null, null, null, true));
+                .thenReturn(new EnergyDtoResponseList(2L, 0.0, 0.0, 0.0, null, null, null, null, null, null, true));
 
         mockMvc.perform(get("/energies")).andExpect(status().isOk()).andExpect(view().name("energy/list"))
                 .andExpect(model().attributeExists("energyReadings", "energyTitles", "currentPage"))

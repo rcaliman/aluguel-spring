@@ -15,14 +15,14 @@ class EnergyMapperTest {
 
         Energy energy = new Energy();
         energy.setId(1L);
-        energy.setCounter1(1000L);
+        energy.setCounter1(1000.0);
 
         EnergyDtoResponseList resultForLast = energyMapper.toDtoResponseList(energy, true);
         EnergyDtoResponseList resultForNotLast = energyMapper.toDtoResponseList(energy, false);
 
         assertNotNull(resultForLast);
         assertEquals(1L, resultForLast.id());
-        assertEquals(1000L, resultForLast.counter1());
+        assertEquals(1000.0, resultForLast.counter1());
         assertTrue(resultForLast.last());
 
         assertNotNull(resultForNotLast);

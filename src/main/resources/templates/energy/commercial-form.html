@@ -7,9 +7,9 @@
 >
   <head>
     <title
-      th:text="${energy.id == null} ? 'Nova Leitura de Energia' : 'Editar Leitura de Energia'"
+      th:text="${commercialEnergy.id == null} ? 'Nova Leitura de Energia Comercial' : 'Editar Leitura de Energia Comercial'"
     >
-      Formulário de Energia
+      Formulário de Energia Comercial
     </title>
   </head>
 
@@ -23,7 +23,7 @@
             <div>
               <h1
                 class="h3 mb-1"
-                th:text="${energy.id == null} ? 'Nova Leitura de Energia' : 'Editar Leitura de Energia'"
+                th:text="${commercialEnergy.id == null} ? 'Nova Leitura de Energia Comercial' : 'Editar Leitura de Energia Comercial'"
               ></h1>
               <p class="mb-0 opacity-75">Preencha os dados da medição abaixo</p>
             </div>
@@ -32,8 +32,6 @@
             </a>
           </div>
         </div>
-        >
-
         <div class="card-custom">
           <div class="card-custom-header">
             <span
@@ -43,26 +41,41 @@
           </div>
           <div class="card-custom-body">
             <form
-              th:action="@{/energies/save}"
-              th:object="${energy}"
+              th:action="@{/energies/save-commercial}"
+              th:object="${commercialEnergy}"
               method="post"
             >
               <input type="hidden" th:field="*{id}" />
 
               <div class="row">
-                <div class="col-md-6 mb-3">
+                <div class="col-md-3 mb-3">
                   <label for="date" class="form-label">Data da Leitura</label>
                   <input
                     type="date"
                     class="form-control"
                     id="date"
                     name="date"
-                    th:value="${energy.date != null ? #temporals.format(energy.date, 'yyyy-MM-dd') : ''}"
+                    th:value="${commercialEnergy.date != null ? #temporals.format(commercialEnergy.date, 'yyyy-MM-dd') : ''}"
                     required
                   />
                 </div>
-                <div class="col-md-6 mb-3">
-                  <label for="billAmount" class="form-label"
+                <div class="col-md-3 mb-3">
+                  <label for="accountConsumption" class="form-label"
+                    >Consumo da Conta (kWh)</label
+                  >
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="form-control"
+                    id="accountConsumption"
+                    name="accountConsumption"
+                    th:value="${commercialEnergy.accountConsumption != null ? #numbers.formatDecimal(commercialEnergy.accountConsumption, 1, 2, 'POINT') : ''}"
+                    required
+                    placeholder="0.00"
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="accountValue" class="form-label"
                     >Valor Total da Conta</label
                   >
                   <div class="input-group">
@@ -71,62 +84,30 @@
                       type="number"
                       step="0.01"
                       class="form-control"
-                      id="billAmount"
-                      name="billAmount"
-                      th:value="${energy.billAmount != null ? #numbers.formatDecimal(energy.billAmount, 1, 2, 'POINT') : ''}"
+                      id="accountValue"
+                      name="accountValue"
+                      th:value="${commercialEnergy.accountValue != null ? #numbers.formatDecimal(commercialEnergy.accountValue, 1, 2, 'POINT') : ''}"
                       required
                       placeholder="0.00"
                     />
                   </div>
                 </div>
-              </div>
-
-              <h5 class="form-section-title mt-4">
-                <i class="bi bi-speedometer2"></i> Leituras dos Relógios
-              </h5>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="counter1" class="form-label">Relógio 1</label>
+                <div class="col-md-3 mb-3">
+                  <label for="internalCounter" class="form-label"
+                    >Medidor Interno</label
+                  >
                   <input
                     type="number"
                     step="0.1"
                     class="form-control"
-                    id="counter1"
-                    name="counter1"
-                    th:value="${energy.counter1 != null ? #numbers.formatDecimal(energy.counter1, 1, 1, 'POINT') : ''}"
-                    required
-                    placeholder="0.0"
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="counter2" class="form-label">Relógio 2</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    class="form-control"
-                    id="counter2"
-                    name="counter2"
-                    th:value="${energy.counter2 != null ? #numbers.formatDecimal(energy.counter2, 1, 1, 'POINT') : ''}"
-                    required
-                    placeholder="0.0"
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="counter3" class="form-label">Relógio 3</label>
-                  <input
-                    type="number"
-                    step="0.1"
-                    class="form-control"
-                    id="counter3"
-                    name="counter3"
-                    th:value="${energy.counter3 != null ? #numbers.formatDecimal(energy.counter3, 1, 1, 'POINT') : ''}"
+                    id="internalCounter"
+                    name="internalCounter"
+                    th:value="${commercialEnergy.internalCounter != null ? #numbers.formatDecimal(commercialEnergy.internalCounter, 1, 1, 'POINT') : ''}"
                     required
                     placeholder="0.0"
                   />
                 </div>
               </div>
-
-              <input type="hidden" th:field="*{kwhValue}" />
 
               <div
                 class="d-flex justify-content-end gap-3 pt-4 mt-3 border-top"

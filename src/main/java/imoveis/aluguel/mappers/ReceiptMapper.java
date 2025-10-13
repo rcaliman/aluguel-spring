@@ -36,6 +36,10 @@ public interface ReceiptMapper {
     @Mapping(target = "tenantContact", ignore = true)
     @Mapping(target = "value", ignore = true)
     @Mapping(target = "day", ignore = true)
+    @Mapping(target = "locale", ignore = true)
+    @Mapping(target = "nextMonth", ignore = true)
+    @Mapping(target = "nextYear", ignore = true)
+    @Mapping(target = "observation", ignore = true)
     Receipt toReceipt(ReceiptDtoRequest receiptDto);
 
 }

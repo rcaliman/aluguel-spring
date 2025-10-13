@@ -26,9 +26,9 @@ class EnergyRepositoryTest {
     void save_ShouldPersistEnergyReading_WhenDataIsValid() {
 
         Energy energy = new Energy();
-        energy.setCounter1(1000L);
-        energy.setCounter2(2000L);
-        energy.setCounter3(3000L);
+        energy.setCounter1(1000.0);
+        energy.setCounter2(2000.0);
+        energy.setCounter3(3000.0);
 
         Energy savedEnergy = energyRepository.save(energy);
         entityManager.flush();
@@ -37,7 +37,7 @@ class EnergyRepositoryTest {
         Energy foundEnergy = energyRepository.findById(savedEnergy.getId()).orElse(null);
 
         assertNotNull(foundEnergy);
-        assertEquals(1000L, foundEnergy.getCounter1());
+        assertEquals(1000.0, foundEnergy.getCounter1());
 
     }
 
@@ -46,8 +46,8 @@ class EnergyRepositoryTest {
     void save_WhenCounter1IsNull_ShouldThrowException() {
 
         Energy energy = new Energy();
-        energy.setCounter2(2000L);
-        energy.setCounter3(3000L);
+        energy.setCounter2(2000.0);
+        energy.setCounter3(3000.0);
 
         assertThrows(DataIntegrityViolationException.class, () -> {
             energyRepository.saveAndFlush(energy);
@@ -60,8 +60,8 @@ class EnergyRepositoryTest {
     void save_WhenCounter2IsNull_ShouldThrowException() {
 
         Energy energy = new Energy();
-        energy.setCounter1(1000L);
-        energy.setCounter3(3000L);
+        energy.setCounter1(1000.0);
+        energy.setCounter3(3000.0);
 
         assertThrows(DataIntegrityViolationException.class, () -> {
             energyRepository.saveAndFlush(energy);
@@ -74,8 +74,8 @@ class EnergyRepositoryTest {
     void save_WhenCounter3IsNull_ShouldThrowException() {
 
         Energy energy = new Energy();
-        energy.setCounter1(1000L);
-        energy.setCounter2(2000L);
+        energy.setCounter1(1000.0);
+        energy.setCounter2(2000.0);
 
         assertThrows(DataIntegrityViolationException.class, () -> {
             energyRepository.saveAndFlush(energy);

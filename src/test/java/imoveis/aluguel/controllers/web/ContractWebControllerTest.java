@@ -180,23 +180,22 @@ class ContractWebControllerTest {
     }
 
     @Test
-    @DisplayName("POST /editor - Deve lançar exceção se o imóvel não tiver inquilino")
-    void contractEditor_ShouldThrowException_WhenPropertyHasNoTenant() {
+    @DisplayName("POST /editor - Deve retornar erro 400 se o imóvel não tiver inquilino")
+    void contractEditor_ShouldReturn400_WhenPropertyHasNoTenant() throws Exception {
 
         property.setTenant(null);
         when(propertyService.findById(1L)).thenReturn(property);
         when(landlordService.findById(10L)).thenReturn(landlord);
 
-        ServletException exception = assertThrows(ServletException.class, () -> {
-            mockMvc.perform(post("/contracts/editor").with(csrf()).param("propertyId", "1").param("landlordId", "10")
-                    .param("startMonth", "10").param("startYear", "2025").param("endMonth", "10")
-                    .param("endYear", "2026"));
-        });
-
-        Throwable cause = exception.getCause();
-
-        assertThat(cause).isInstanceOf(NotFoundException.class);
-        assertThat(cause.getMessage()).contains("Imóvel não possui inquilino associado");
+        mockMvc.perform(post("/contracts/editor")
+                .with(csrf())
+                .param("propertyId", "1")
+                .param("landlordId", "10")
+                .param("startMonth", "10")
+                .param("startYear", "2025")
+                .param("endMonth", "10")
+                .param("endYear", "2026"))
+                .andExpect(status().isBadRequest());
 
     }
 }

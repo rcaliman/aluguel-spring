@@ -1,10 +1,16 @@
 package imoveis.aluguel.controllers.web;
 
+import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
+import imoveis.aluguel.dtos.CommercialEnergyDtoResponseList;
 import imoveis.aluguel.dtos.EnergyDtoRequest;
+import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoResponseList;
+import imoveis.aluguel.entities.CommercialEnergy;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;
+import imoveis.aluguel.mappers.CommercialEnergyMapper;
 import imoveis.aluguel.mappers.EnergyMapper;
+import imoveis.aluguel.services.CommercialEnergyService;
 import imoveis.aluguel.services.EnergyService;
 import imoveis.aluguel.services.EnergyTitleService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +30,9 @@ public class EnergyWebController {
     private final EnergyTitleService energyTitleService;
     private final EnergyMapper energyMapper;
 
+    private final CommercialEnergyService commercialEnergyService;
+    private final CommercialEnergyMapper commercialEnergyMapper;
+
     @GetMapping
     public String listEnergyReadings(Model model) {
 
@@ -42,6 +51,16 @@ public class EnergyWebController {
         model.addAttribute("energyTitles", energyTitles);
         model.addAttribute("currentPage", "energies");
 
+        List<CommercialEnergy> commercialEnergies = commercialEnergyService.listLasts();
+
+        List<CommercialEnergyDtoResponseList> dtoListCommercial = IntStream.range(0, commercialEnergies.size()).mapToObj( i -> {
+            CommercialEnergy commercialEnergy = commercialEnergies.get(i);
+            boolean isLast = ( i == commercialEnergies.size() -1 );
+            return commercialEnergyMapper.toCommercialEnergyDtoResponseList(commercialEnergy, isLast);
+        }).toList();
+                                                        
+        model.addAttribute("commercialEnergyReadings", dtoListCommercial);
+
         return "energy/list";
 
     }
@@ -53,6 +72,8 @@ public class EnergyWebController {
             energyTitles.setTitleAmount1("conta 1");
             energyTitles.setTitleAmount2("conta 2");
             energyTitles.setTitleAmount3("conta 3");
+            energyTitles.setTitleAmount4("conta 1");
+            energyTitles.setTitleAmount5("conta 2");
         } else {
             if (energyTitles.getTitleAmount1() == null || energyTitles.getTitleAmount1().isBlank()) {
                 energyTitles.setTitleAmount1("conta 1");
@@ -62,6 +83,12 @@ public class EnergyWebController {
             }
             if (energyTitles.getTitleAmount3() == null || energyTitles.getTitleAmount3().isBlank()) {
                 energyTitles.setTitleAmount3("conta 3");
+            }
+            if (energyTitles.getTitleAmount4() == null || energyTitles.getTitleAmount4().isBlank()) {
+                energyTitles.setTitleAmount4("conta 1");
+            }
+            if (energyTitles.getTitleAmount5() == null || energyTitles.getTitleAmount5().isBlank()) {
+                energyTitles.setTitleAmount5("conta 2");
             }
         }
 
@@ -124,5 +151,43 @@ public class EnergyWebController {
         return "redirect:/energies";
 
     }
+
+    @GetMapping("/new-commercial")
+    public String showCreateFormCommercial(Model model) {
+
+        model.addAttribute("commercialEnergy", new CommercialEnergy());
+        model.addAttribute("currentPage", "energies");
+
+        return "energy/commercial-form";
+
+    }
+
+    @PostMapping("/save-commercial")
+    public String saveCommercialEnergy(@ModelAttribute CommercialEnergyDtoRequest dtoRequest) {
+
+        var commercialEnergy = commercialEnergyMapper.toEntity(dtoRequest);
+
+        if (commercialEnergy.getId() == null) {
+            commercialEnergyService.calculate(commercialEnergy);
+        } else {
+            commercialEnergyService.edit(commercialEnergy, commercialEnergy.getId());
+        }
+
+        return "redirect:/energies";
+
+    }
+
+    @GetMapping("/edit-commercial/{id}")
+    public String showEditFormCommercial(@PathVariable Long id, Model model) {
+
+        CommercialEnergy commercialEnergy = commercialEnergyService.findById(id);
+
+        model.addAttribute("commercialEnergy", commercialEnergy);
+        model.addAttribute("currentPage", "energies");
+
+        return "energy/commercial-form";
+
+    }
+
 
 }

@@ -16,21 +16,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Table(name = "tb_energy")
-public class Energy {
+@Table(name = "tb_commercial_energy")
+public class CommercialEnergy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "counter_1", nullable = false)
-    private Double counter1;
-
-    @Column(name = "counter_2", nullable = false)
-    private Double counter2;
-
-    @Column(name = "counter_3", nullable = false)
-    private Double counter3;
 
     @Column(name = "amount_1", nullable = true)
     private Double amount1;
@@ -38,14 +29,20 @@ public class Energy {
     @Column(name = "amount_2", nullable = true)
     private Double amount2;
 
-    @Column(name = "amount_3", nullable = true)
-    private Double amount3;
+    @Column(name = "internal_counter", nullable = true)
+    private Double internalCounter;
 
-    @Column(name = "kwh_value", nullable = true)
-    private Double kwhValue;
+    @Column(name = "account_value", nullable = true)
+    private Double accountValue;
 
-    @Column(name = "bill_amount", nullable = true)
-    private Double billAmount;
+    @Column(name = "account_consumption", nullable = true)
+    private Double accountConsumption;
+
+    @Column(name = "calculated_consumption_1", nullable = true)
+    private Double calculatedConsumption1;
+
+    @Column(name = "calculated_consumption_2", nullable = true)
+    private Double calculatedConsumption2;
 
     @Column(name = "date", nullable = true)
     private LocalDate date;

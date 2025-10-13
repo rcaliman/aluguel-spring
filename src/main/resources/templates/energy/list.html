@@ -9,23 +9,24 @@
     <title>Leituras de Energia</title>
     <style>
       @media print {
-        body {
-          background-color: white;
+        body * {
+          visibility: hidden;
         }
-        /* Esconde o cabeçalho da página, botões e outras seções não essenciais */
-        .page-header,
-        .card-custom-header,
-        dl,
-        .btn {
-          display: none !important;
+        #print-area,
+        #print-area * {
+          visibility: visible;
         }
-        .card-custom {
-          box-shadow: none;
-          border: none;
+        #print-area {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
         }
-        /* Garante que os ícones de edição de título não apareçam */
-        th a {
-          display: none !important;
+        .printable-page {
+          page-break-after: always;
+        }
+        .no-print {
+            display: none !important;
         }
       }
     </style>
@@ -34,7 +35,7 @@
   <body>
     <section layout:fragment="content">
       <div class="container">
-        <div class="page-header">
+        <div class="page-header no-print">
           <div
             class="d-flex justify-content-between align-items-center flex-wrap"
           >
@@ -46,9 +47,6 @@
               <p class="mb-0 opacity-75">Histórico de medições e valores</p>
             </div>
             <div class="d-flex gap-2">
-              <a th:href="@{/energies/new}" class="btn btn-light">
-                <i class="bi bi-plus-circle"></i> Nova Leitura
-              </a>
               <button id="printButton" class="btn btn-light">
                 <i class="bi bi-printer"></i> Imprimir
               </button>
@@ -56,158 +54,272 @@
           </div>
         </div>
 
-        <div class="card-custom">
-          <div class="card-custom-header">
-            <span><i class="bi bi-list-ul me-2"></i> Últimas Leituras</span>
+        <div id="print-area">
+          <div class="printable-page">
+            <div class="card-custom">
+              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-list-ul me-2"></i> Últimas Leituras</span>
+                <a th:href="@{/energies/new}" class="btn btn-sm btn-light">
+                  <i class="bi bi-plus-circle"></i> Nova Leitura
+                </a>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-striped table-hover mb-0" id="table-residentials">
+                  <thead>
+                    <tr>
+                      <th class="text-end">Data</th>
+                      <th class="text-end">Relógio 1</th>
+                      <th class="text-end">Relógio 2</th>
+                      <th class="text-end">Relógio 3</th>
+                      <th class="text-end">Valor Conta R$</th>
+                      <th class="text-end">
+                        <span th:text="${energyTitles.titleAmount1}"
+                          >Valor Rateado 1 R$</span
+                        >
+                        <a
+                          th:href="@{/energies/titleform}"
+                          class="ms-1 no-print"
+                          title="Editar Título"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </th>
+                      <th class="text-end">
+                        <span th:text="${energyTitles.titleAmount2}"
+                          >Valor Rateado 2 R$</span
+                        >
+                        <a
+                          th:href="@{/energies/titleform}"
+                          class="ms-1 no-print"
+                          title="Editar Título"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </th>
+                      <th class="text-end">
+                        <span th:text="${energyTitles.titleAmount3}"
+                          >Valor Rateado 3 R$</span
+                        >
+                        <a
+                          th:href="@{/energies/titleform}"
+                          class="ms-1 no-print"
+                          title="Editar Título"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </th>
+                      <th class="text-center no-print"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="reading : ${energyReadings}">
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#temporals.format(reading.date(), 'dd/MM/yyyy')}"
+                      >
+                        01/01/2025
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(reading.counter1(), 1, 1, 'COMMA')}"
+                      >
+                        1000,0
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(reading.counter2(), 1, 1, 'COMMA')}"
+                      >
+                        2000,0
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(reading.counter3(), 1, 1, 'COMMA')}"
+                      >
+                        3000,0
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(reading.billAmount())}"
+                        th:classappend="${reading.last()} ? 'text-decoration-underline' : ''"
+                      >
+                        R$ 500,00
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(reading.amount1())}"
+                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                      >
+                        R$ 150,00
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(reading.amount2())}"
+                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                      >
+                        R$ 150,00
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(reading.amount3())}"
+                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                      >
+                        R$ 200,00
+                      </td>
+                      <td class="text-center no-print">
+                        <a
+                          th:if="${reading.last()}"
+                          th:href="@{/energies/edit/{id}(id=${reading.id()})}"
+                          class="btn btn-sm btn-outline-primary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil-square m-0"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr th:if="${energyReadings.empty}">
+                      <td colspan="9" class="text-center py-4">
+                        <i
+                          class="bi bi-inbox display-4 text-muted d-block mb-2"
+                        ></i>
+                        <span class="text-muted"
+                          >Nenhuma leitura de energia cadastrada</span
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <dl class="mt-2 p-2 m-2 no-print">
+                  <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
+                  <dd>
+                    - Subtrai a leitura do mês atual pela do mês anterior de cada
+                    inquilino;
+                  </dd>
+                  <dd>
+                    - Soma o resultado dos três inquilinos para chegar ao total
+                    gasto no mês, em kWh;
+                  </dd>
+                  <dd>
+                    - Calcula a porcentagem de kWh consumidos de cada inquilino em
+                    relação ao total;
+                  </dd>
+                  <dd>
+                    - A porcentagem que cada inquilino usou dos kWh totais
+                    consumidos no mês será a porcentagem que ele pagará da conta;
+                  </dd>
+                  <dd>
+                    - A porcentagem de cada inquilino sobre o total da conta aparece
+                    junto ao valor na tabela.
+                  </dd>
+                </dl>
+              </div>
+            </div>
           </div>
-          <div class="table-responsive">
-            <table class="table table-striped table-hover mb-0">
-              <thead>
-                <tr>
-                  <th class="text-end">Data</th>
-                  <th class="text-end">Relógio 1</th>
-                  <th class="text-end">Relógio 2</th>
-                  <th class="text-end">Relógio 3</th>
-                  <th class="text-end">Valor Conta R$</th>
-                  <th class="text-end">
-                    <span th:text="${energyTitles.titleAmount1}"
-                      >Valor Rateado 1 R$</span
-                    >
-                    <a
-                      th:href="@{/energies/titleform}"
-                      class="ms-1"
-                      title="Editar Título"
-                    >
-                      <i class="bi bi-pencil-square"></i>
-                    </a>
-                  </th>
-                  <th class="text-end">
-                    <span th:text="${energyTitles.titleAmount2}"
-                      >Valor Rateado 2 R$</span
-                    >
-                    <a
-                      th:href="@{/energies/titleform}"
-                      class="ms-1"
-                      title="Editar Título"
-                    >
-                      <i class="bi bi-pencil-square"></i>
-                    </a>
-                  </th>
-                  <th class="text-end">
-                    <span th:text="${energyTitles.titleAmount3}"
-                      >Valor Rateado 3 R$</span
-                    >
-                    <a
-                      th:href="@{/energies/titleform}"
-                      class="ms-1"
-                      title="Editar Título"
-                    >
-                      <i class="bi bi-pencil-square"></i>
-                    </a>
-                  </th>
-                  <th class="text-center"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:each="reading : ${energyReadings}">
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${#temporals.format(reading.date(), 'dd/MM/yyyy')}"
-                  >
-                    01/01/2025
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${reading.counter1()}"
-                  >
-                    1000
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${reading.counter2()}"
-                  >
-                    2000
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${reading.counter3()}"
-                  >
-                    3000
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${#numbers.formatCurrency(reading.billAmount())}"
-                    th:classappend="${reading.last()} ? 'text-decoration-underline' : ''"
-                  >
-                    R$ 500,00
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${#numbers.formatCurrency(reading.amount1())}"
-                    th:classappend="${reading.last()} ? 'fw-bold' : ''"
-                  >
-                    R$ 150,00
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${#numbers.formatCurrency(reading.amount2())}"
-                    th:classappend="${reading.last()} ? 'fw-bold' : ''"
-                  >
-                    R$ 150,00
-                  </td>
-                  <td
-                    class="text-end font-monospace"
-                    th:text="${#numbers.formatCurrency(reading.amount3())}"
-                    th:classappend="${reading.last()} ? 'fw-bold' : ''"
-                  >
-                    R$ 200,00
-                  </td>
-                  <td class="text-center">
-                    <a
-                      th:if="${reading.last()}"
-                      th:href="@{/energies/edit/{id}(id=${reading.id()})}"
-                      class="btn btn-sm btn-outline-primary"
-                      title="Editar"
-                    >
-                      <i class="bi bi-pencil-square m-0"></i>
-                    </a>
-                  </td>
-                </tr>
-                <tr th:if="${energyReadings.empty}">
-                  <td colspan="9" class="text-center py-4">
-                    <i
-                      class="bi bi-inbox display-4 text-muted d-block mb-2"
-                    ></i>
-                    <span class="text-muted"
-                      >Nenhuma leitura de energia cadastrada</span
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <dl class="mt-2 p-2 m-2">
-              <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
-              <dd>
-                - Subtrai a leitura do mês atual pela do mês anterior de cada
-                inquilino;
-              </dd>
-              <dd>
-                - Soma o resultado dos três inquilinos para chegar ao total
-                gasto no mês, em kWh;
-              </dd>
-              <dd>
-                - Calcula a porcentagem de kWh consumidos de cada inquilino em
-                relação ao total;
-              </dd>
-              <dd>
-                - A porcentagem que cada inquilino usou dos kWh totais
-                consumidos no mês será a porcentagem que ele pagará da conta;
-              </dd>
-              <dd>
-                - A porcentagem de cada inquilino sobre o total da conta aparece
-                junto do valor.
-              </dd>
-            </dl>
+
+          <div class="printable-page">
+            <div class="card-custom mt-4">
+              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-building me-2"></i> Leituras Comerciais</span>
+                <a th:href="@{/energies/new-commercial}" class="btn btn-sm btn-light">
+                  <i class="bi bi-plus-circle"></i> Nova Leitura
+                </a>
+              </div>
+              <div class="table-responsive mt-3">
+                <table class="table table-striped table-hover mb-0" id="table-commercials">
+                  <thead>
+                    <tr>
+                      <th class="text-end">Data</th>
+                      <th class="text-end">Consumo mês (kWh)</th>
+                      <th class="text-end">Conta mês (R$)</th>
+                      <th class="text-end">Medidor (kWh)</th>
+                      <th class="text-end">Ponto 1 (kWh)</th>
+                      <th class="text-end">Ponto 2 (kWh)</th>
+                      <th class="text-end">
+                        <span th:text="${energyTitles.titleAmount4}"
+                          >Valor Rateado 1 R$</span
+                        >
+                        <a
+                          th:href="@{/energies/titleform}"
+                          class="ms-1 no-print"
+                          title="Editar Título"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </th>
+                      <th class="text-end">
+                        <span th:text="${energyTitles.titleAmount5}"
+                          >Valor Rateado 1 R$</span
+                        >
+                        <a
+                          th:href="@{/energies/titleform}"
+                          class="ms-1 no-print"
+                          title="Editar Título"
+                        >
+                          <i class="bi bi-pencil-square"></i>
+                        </a>
+                      </th>
+                      <th class="text-center no-print"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="commercialReading : ${commercialEnergyReadings}">
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#temporals.format(commercialReading.date(), 'dd/MM/yyyy')}"
+                      ></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount1())}"
+                      th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
+                      
+                      ></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount2())}"
+                      
+                      th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
+                      
+                      ></td>
+                      <td class="text-center no-print">
+                        <a
+                          th:if="${commercialReading.isLast()}"
+                          th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id()})}"
+                          class="btn btn-sm btn-outline-primary"
+                          title="Editar"
+                        >
+                          <i class="bi bi-pencil-square m-0"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    <tr th:if="${commercialEnergyReadings.empty}">
+                      <td colspan="7" class="text-center py-4">
+                        <i class="bi bi-inbox display-4 text-muted d-block mb-2"></i>
+                        <span class="text-muted">Nenhuma leitura comercial cadastrada</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                                <dl class="mt-2 p-2 m-2 no-print">
+                  <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
+                  <dd>
+                    - Pega a quantidade total de kWh gastos no medidor do ponto e subtrai pelo do mês anterior para ter a quantidade de kWh gastos do ponto 1;
+                  </dd>
+                  <dd>
+                    - Consulta na conta o consumo total do mês e subtrai pela quantidade calculada no ponto 1 para termos a quantidade de kWh gastos do ponto 2;
+                  </dd>
+                  <dd>
+                    - Calcula a porcentagem de gasto do ponto 1 e do ponto 2 em relação ao total de kWh gastos no mês;
+                  </dd>
+                  <dd>
+                    - Aplica a porcentagem que cada ponto gastou dos kWh totais ao valor da conta;
+                  </dd>
+                  <dd>
+                    - A porcentagem de cada inquilino sobre o total da conta aparece
+                    junto ao valor na tabela.
+                  </dd>
+                </dl>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -235,15 +347,15 @@
             return isNaN(value) ? 0 : value;
           };
 
-          const allRows = document.querySelectorAll("tbody tr");
+          const allResidentialRows = document.querySelectorAll("#table-residentials tbody tr");
           // Filtra para pegar apenas as linhas com dados
-          const dataRows = Array.from(allRows).filter(
+          const dataResidentialRows = Array.from(allResidentialRows).filter(
             (row) => row.querySelectorAll("td").length > 1
           );
 
           // Executa o cálculo apenas se houverem linhas de dados
-          if (dataRows.length > 0) {
-            const lastRow = dataRows[dataRows.length - 1]; // Pega a última linha
+          if (dataResidentialRows.length > 0) {
+            const lastRow = dataResidentialRows[dataResidentialRows.length - 1]; // Pega a última linha
             const cells = lastRow.querySelectorAll("td");
 
             const billAmountText = cells[4].textContent;
@@ -273,6 +385,37 @@
               const amount3 = parseCurrency(amount3Text);
               const percentage3 = ((amount3 / billAmount) * 100).toFixed(1);
               cells[7].innerHTML += `<br><small class="text-muted">(${percentage3.replace(
+                ".",
+                ","
+              )}%)</small>`;
+            }
+          }
+
+          const allCommercialRows = document.querySelectorAll("#table-commercials tbody tr");
+          const dataCommercialRows = Array.from(allCommercialRows).filter(
+            (row) => row.querySelectorAll("td").length > 1
+          );
+
+          if (dataCommercialRows.length > 0) {
+            const lastRow = dataCommercialRows[dataCommercialRows.length - 1];
+            const cells = lastRow.querySelectorAll("td");
+
+            const billAmountText = cells[2].textContent;
+            const billAmount = parseCurrency(billAmountText);
+
+            if (billAmount > 0) {
+              const amount1Text = cells[6].textContent;
+              const amount1 = parseCurrency(amount1Text);
+              const percentage1 = ((amount1 / billAmount) * 100).toFixed(1);
+              cells[6].innerHTML += `<br><small class="text-muted">(${percentage1.replace(
+                ".",
+                ","
+              )}%)</small>`;
+
+              const amount2Text = cells[7].textContent;
+              const amount2 = parseCurrency(amount2Text);
+              const percentage2 = ((amount2 / billAmount) * 100).toFixed(1);
+              cells[7].innerHTML += `<br><small class="text-muted">(${percentage2.replace(
                 ".",
                 ","
               )}%)</small>`;
