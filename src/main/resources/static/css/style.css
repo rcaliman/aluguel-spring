@@ -1,6 +1,6 @@
 /* style.css - Estilos modernos e otimizados para o sistema de aluguel de imóveis */
 
-/* 1. VARIÁVEIS GLOBAIS (ROOT) */
+/* 1. GLOBAL VARIABLES (ROOT) */
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
@@ -15,7 +15,7 @@
     --transition: all 0.3s ease;
 }
 
-/* 2. ESTILOS DE BASE E RESET */
+/* 2. BASE STYLES AND RESET */
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +32,7 @@ body {
     line-height: 1.6;
 }
 
-/* 3. LAYOUT PRINCIPAL */
+/* 3. MAIN LAYOUT */
 main {
     flex: 1;
     padding-top: 2rem;
@@ -48,7 +48,7 @@ footer.site-footer {
     text-align: center;
 }
 
-/* 4. COMPONENTES REUTILIZÁVEIS */
+/* 4. REUSABLE COMPONENTS */
 
 /* Navegação */
 .navbar-dark.bg-dark {
@@ -140,7 +140,7 @@ footer.site-footer {
     box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
 }
 
-/* ===== NOVO: Estilo para placeholders mais claros ===== */
+/* NEW: Style for lighter placeholders */
 .form-control::placeholder {
     color: #adb5bd; /* Um cinza mais claro e sutil */
     opacity: 1;    /* Garante a visibilidade em todos os navegadores */
@@ -191,7 +191,7 @@ tr.table-active, tr.table-active:hover {
     font-size: 0.9rem;
 }
 
-/* Novas classes para substituir estilos inline */
+/* New classes to replace inline styles */
 .th-col-main { width: 70px; }
 .th-col-actions { width: 140px; }
 
@@ -209,7 +209,7 @@ tr.table-active, tr.table-active:hover {
     color: white;
 }
 
-/* 5. ESTILOS DE PÁGINAS ESPECÍFICAS */
+/* 5. SPECIFIC PAGE STYLES */
 
 /* Página de Login */
 .login-container {
@@ -282,12 +282,13 @@ tr.table-active, tr.table-active:hover {
     color: var(--secondary-color);
 }
 
-/* 6. ÍCONES E UTILITÁRIOS */
+/* 6. ICONS AND UTILITIES */
+/* Align Bootstrap Icons vertically */
 .bi {
     vertical-align: -0.125em;
 }
 
-/* 7. RESPONSIVIDADE */
+/* 7. RESPONSIVENESS */
 @media (max-width: 768px) {
     .page-header {
         text-align: center;

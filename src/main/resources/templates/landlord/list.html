@@ -61,14 +61,14 @@
                   <div class="d-inline-flex gap-1">
                     <a
                       th:href="@{/landlords/edit/{id}(id=${landlord.id})}"
-                      class="btn btn-sm btn-outline-primary"
+                      class="btn btn-sm btn-primary"
                       title="Editar"
                     >
                       <i class="bi bi-pencil-square"></i>
                     </a>
                     <a
                       th:href="@{/landlords/delete/{id}(id=${landlord.id})}"
-                      class="btn btn-sm btn-outline-danger"
+                      class="btn btn-sm btn-danger"
                       title="Excluir"
                       onclick="return confirm('Tem certeza que deseja excluir este locador?');"
                     >

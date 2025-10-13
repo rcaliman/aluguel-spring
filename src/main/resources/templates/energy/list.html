@@ -28,6 +28,9 @@
         .no-print {
             display: none !important;
         }
+        .table-striped > tbody > tr:nth-of-type(odd) > * {
+            background-color: transparent !important;
+        }
       }
     </style>
   </head>
@@ -47,7 +50,7 @@
               <p class="mb-0 opacity-75">Histórico de medições e valores</p>
             </div>
             <div class="d-flex gap-2">
-              <button id="printButton" class="btn btn-light">
+              <button id="printButton" class="btn btn-primary shadow-sm">
                 <i class="bi bi-printer"></i> Imprimir
               </button>
             </div>
@@ -59,7 +62,7 @@
             <div class="card-custom">
               <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-list-ul me-2"></i> Últimas Leituras</span>
-                <a th:href="@{/energies/new}" class="btn btn-sm btn-light">
+                <a th:href="@{/energies/new}" class="btn btn-secondary shadow-sm">
                   <i class="bi bi-plus-circle"></i> Nova Leitura
                 </a>
               </div>
@@ -169,7 +172,7 @@
                         <a
                           th:if="${reading.last()}"
                           th:href="@{/energies/edit/{id}(id=${reading.id()})}"
-                          class="btn btn-sm btn-outline-primary"
+                          class="btn btn-sm btn-primary"
                           title="Editar"
                         >
                           <i class="bi bi-pencil-square m-0"></i>
@@ -219,7 +222,7 @@
             <div class="card-custom mt-4">
               <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-building me-2"></i> Leituras Comerciais</span>
-                <a th:href="@{/energies/new-commercial}" class="btn btn-sm btn-light">
+                <a th:href="@{/energies/new-commercial}" class="btn btn-secondary shadow-sm">
                   <i class="bi bi-plus-circle"></i> Nova Leitura
                 </a>
               </div>
@@ -284,7 +287,7 @@
                         <a
                           th:if="${commercialReading.isLast()}"
                           th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id()})}"
-                          class="btn btn-sm btn-outline-primary"
+                          class="btn btn-sm btn-primary"
                           title="Editar"
                         >
                           <i class="bi bi-pencil-square m-0"></i>

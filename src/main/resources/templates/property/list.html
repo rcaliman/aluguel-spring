@@ -24,7 +24,7 @@
                 Gerencie todos os imóveis do sistema
               </p>
             </div>
-            <a th:href="@{/properties/new}" class="btn btn-light">
+            <a th:href="@{/properties/new}" class="btn btn-primary shadow-sm">
               <i class="bi bi-plus-circle"></i> Novo Imóvel
             </a>
           </div>
@@ -199,14 +199,14 @@
                       <div class="btn-group btn-group-sm" role="group">
                         <a
                           th:href="@{/properties/edit/{id}(id=${prop.id})}"
-                          class="btn btn-outline-primary"
+                          class="btn btn-primary"
                           title="Editar"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
                         <a
                           th:href="@{/properties/delete/{id}(id=${prop.id})}"
-                          class="btn btn-outline-danger"
+                          class="btn btn-danger"
                           title="Excluir"
                           onclick="return confirm('Tem certeza que deseja excluir este imóvel?');"
                         >
