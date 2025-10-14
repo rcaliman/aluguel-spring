@@ -81,7 +81,7 @@
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="propertyType" class="form-label">Tipo de Imóvel</label>
-                  <input type="text" class="form-control" id="propertyType" name="propertyType" th:value="${property.propertyType().displayName}" readonly />
+                  <input type="text" class="form-control" id="propertyType" name="propertyType" th:value="${property.propertyType() != null ? property.propertyType().displayName : ''}" readonly />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="useType" class="form-label">Tipo de Uso</label>
@@ -91,25 +91,25 @@
               <div class="row">
                   <div class="col-md-9 mb-3">
                       <label for="propertyAddress" class="form-label">Logradouro (Rua, Av.)</label>
-                      <input type="text" class="form-control" id="propertyAddress" th:value="${property.address() + ', ' + property.number()}" readonly>
+                      <input type="text" class="form-control" id="propertyAddress" th:value="${(property.address() ?: '') + (property.number() != null ? ', ' + property.number() : '')}" readonly>
                   </div>
                   <div class="col-md-3 mb-3">
                       <label for="propertyComplement" class="form-label">Complemento</label>
-                      <input type="text" class="form-control" id="propertyComplement" th:value="${property.complement()}" readonly>
+                      <input type="text" class="form-control" id="propertyComplement" th:value="${property.complement() ?: ''}" readonly>
                   </div>
               </div>
               <div class="row">
                   <div class="col-md-5 mb-3">
                       <label for="propertyLocation" class="form-label">Bairro</label>
-                      <input type="text" class="form-control" id="propertyLocation" th:value="${property.location()}" readonly>
+                      <input type="text" class="form-control" id="propertyLocation" th:value="${property.location() ?: ''}" readonly>
                   </div>
                   <div class="col-md-5 mb-3">
                       <label for="propertyCity" class="form-label">Cidade</label>
-                      <input type="text" class="form-control" id="propertyCity" th:value="${property.city()}" readonly>
+                      <input type="text" class="form-control" id="propertyCity" th:value="${property.city() ?: ''}" readonly>
                   </div>
                   <div class="col-md-2 mb-3">
                       <label for="propertyState" class="form-label">Estado</label>
-                      <input type="text" class="form-control" id="propertyState" th:value="${property.state()}" readonly>
+                      <input type="text" class="form-control" id="propertyState" th:value="${property.state() ?: ''}" readonly>
                   </div>
               </div>
               <div class="row">
@@ -129,34 +129,34 @@
               <div class="row">
                   <div class="col-12 mb-3">
                       <label for="tenantName" class="form-label">Nome do Inquilino</label>
-                      <input type="text" class="form-control" id="tenantName" th:value="${tenant.name()}" readonly>
+                      <input type="text" class="form-control" id="tenantName" th:value="${tenant.name() ?: ''}" readonly>
                   </div>
               </div>
               <div class="row">
                   <div class="col-md-6 mb-3">
                       <label for="tenantCpfCnpj" class="form-label">CPF/CNPJ</label>
-                      <input type="text" class="form-control" id="tenantCpfCnpj" th:value="${tenant.cpfCnpj()}" readonly>
+                      <input type="text" class="form-control" id="tenantCpfCnpj" th:value="${tenant.cpfCnpj() ?: ''}" readonly>
                   </div>
                   <div class="col-md-6 mb-3">
                       <label for="tenantDocument" class="form-label">Documento (RG)</label>
-                      <input type="text" class="form-control" id="tenantDocument" th:value="${tenant.document()}" readonly>
+                      <input type="text" class="form-control" id="tenantDocument" th:value="${tenant.document() ?: ''}" readonly>
                   </div>
               </div>
               <div class="row">
                   <div class="col-md-6 mb-3">
                       <label for="tenantMaritalStatus" class="form-label">Estado Civil</label>
-                      <input type="text" class="form-control" id="tenantMaritalStatus" th:value="${tenant.maritalStatus()?.getDisplayName()}" readonly>
+                      <input type="text" class="form-control" id="tenantMaritalStatus" th:value="${tenant.maritalStatus() != null ? tenant.maritalStatus().getDisplayName() : ''}" readonly>
                   </div>
                   <div class="col-md-6 mb-3">
                       <label for="nationality" class="form-label">Nacionalidade</label>
-                      <input type="text" class="form-control" id="nationality" th:value="${tenant.nationality}" readonly>
+                      <input type="text" class="form-control" id="nationality" th:value="${tenant.nationality ?: ''}" readonly>
                   </div>
               </div>
               <div class="row">
                   <div class="col-12 mb-3">
                       <label for="tenantAddress" class="form-label">Endereço do Inquilino</label>
                       <input type="text" class="form-control" id="tenantAddress" 
-                             th:value="${tenant.address() + ', ' + tenant.location() + ' - ' + tenant.city() + '/' + tenant.state()}" readonly>
+                             th:value="${(tenant.address() != null ? tenant.address() : '') + (tenant.location() != null ? ', ' + tenant.location() : '') + (tenant.city() != null ? ' - ' + tenant.city() : '') + (tenant.state() != null ? '/' + tenant.state() : '')}" readonly>
                   </div>
               </div>
 
