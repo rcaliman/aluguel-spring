@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.mappers.PropertyLogMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
 import imoveis.aluguel.mappers.TenantMapper;
@@ -32,8 +33,12 @@ public class InfoPageWebController {
         var property = propertyService.findById(id);
         var propertyDtoResponse = propertyMapper.toDtoResponse(property);
 
-        var tenant = tenantService.findById(property.getTenant().getId());
-        var tenantDtoResponse = tenantMapper.toDtoResponse(tenant);
+        
+        imoveis.aluguel.dtos.TenantDtoResponse tenantDtoResponse = null;
+        if (property.getTenant() != null) {
+            var tenant = tenantService.findById(property.getTenant().getId());
+            tenantDtoResponse = tenantMapper.toDtoResponse(tenant);
+        }
 
         var propertyLog = propertyLogService.findAllByPropertyId(property.getId());
         var propertyLogDtoResponse = propertyLog.stream().map(propertyLogMapper::toDtoResponse).toList();
@@ -42,7 +47,7 @@ public class InfoPageWebController {
         model.addAttribute("tenant", tenantDtoResponse);
         model.addAttribute("propertyLog", propertyLogDtoResponse);
 
-        return "/infopage/infopage";
+        return "infopage/infopage";
 
     }
 

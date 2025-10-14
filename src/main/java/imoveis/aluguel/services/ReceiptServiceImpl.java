@@ -37,7 +37,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                 property -> {
 
                     var tenant = property.getTenant();
-                    var contact = tenant.getContacts().isEmpty() ? "" : tenant.getContacts().getFirst().toString();
+                    var contact = tenant.getContacts().isEmpty() ? "" : tenant.getContacts().get(0).toString();
                     var nextMonth = DateUtil.getNextMonth(receiptRequest.month());
                     var nextYear = String.valueOf(Integer.valueOf(receiptRequest.year()) + 1);
                     var locale = landlord.getCity() + " " + landlord.getState();

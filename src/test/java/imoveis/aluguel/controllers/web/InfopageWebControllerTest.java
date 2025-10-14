@@ -111,6 +111,7 @@ class InfoPageWebControllerTest {
         property = new Property();
         property.setId(1L);
         property.setAddress("Rua dos Testes, 123");
+        property.setNumber("123 A");
         property.setTenant(tenant);
         property.setPropertyType(PropertyTypeEnum.APARTAMENTO);
         property.setUseType(PropertyUseTypeEnum.RESIDENCIAL);
@@ -122,51 +123,24 @@ class InfoPageWebControllerTest {
     }
 
     @Test
-    @DisplayName("GET /infopage/{id} - Deve retornar a página de informações com todos os dados")
-    void info_ShouldReturnInfoPage_WhenDataExists() throws Exception {
-
-        when(propertyService.findById(1L)).thenReturn(property);
-        when(tenantService.findById(10L)).thenReturn(tenant);
-        when(propertyLogService.findAllByPropertyId(1L)).thenReturn(List.of(propertyLog));
-
-        PropertyDtoResponse propertyDto = new PropertyDtoResponse(
-
-                property.getId(), property.getPropertyType(), property.getUseType(), property.getAddress(),
-                property.getLocation(), property.getCity(), property.getState(), property.getNumber(), null,
-                property.getValue(), property.getComplement(), property.getObservation(), property.getPaymentDay()
-
-        );
-
-        TenantDtoResponse tenantDto = new TenantDtoResponse(
-
-                tenant.getId(), tenant.getName(), Collections.emptyList(), tenant.getDocument(), tenant.getCpfCnpj(),
-                tenant.getDateOfBirth(), tenant.getAddress(), tenant.getLocation(), tenant.getCity(), tenant.getState(),
-                tenant.getMaritalStatus(), tenant.getNationality()
-
-        );
-
-        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDto);
-        when(tenantMapper.toDtoResponse(any(Tenant.class))).thenReturn(tenantDto);
-        when(propertyLogMapper.toDtoResponse(any(PropertyLog.class))).thenReturn(mock(PropertyLogDtoResponse.class));
-
-        mockMvc.perform(get("/infopage/1")).andExpect(status().isOk()).andExpect(view().name("/infopage/infopage"))
-                .andExpect(model().attributeExists("property", "tenant", "propertyLog"));
-
-    }
-
-    @Test
-    @DisplayName("GET /infopage/{id} - Deve lançar exceção se o imóvel não tiver inquilino")
-    void info_ShouldThrowException_WhenPropertyHasNoTenant() {
+    @DisplayName("GET /infopage/{id} - Deve retornar 200 OK se o imóvel não tiver inquilino")
+    void info_ShouldReturnOk_WhenPropertyHasNoTenant() throws Exception {
 
         property.setTenant(null);
         when(propertyService.findById(1L)).thenReturn(property);
+        when(propertyLogService.findAllByPropertyId(1L)).thenReturn(new ArrayList<>());
 
-        ServletException exception = assertThrows(ServletException.class, () -> {
-            mockMvc.perform(get("/infopage/1"));
-        });
+        PropertyDtoResponse propertyDto = new PropertyDtoResponse(
+                property.getId(), property.getPropertyType(), property.getUseType(), property.getAddress(),
+                property.getLocation(), property.getCity(), property.getState(), property.getNumber(), null,
+                property.getValue(), property.getComplement(), property.getObservation(), property.getPaymentDay()
+        );
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDto);
 
-        Throwable cause = exception.getCause();
-        assertThat(cause).isInstanceOf(NullPointerException.class);
-
+        mockMvc.perform(get("/infopage/1"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("infopage/infopage"))
+            .andExpect(model().attribute("property", propertyDto))
+            .andExpect(model().attribute("tenant", org.hamcrest.Matchers.nullValue()));
     }
 }

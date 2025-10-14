@@ -123,7 +123,7 @@ public class ContractWebController {
 
         Month monthEnum = Month.of(Integer.parseInt(mesNumero));
 
-        String mesNome = monthEnum.getDisplayName(TextStyle.FULL, Locale.of("pt", "BR"));
+        String mesNome = monthEnum.getDisplayName(TextStyle.FULL, new Locale("pt", "BR"));
 
         String local = (cidade != null && !cidade.isEmpty() && estado != null && !estado.isEmpty())
                 ? cidade + "-" + estado

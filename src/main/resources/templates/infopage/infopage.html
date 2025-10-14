@@ -87,6 +87,7 @@
                   <i class="bi bi-person-badge-fill me-2"></i> Dados do Inquilino
                 </span>
                 <a
+                  th:if="${tenant}"
                   th:href="@{/tenants/edit/{id}(id=${tenant.id})}"
                   class="btn btn-secondary"
                   title="Editar"
@@ -154,7 +155,7 @@
                   <tbody>
                     <tr th:each="log : ${propertyLog}">
                        <td>
-                        <small th:text="${#temporals.format(log.createdAt(), 'dd/MM/yyyy HH:mm', 'UTC')}"></small>
+                        <small th:text="${#temporals.format(log.createdAt(), 'dd/MM/yyyy HH:mm')}"></small>
                        </td>
                        <td>
                         <span th:text="${log.tenantName()}"></span>
