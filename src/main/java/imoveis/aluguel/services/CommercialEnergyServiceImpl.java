@@ -55,31 +55,40 @@ public class CommercialEnergyServiceImpl implements CommercialEnergyService {
     public CommercialEnergy edit(CommercialEnergy editedEnergy, Long id) {
 
         CommercialEnergy energy = commercialEnergyRepository.findById(id).orElseThrow(
-                    () -> new NotFoundException(String.format("conta de id %d não encontrada", id))
-            );
-        var energyPrev = commercialEnergyRepository.findTop2ByOrderByIdDesc().orElseThrow(
-                () -> new NotFoundException("registros não encontrados")
-            ).get(1);
+                () -> new NotFoundException(String.format("conta de id %d não encontrada", id)));
+
+        var energyList = commercialEnergyRepository.findTop2ByOrderByIdDesc().orElseThrow(
+                () -> new NotFoundException("registros não encontrados"));
 
         energy.setDate(editedEnergy.getDate());
         energy.setInternalCounter(editedEnergy.getInternalCounter());
         energy.setAccountConsumption(editedEnergy.getAccountConsumption());
         energy.setAccountValue(editedEnergy.getAccountValue());
 
-        var kwh1 = energy.getInternalCounter() - energyPrev.getInternalCounter();
-        var kwh2 = energy.getAccountConsumption() - kwh1;
-        var percentKwh1 = kwh1 / energy.getAccountConsumption();
-        var percentKwh2 = kwh2 / energy.getAccountConsumption();
-        var amount1 = percentKwh1 * energy.getAccountValue();
-        var amount2 = percentKwh2 * energy.getAccountValue();
+        if (energyList.size() < 2) {
+            energy.setCalculatedConsumption1(null);
+            energy.setCalculatedConsumption2(null);
+            energy.setAmount1(null);
+            energy.setAmount2(null);
 
-        energy.setCalculatedConsumption1(kwh1);
-        energy.setCalculatedConsumption2(kwh2);
-        energy.setAmount1(amount1);
-        energy.setAmount2(amount2);
+        } else {
+
+            var energyPrev = energyList.get(1);
+
+            var kwh1 = energy.getInternalCounter() - energyPrev.getInternalCounter();
+            var kwh2 = energy.getAccountConsumption() - kwh1;
+            var percentKwh1 = kwh1 / energy.getAccountConsumption();
+            var percentKwh2 = kwh2 / energy.getAccountConsumption();
+            var amount1 = percentKwh1 * energy.getAccountValue();
+            var amount2 = percentKwh2 * energy.getAccountValue();
+
+            energy.setCalculatedConsumption1(kwh1);
+            energy.setCalculatedConsumption2(kwh2);
+            energy.setAmount1(amount1);
+            energy.setAmount2(amount2);
+        }
 
         return commercialEnergyRepository.save(energy);
-    
     }
 
     @Override

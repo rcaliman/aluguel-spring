@@ -269,9 +269,9 @@
                         class="text-end font-monospace"
                         th:text="${#temporals.format(commercialReading.date(), 'dd/MM/yyyy')}"
                       ></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 2, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 2, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 1, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 1, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount1())}"

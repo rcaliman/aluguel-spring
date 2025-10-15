@@ -1,7 +1,6 @@
 package imoveis.aluguel.controllers.web;
 
 import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
-import imoveis.aluguel.dtos.CommercialEnergyDtoResponseList;
 import imoveis.aluguel.dtos.EnergyDtoRequest;
 import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoResponseList;
@@ -53,7 +52,7 @@ public class EnergyWebController {
 
         List<CommercialEnergy> commercialEnergies = commercialEnergyService.listLasts();
 
-        List<CommercialEnergyDtoResponseList> dtoListCommercial = IntStream.range(0, commercialEnergies.size()).mapToObj( i -> {
+        List<CommercialEnergyDtoResponse> dtoListCommercial = IntStream.range(0, commercialEnergies.size()).mapToObj( i -> {
             CommercialEnergy commercialEnergy = commercialEnergies.get(i);
             boolean isLast = ( i == commercialEnergies.size() -1 );
             return commercialEnergyMapper.toCommercialEnergyDtoResponseList(commercialEnergy, isLast);
