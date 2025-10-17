@@ -2,8 +2,11 @@ package imoveis.aluguel.services;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import imoveis.aluguel.dtos.PropertyDtoResponse;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.exceptions.NotFoundException;
@@ -24,58 +27,105 @@ public class PropertyServiceImpl implements PropertyService {
     private final PropertyLogMapper propertyLogMapper;
 
     @Override
-    public Property create(Property property) {
+    @CacheEvict(value = "properties", allEntries = true)
+    public PropertyDtoResponse create(Property property) {
+
         var propertyLog = propertyLogMapper.toPropertyLog(property);
         property.addPropertyLog(propertyLog);
-        return propertyRepository.save(property);
+        var savedProperty = propertyRepository.save(property);
+
+        return propertyMapper.toDtoResponse(savedProperty);
+
     }
 
     @Override
-    public Property findById(Long id) {
-        return propertyRepository.findById(id)
+    @Cacheable("properties")
+    public PropertyDtoResponse findById(Long id) {
+
+        var property = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Imovel de id %d não encontrado", id)));
+
+        return propertyMapper.toDtoResponse(property);
+        
     }
 
     @Override
     @Transactional
-    public Property update(Long id, Property updatedProperty) {
-        Property recordedProperty = propertyRepository.findById(id)
+    @CacheEvict(value = "properties", allEntries = true)
+    public PropertyDtoResponse update(Long id, Property updatedProperty) {
+
+        Property originalProperty = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Imovel de id %d não encontrado", id)));
 
-        propertyMapper.updateEntity(updatedProperty, recordedProperty);
+        propertyMapper.updateEntity(updatedProperty, originalProperty);
 
-        Tenant tenantInRequest = updatedProperty.getTenant();
+        Tenant updatedTenant = updatedProperty.getTenant();
 
-        if (tenantInRequest == null || tenantInRequest.getId() == null) {
-            recordedProperty.setTenant(null);
+        if (updatedTenant == null || updatedTenant.getId() == null) {
+
+            originalProperty.setTenant(null);
+
         } else {
-            Tenant newTenant = tenantRepository.findById(tenantInRequest.getId()).orElse(null);
-            recordedProperty.setTenant(newTenant);
+
+            Tenant tenant = tenantRepository.findById(updatedTenant.getId()).orElse(null);
+            originalProperty.setTenant(tenant);
+            
         }
 
-        var propertyLog = propertyLogMapper.toPropertyLog(recordedProperty);
-        recordedProperty.addPropertyLog(propertyLog);
+        var propertyLog = propertyLogMapper.toPropertyLog(originalProperty);
+        originalProperty.addPropertyLog(propertyLog);
 
-        return propertyRepository.save(recordedProperty);
+        var savedProperty =  propertyRepository.save(originalProperty);
+
+        return propertyMapper.toDtoResponse(savedProperty);
+
     }
 
     @Override
-    public List<Property> list(String sortField) {
+    @Cacheable(value = "properties")
+    public List<PropertyDtoResponse> list(String sortField) {
         return switch (sortField) {
-            case "tenant.name" -> propertyRepository.findAllOrderByTenantNameAsc();
-            case "propertyType" -> propertyRepository.findAllOrderByPropertyTypeAsc();
-            case "number" -> propertyRepository.findAllOrderByNumberAsc();
-            case "paymentDay" -> propertyRepository.findAllOrderByPaymentDayAsc();
-            case "value" -> propertyRepository.findAllOrderByValueAsc();
-            default -> propertyRepository.findAllOrderByTenantNameAsc();
+            case "tenant.name" -> 
+                    propertyRepository.findAllOrderByTenantNameAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
+            case "propertyType" -> 
+                    propertyRepository.findAllOrderByPropertyTypeAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
+            case "number" -> 
+                    propertyRepository.findAllOrderByNumberAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
+            case "paymentDay" -> 
+                    propertyRepository.findAllOrderByPaymentDayAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
+            case "value" -> 
+                    propertyRepository.findAllOrderByValueAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
+            default -> 
+                    propertyRepository.findAllOrderByTenantNameAsc().stream()
+                        .map(propertyMapper::toDtoResponse)
+                        .toList();
+
         };
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "properties", allEntries = true)
     public void deleteById(Long id) {
+
         Property property = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Imóvel de id %d não encontrado.", id)));
         propertyRepository.delete(property);
+
     }
 }

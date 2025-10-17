@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.enums.PropertyUseTypeEnum;
+import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.repositories.LandlordRepository;
+import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
 import imoveis.aluguel.services.TenantService;
@@ -31,6 +34,7 @@ public class PropertyWebController {
     private final PropertyService propertyService;
     private final TenantService tenantService;
     private final LandlordService landlordService;
+    private final PropertyRepository propertyRepository;
 
     @GetMapping
     public String listProperties(Model model,
@@ -81,12 +85,14 @@ public class PropertyWebController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        Property property = propertyService.findById(id);
+        Property property = propertyRepository.findById(id).orElseThrow(
+            () -> new NotFoundException(String.format("Imóvel de id %d não encontrado.", id))
+        );
         
         model.addAttribute("property", property);
         model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());
-        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values()); // LINHA ADICIONADA
+        model.addAttribute("propertyUseTypes", PropertyUseTypeEnum.values());
         model.addAttribute("currentPage", "properties");
 
         return "property/form";

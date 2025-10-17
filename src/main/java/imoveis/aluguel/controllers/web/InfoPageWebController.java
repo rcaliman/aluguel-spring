@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.dtos.TenantDtoResponse;
 import imoveis.aluguel.mappers.PropertyLogMapper;
 import imoveis.aluguel.mappers.PropertyMapper;
-import imoveis.aluguel.mappers.TenantMapper;
 import imoveis.aluguel.services.PropertyLogService;
 import imoveis.aluguel.services.PropertyService;
 import imoveis.aluguel.services.TenantService;
@@ -21,31 +20,25 @@ import lombok.RequiredArgsConstructor;
 public class InfoPageWebController {
 
     private final PropertyService propertyService;
-    private final PropertyMapper propertyMapper;
     private final TenantService tenantService;
-    private final TenantMapper tenantMapper;
     private final PropertyLogService propertyLogService;
-    private final PropertyLogMapper propertyLogMapper;
 
     @GetMapping("/{id}")
     public String info(@PathVariable Long id, Model model) {
 
         var property = propertyService.findById(id);
-        var propertyDtoResponse = propertyMapper.toDtoResponse(property);
-
         
-        imoveis.aluguel.dtos.TenantDtoResponse tenantDtoResponse = null;
-        if (property.getTenant() != null) {
-            var tenant = tenantService.findById(property.getTenant().getId());
-            tenantDtoResponse = tenantMapper.toDtoResponse(tenant);
+        TenantDtoResponse tenant = null;
+
+        if (property.tenant() != null) {
+            tenant = tenantService.findById(property.tenant().id());
         }
 
-        var propertyLog = propertyLogService.findAllByPropertyId(property.getId());
-        var propertyLogDtoResponse = propertyLog.stream().map(propertyLogMapper::toDtoResponse).toList();
+        var propertyLog = propertyLogService.findAllByPropertyId(property.id());
 
-        model.addAttribute("property", propertyDtoResponse);
-        model.addAttribute("tenant", tenantDtoResponse);
-        model.addAttribute("propertyLog", propertyLogDtoResponse);
+        model.addAttribute("property", property);
+        model.addAttribute("tenant", tenant);
+        model.addAttribute("propertyLog", propertyLog);
 
         return "infopage/infopage";
 

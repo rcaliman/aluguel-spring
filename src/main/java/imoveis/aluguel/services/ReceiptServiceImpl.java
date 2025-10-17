@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Receipt;
+import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.utils.DateUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class ReceiptServiceImpl implements ReceiptService {
 
     private final LandlordService landlordService;
-    private final PropertyService propertyService;
+    private final PropertyRepository propertyRepository;
 
     @Override
     public List<Receipt> receipts(ReceiptDtoRequest receiptRequest) {
@@ -29,7 +30,11 @@ public class ReceiptServiceImpl implements ReceiptService {
         List<Property> properties = new ArrayList<>();
 
         if (receiptRequest.propertyIds() != null) {
-            receiptRequest.propertyIds().forEach(id -> properties.add(propertyService.findById(id)));
+
+            receiptRequest.propertyIds().forEach(id -> {
+                Property property = propertyRepository.findById(id).orElse(null);
+                properties.add(property);
+            });
         }
 
         properties.forEach(
@@ -37,10 +42,10 @@ public class ReceiptServiceImpl implements ReceiptService {
                 property -> {
 
                     var tenant = property.getTenant();
-                    var contact = tenant.getContacts().isEmpty() ? "" : tenant.getContacts().get(0).toString();
+                    var contact = tenant.getContacts().isEmpty() ? "" : tenant.getContacts().get(0).getContact();
                     var nextMonth = DateUtil.getNextMonth(receiptRequest.month());
                     var nextYear = String.valueOf(Integer.valueOf(receiptRequest.year()) + 1);
-                    var locale = landlord.getCity() + " " + landlord.getState();
+                    var locale = landlord.city() + " " + landlord.state();
 
                     var receipt = Receipt.builder()
                                     .tenant(tenant.getName())
@@ -54,7 +59,7 @@ public class ReceiptServiceImpl implements ReceiptService {
                                     .year(receiptRequest.year())
                                     .nextYear(nextYear)
                                     .observation(property.getObservation())
-                                    .landlord(landlord.getName())
+                                    .landlord(landlord.name())
                                     .tenantContact(contact)
                                 .build();
 

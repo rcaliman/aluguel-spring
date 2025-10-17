@@ -2,16 +2,17 @@ package imoveis.aluguel.services;
 
 import java.util.List;
 
+import imoveis.aluguel.dtos.EnergyDtoResponse;
 import imoveis.aluguel.entities.Energy;
 
 public interface EnergyService {
 
-    List<Energy> listLasts();
+    List<EnergyDtoResponse> listLasts();
 
-    Energy calculate(Energy energy);
+    EnergyDtoResponse calculate(Energy energy);
 
-    Energy edit(Energy editedEnergy, Long id);
+    EnergyDtoResponse edit(Energy editedEnergy, Long id);
 
-    Energy findById(Long id);
+    EnergyDtoResponse findById(Long id);
 
 }

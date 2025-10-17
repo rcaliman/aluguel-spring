@@ -2,9 +2,12 @@ package imoveis.aluguel.services;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import imoveis.aluguel.dtos.LandlordDtoResponse;
 import imoveis.aluguel.entities.Landlord;
 import imoveis.aluguel.exceptions.NotFoundException;
 import imoveis.aluguel.mappers.LandlordMapper;
@@ -21,7 +24,8 @@ public class LandlordServiceImpl implements LandlordService {
 
     @Override
     @Transactional
-    public Landlord create(Landlord landlord) {
+    @CacheEvict(value = "landlords", allEntries = true)
+    public LandlordDtoResponse create(Landlord landlord) {
 
         if (landlord.getMain()) {
             landlordRepository.setAllMainToFalse();
@@ -32,33 +36,39 @@ public class LandlordServiceImpl implements LandlordService {
             contact.setTenant(null);
             contact.setLandlord(landlord);
         });
-        return landlordRepository.save(landlord);
+
+        var savedLandlord = landlordRepository.save(landlord);
+
+        return landlordMapper.toDtoResponse(savedLandlord);
 
     }
 
     @Override
-    public Landlord findByCpfCnpj(String cpfCnpj) {
+    @Cacheable(value = "landlords", key = "#cpfCnpj")
+    public LandlordDtoResponse findByCpfCnpj(String cpfCnpj) {
 
         var landlord = landlordRepository.findByCpfCnpj(cpfCnpj).orElseThrow(
                 () -> new NotFoundException(String.format("Locador de cpf %s não encontrado", cpfCnpj)));
 
-        return landlord;
+        return landlordMapper.toDtoResponse(landlord);
 
     }
 
     @Override
-    public Landlord findById(Long id) {
+    @Cacheable(value = "landlords", key = "#id")
+    public LandlordDtoResponse findById(Long id) {
 
         var landlord = landlordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
 
-        return landlord;
+        return landlordMapper.toDtoResponse(landlord);
 
     }
 
     @Override
     @Transactional
-    public Landlord update(Long id, Landlord updatedLandlord) {
+    @CacheEvict(value = "landlords", allEntries = true)
+    public LandlordDtoResponse update(Long id, Landlord updatedLandlord) {
 
         var landlord = landlordRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
@@ -82,19 +92,27 @@ public class LandlordServiceImpl implements LandlordService {
 
         landlordMapper.updateEntity(updatedLandlord, landlord);
 
-        return landlordRepository.saveAndFlush(landlord);
+        var savedLandlord = landlordRepository.saveAndFlush(landlord);
+
+        return landlordMapper.toDtoResponse(savedLandlord);
 
     }
 
     @Override
-    public List<Landlord> list(Sort sort) {
+    @Cacheable("landlords")
+    public List<LandlordDtoResponse> list(Sort sort) {
 
-        return landlordRepository.findAll(sort);
+        var orderedList = landlordRepository.findAll(sort);
+
+        return orderedList.stream()
+                    .map(landlordMapper::toDtoResponse)
+                    .toList();
 
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "landlords", allEntries = true)
     public void deleteById(Long id) {
 
         Landlord landlord = landlordRepository.findById(id)

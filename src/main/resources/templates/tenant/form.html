@@ -195,28 +195,29 @@
             </div>
           </div>
         </div>
+        
+        <!-- Template movido para dentro do fragment -->
+        <template id="contact-template">
+            <div class="row contact-row g-2 mb-2">
+                <div class="col-md-4">
+                    <label for="contactsINDEXtype" class="visually-hidden">Tipo</label>
+                    <select class="form-select" id="contactsINDEXtype" name="contacts[INDEX].type">
+                        <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
+                                th:text="${typeOpt.displayName}" th:selected="${typeOpt.name() == 'CELULAR'}"></option>
+                    </select>
+                </div>
+                <div class="col-md-7">
+                    <label for="contactsINDEXcontact" class="visually-hidden">Contato</label>
+                    <input type="text" class="form-control" id="contactsINDEXcontact" name="contacts[INDEX].contact" placeholder="Digite o contato" required/>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger remove-contact-btn w-100" title="Remover Contato">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </template>
       </div>
-      
-      <template id="contact-template">
-          <div class="row contact-row g-2 mb-2">
-              <div class="col-md-4">
-                  <label for="contactsINDEXtype" class="visually-hidden">Tipo</label>
-                  <select class="form-select" id="contactsINDEXtype" name="contacts[INDEX].type">
-                      <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
-                              th:text="${typeOpt.displayName}" th:selected="${typeOpt.name() == 'CELULAR'}"></option>
-                  </select>
-              </div>
-              <div class="col-md-7">
-                  <label for="contactsINDEXcontact" class="visually-hidden">Contato</label>
-                  <input type="text" class="form-control" id="contactsINDEXcontact" name="contacts[INDEX].contact" placeholder="Digite o contato" required/>
-              </div>
-              <div class="col-md-1">
-                  <button type="button" class="btn btn-danger remove-contact-btn w-100" title="Remover Contato">
-                      <i class="bi bi-trash"></i>
-                  </button>
-              </div>
-          </div>
-      </template>
     </section>
   </body>
 </html>

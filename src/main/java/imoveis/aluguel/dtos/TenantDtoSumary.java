@@ -3,11 +3,10 @@ package imoveis.aluguel.dtos;
 import java.time.LocalDate;
 import java.util.List;
 
-import imoveis.aluguel.entities.Contact;
 import imoveis.aluguel.enums.MaritalStatusEnum;
 
-public record LandlordDtoRequest(Long id, String name, List<Contact> contacts, String document,
+public record TenantDtoSumary(Long id, String name, List<ContactDtoResponse> contacts, String document,
         String cpfCnpj, LocalDate dateOfBirth, String address, String location, String city, String state,
-        MaritalStatusEnum maritalStatus, String nationality, Boolean main) {
-
+        MaritalStatusEnum maritalStatus, String nationality) {
+    
 }

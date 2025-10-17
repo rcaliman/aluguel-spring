@@ -3,11 +3,16 @@ package imoveis.aluguel.services;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import imoveis.aluguel.dtos.EnergyDtoResponse;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.mappers.EnergyMapper;
 import imoveis.aluguel.repositories.EnergyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +22,13 @@ import lombok.RequiredArgsConstructor;
 public class EnergyServiceImpl implements EnergyService {
 
     private final EnergyRepository energyRepository;
+    private final EnergyMapper energyMapper;
 
     @Override
-    public List<Energy> listLasts() {
+    @Cacheable("energies")
+    public List<EnergyDtoResponse> listLasts() {
 
-        var lasts = energyRepository.findTop3ByOrderByIdDesc().orElse(Collections.emptyList());
+        var lasts = energyRepository.findTop3ByOrderByIdDesc().orElse(List.of());
 
         if (lasts.isEmpty()) {
             return Collections.emptyList();
@@ -29,17 +36,27 @@ public class EnergyServiceImpl implements EnergyService {
 
         var sortedEnergies = lasts.stream().sorted(Comparator.comparing(Energy::getId)).toList();
 
-        return sortedEnergies;
+        var dtoResponse = IntStream.range(0, sortedEnergies.size()).mapToObj( i -> {
+            Energy energy = sortedEnergies.get(i);
+            boolean isLast = (i == sortedEnergies.size() - 1);
+
+            return energyMapper.toDtoResponse(energy, isLast);
+        }).toList();
+
+        return dtoResponse;
 
     }
 
     @Override
     @Transactional
-    public Energy calculate(Energy newEnergy) {
+    @CacheEvict(value = "energies", allEntries = true)
+    public EnergyDtoResponse calculate(Energy newEnergy) {
 
         var energy = calculateAmounts(newEnergy, false);
 
-        return energyRepository.save(energy);
+        var savedEnergy = energyRepository.save(energy);
+
+        return energyMapper.toDtoResponse(savedEnergy, false);
 
     }
 
@@ -62,6 +79,7 @@ public class EnergyServiceImpl implements EnergyService {
         var previousEnergy = previousEnergies.get(recordToUse);
 
         if (previousEnergy != null) {
+            
             var consuption1 = Math.max(0, newEnergy.getCounter1() - previousEnergy.getCounter1());
             var consuption2 = Math.max(0, newEnergy.getCounter2() - previousEnergy.getCounter2());
             var consuption3 = Math.max(0, newEnergy.getCounter3() - previousEnergy.getCounter3());
@@ -69,6 +87,7 @@ public class EnergyServiceImpl implements EnergyService {
             var total = consuption1 + consuption2 + consuption3;
 
             if (total > 0) {
+
                 var amount1 = ((double) consuption1 / total) * newEnergy.getBillAmount();
                 var amount2 = ((double) consuption2 / total) * newEnergy.getBillAmount();
                 var amount3 = ((double) consuption3 / total) * newEnergy.getBillAmount();
@@ -76,6 +95,7 @@ public class EnergyServiceImpl implements EnergyService {
                 newEnergy.setAmount1(amount1);
                 newEnergy.setAmount2(amount2);
                 newEnergy.setAmount3(amount3);
+
             }
 
         }
@@ -86,7 +106,8 @@ public class EnergyServiceImpl implements EnergyService {
 
     @Override
     @Transactional
-    public Energy edit(Energy editedEnergy, Long id) {
+    @CacheEvict(value = "energies", allEntries = true)
+    public EnergyDtoResponse edit(Energy editedEnergy, Long id) {
 
         Energy existingEnergy = energyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Conta de id %d não encontrada.", id)));
@@ -102,15 +123,20 @@ public class EnergyServiceImpl implements EnergyService {
 
         calculateAmounts(existingEnergy, true);
 
-        return energyRepository.save(existingEnergy);
+        var savedEnergy =  energyRepository.save(existingEnergy);
+
+        return energyMapper.toDtoResponse(savedEnergy, false);
 
     }
 
     @Override
-    public Energy findById(Long id) {
+    @Cacheable(value = "energies", key = "#id")
+    public EnergyDtoResponse findById(Long id) {
 
-        return energyRepository.findById(id)
+        var energy = energyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Conta de id %d não encontrada.", id)));
+
+        return energyMapper.toDtoResponse(energy, false);
 
     }
 

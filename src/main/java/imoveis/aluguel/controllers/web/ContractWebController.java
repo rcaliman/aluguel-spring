@@ -39,28 +39,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ContractWebController {
 
-    private final TenantMapper tenantMapper;
     private final LandlordService landlordService;
-    private final LandlordMapper landlordMapper;
     private final PropertyService propertyService;
-    private final PropertyMapper propertyMapper;
 
     @GetMapping("/form/{id}")
     public String contractForm(@PathVariable Long id, Model model) {
 
-        Property property = propertyService.findById(id);
+        var property = propertyService.findById(id);
 
-        if (Objects.isNull(property.getTenant())) {
+        if (Objects.isNull(property.tenant())) {
             return "redirect:/properties?error=ImovelVago";
         }
 
-        Tenant tenant = property.getTenant();
+        var tenant = property.tenant();
 
-        List<LandlordDtoResponse> landlords = landlordService.list(Sort.by("name")).stream()
-                .map(landlordMapper::toDtoResponse).toList();
+        List<LandlordDtoResponse> landlords = landlordService.list(Sort.by("name"));
 
-        model.addAttribute("property", propertyMapper.toDtoResponse(property));
-        model.addAttribute("tenant", tenantMapper.toDtoResponse(tenant));
+        model.addAttribute("property", property);
+        model.addAttribute("tenant", tenant);
         model.addAttribute("landlords", landlords);
         model.addAttribute("propertyTypeEnum", PropertyTypeEnum.values());
 
@@ -73,19 +69,19 @@ public class ContractWebController {
 
         var property = propertyService.findById(dtoRequest.propertyId());
         var landlord = landlordService.findById(dtoRequest.landlordId());
-        var tenant = property.getTenant();
+        var tenant = property.tenant();
 
         if (tenant == null) {
             throw new NotFoundException("Imóvel não possui inquilino associado para gerar o contrato.");
         }
 
         var period = period(dtoRequest.startYear(), dtoRequest.startMonth(), dtoRequest.endYear(),
-                dtoRequest.endMonth(), property.getPaymentDay());
+                dtoRequest.endMonth(), property.paymentDay());
 
-        String dataContratoPorExtenso = getDataContratoPorExtenso(landlord.getCity(), landlord.getState(),
-                property.getPaymentDay(), dtoRequest.startMonth(), dtoRequest.startYear());
+        String dataContratoPorExtenso = getDataContratoPorExtenso(landlord.city(), landlord.state(),
+                property.paymentDay(), dtoRequest.startMonth(), dtoRequest.startYear());
 
-        String valorPorExtenso = NumberToWordsConverter.convert(property.getValue());
+        String valorPorExtenso = NumberToWordsConverter.convert(property.value());
 
         model.addAttribute("landlord", landlord);
         model.addAttribute("tenant", tenant);

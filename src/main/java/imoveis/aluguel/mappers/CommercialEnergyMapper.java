@@ -9,14 +9,11 @@ import imoveis.aluguel.entities.CommercialEnergy;
 @Mapper(componentModel = "spring")
 public interface CommercialEnergyMapper {
 
-    @Mapping(target = "isLast", ignore = true)
-    CommercialEnergyDtoResponse toResponse(CommercialEnergy commercialEnergy);
-
     @Mapping(target = "calculatedConsumption1", ignore = true)
     @Mapping(target = "calculatedConsumption2", ignore = true)
     CommercialEnergy toEntity(imoveis.aluguel.dtos.CommercialEnergyDtoRequest commercialEnergyDtoRequest);
 
-    default CommercialEnergyDtoResponse toCommercialEnergyDtoResponseList(CommercialEnergy commercialEnergy, Boolean isLast) {
+    default CommercialEnergyDtoResponse toDtoResponse(CommercialEnergy commercialEnergy, Boolean isLast) {
         
         return new CommercialEnergyDtoResponse(
             commercialEnergy.getId(),
@@ -30,5 +27,6 @@ public interface CommercialEnergyMapper {
             commercialEnergy.getCalculatedConsumption2(), 
             isLast
             );
+
     }
 }

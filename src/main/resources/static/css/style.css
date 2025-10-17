@@ -191,6 +191,13 @@ tr.table-active, tr.table-active:hover {
     font-size: 0.9rem;
 }
 
+.name-cell {
+  max-width: 250px;
+  white-space: normal;
+  word-wrap: break-word;
+  cursor: pointer;
+}
+
 /* New classes to replace inline styles */
 .th-col-main { width: 70px; }
 .th-col-actions { width: 140px; }

@@ -75,7 +75,7 @@
                       <th class="text-end">Relógio 2</th>
                       <th class="text-end">Relógio 3</th>
                       <th class="text-end">Valor Conta R$</th>
-                      <th class="text-end">
+                      <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount1}"
                           >Valor Rateado 1 R$</span
                         >
@@ -87,7 +87,7 @@
                           <i class="bi bi-pencil-square"></i>
                         </a>
                       </th>
-                      <th class="text-end">
+                      <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount2}"
                           >Valor Rateado 2 R$</span
                         >
@@ -99,7 +99,7 @@
                           <i class="bi bi-pencil-square"></i>
                         </a>
                       </th>
-                      <th class="text-end">
+                      <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount3}"
                           >Valor Rateado 3 R$</span
                         >
@@ -180,7 +180,7 @@
                       </td>
                     </tr>
                     <tr th:if="${energyReadings.empty}">
-                      <td colspan="9" class="text-center py-4">
+                      <td colspan="8" class="text-center py-4">
                         <i
                           class="bi bi-inbox display-4 text-muted d-block mb-2"
                         ></i>
@@ -236,7 +236,7 @@
                       <th class="text-end">Medidor (kWh)</th>
                       <th class="text-end">Ponto 1 (kWh)</th>
                       <th class="text-end">Ponto 2 (kWh)</th>
-                      <th class="text-end">
+                      <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount4}"
                           >Valor Rateado 1 R$</span
                         >
@@ -248,7 +248,7 @@
                           <i class="bi bi-pencil-square"></i>
                         </a>
                       </th>
-                      <th class="text-end">
+                      <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount5}"
                           >Valor Rateado 1 R$</span
                         >
@@ -272,8 +272,8 @@
                       <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 2, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 2, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 1, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 1, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 2, 'COMMA')}"></td>
+                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 2, 'COMMA')}"></td>
                       <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount1())}"
                       th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
                       
@@ -295,7 +295,7 @@
                       </td>
                     </tr>
                     <tr th:if="${commercialEnergyReadings.empty}">
-                      <td colspan="7" class="text-center py-4">
+                      <td colspan="8" class="text-center py-4">
                         <i class="bi bi-inbox display-4 text-muted d-block mb-2"></i>
                         <span class="text-muted">Nenhuma leitura comercial cadastrada</span>
                       </td>

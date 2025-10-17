@@ -1,9 +1,19 @@
 package imoveis.aluguel.controllers.web;
 
-import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
-import imoveis.aluguel.dtos.EnergyDtoRequest;
+import java.util.List;
+import java.util.stream.IntStream;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
-import imoveis.aluguel.dtos.EnergyDtoResponseList;
+import imoveis.aluguel.dtos.EnergyDtoRequest;
+import imoveis.aluguel.dtos.EnergyDtoResponse;
 import imoveis.aluguel.entities.CommercialEnergy;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;
@@ -13,12 +23,6 @@ import imoveis.aluguel.services.CommercialEnergyService;
 import imoveis.aluguel.services.EnergyService;
 import imoveis.aluguel.services.EnergyTitleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/energies")
@@ -35,65 +39,23 @@ public class EnergyWebController {
     @GetMapping
     public String listEnergyReadings(Model model) {
 
-        List<Energy> energies = energyService.listLasts();
-        EnergyTitle energyTitles = energyTitleService.findLast();
+        var energiesReadings = energyService.listLasts();
+        
+        var energyTitles = energyTitleService.findLast();
 
-        energyTitles = setDefaultTitles(energyTitles);
-
-        List<EnergyDtoResponseList> dtoList = IntStream.range(0, energies.size()).mapToObj(i -> {
-            Energy energy = energies.get(i);
-            boolean isLast = (i == energies.size() - 1);
-            return energyMapper.toDtoResponseList(energy, isLast);
-        }).toList();
-
-        model.addAttribute("energyReadings", dtoList);
+        model.addAttribute("energyReadings", energiesReadings);
         model.addAttribute("energyTitles", energyTitles);
         model.addAttribute("currentPage", "energies");
 
-        List<CommercialEnergy> commercialEnergies = commercialEnergyService.listLasts();
-
-        List<CommercialEnergyDtoResponse> dtoListCommercial = IntStream.range(0, commercialEnergies.size()).mapToObj( i -> {
-            CommercialEnergy commercialEnergy = commercialEnergies.get(i);
-            boolean isLast = ( i == commercialEnergies.size() -1 );
-            return commercialEnergyMapper.toCommercialEnergyDtoResponseList(commercialEnergy, isLast);
-        }).toList();
+        var commercialEnergiesReadings = commercialEnergyService.listLasts();
                                                         
-        model.addAttribute("commercialEnergyReadings", dtoListCommercial);
+        model.addAttribute("commercialEnergyReadings", commercialEnergiesReadings);
 
         return "energy/list";
 
     }
 
-    private EnergyTitle setDefaultTitles(EnergyTitle energyTitles) {
 
-        if (energyTitles == null) {
-            energyTitles = new EnergyTitle();
-            energyTitles.setTitleAmount1("conta 1");
-            energyTitles.setTitleAmount2("conta 2");
-            energyTitles.setTitleAmount3("conta 3");
-            energyTitles.setTitleAmount4("conta 1");
-            energyTitles.setTitleAmount5("conta 2");
-        } else {
-            if (energyTitles.getTitleAmount1() == null || energyTitles.getTitleAmount1().isBlank()) {
-                energyTitles.setTitleAmount1("conta 1");
-            }
-            if (energyTitles.getTitleAmount2() == null || energyTitles.getTitleAmount2().isBlank()) {
-                energyTitles.setTitleAmount2("conta 2");
-            }
-            if (energyTitles.getTitleAmount3() == null || energyTitles.getTitleAmount3().isBlank()) {
-                energyTitles.setTitleAmount3("conta 3");
-            }
-            if (energyTitles.getTitleAmount4() == null || energyTitles.getTitleAmount4().isBlank()) {
-                energyTitles.setTitleAmount4("conta 1");
-            }
-            if (energyTitles.getTitleAmount5() == null || energyTitles.getTitleAmount5().isBlank()) {
-                energyTitles.setTitleAmount5("conta 2");
-            }
-        }
-
-        return energyTitles;
-
-    }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
@@ -108,7 +70,7 @@ public class EnergyWebController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        Energy energy = energyService.findById(id);
+        var energy = energyService.findById(id);
 
         model.addAttribute("energy", energy);
         model.addAttribute("currentPage", "energies");
@@ -179,7 +141,7 @@ public class EnergyWebController {
     @GetMapping("/edit-commercial/{id}")
     public String showEditFormCommercial(@PathVariable Long id, Model model) {
 
-        CommercialEnergy commercialEnergy = commercialEnergyService.findById(id);
+        var commercialEnergy = commercialEnergyService.findById(id);
 
         model.addAttribute("commercialEnergy", commercialEnergy);
         model.addAttribute("currentPage", "energies");

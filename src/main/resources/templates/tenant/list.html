@@ -51,13 +51,15 @@
                   <th>CPF/CNPJ</th>
                   <th>Cidade/Estado</th>
                   <th>Contatos</th>
-                  <th class="text-center">Ações</th>
+                  <th class="text-center" width="120">Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr th:each="tenant : ${tenants}">
                   <td
                     th:text="${tenant.name}"
+                    th:title="${tenant.name}"
+                    class="name-cell"
                     th:classappend="${#lists.isEmpty(tenant.properties)} ? 'fst-italic' : ''"
                   >
                     Nome do Inquilino

@@ -31,13 +31,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import imoveis.aluguel.dtos.EnergyDtoRequest;
-import imoveis.aluguel.dtos.EnergyDtoResponseList;
+import imoveis.aluguel.dtos.EnergyDtoResponse;
+import imoveis.aluguel.dtos.EnergyTitleDtoResponse;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;
-import imoveis.aluguel.mappers.EnergyMapper;
 import imoveis.aluguel.mappers.CommercialEnergyMapper;
-import imoveis.aluguel.services.EnergyService;
+import imoveis.aluguel.mappers.EnergyMapper;
 import imoveis.aluguel.services.CommercialEnergyService;
+import imoveis.aluguel.services.EnergyService;
 import imoveis.aluguel.services.EnergyTitleService;
 
 @WebMvcTest(EnergyWebController.class)
@@ -98,23 +99,18 @@ class EnergyWebControllerTest {
     @DisplayName("GET /energies - Deve exibir a lista de leituras com títulos padrão")
     void listEnergyReadings_WhenTitlesAreNull_ShouldUseDefaultTitles() throws Exception {
 
-        Energy energy1 = new Energy();
-        energy1.setId(1L);
-        Energy energy2 = new Energy();
-        energy2.setId(2L);
+        EnergyDtoResponse energy1 = new EnergyDtoResponse(1L, 0.0, 0.0, 0.0, null, null, null, null, null, null, false);
+        EnergyDtoResponse energy2 = new EnergyDtoResponse(2L, 0.0, 0.0, 0.0, null, null, null, null, null, null, true);
 
         when(energyService.listLasts()).thenReturn(List.of(energy1, energy2));
-        when(energyTitleService.findLast()).thenReturn(null);
-
-        when(energyMapper.toDtoResponseList(energy1, false))
-                .thenReturn(new EnergyDtoResponseList(1L, 0.0, 0.0, 0.0, null, null, null, null, null, null, false));
-        when(energyMapper.toDtoResponseList(energy2, true))
-                .thenReturn(new EnergyDtoResponseList(2L, 0.0, 0.0, 0.0, null, null, null, null, null, null, true));
+        
+        EnergyTitleDtoResponse energyTitle = new EnergyTitleDtoResponse(1L, "conta 1", "conta 2", "conta 3", "ponto 4", "ponto 5");
+        when(energyTitleService.findLast()).thenReturn(energyTitle);
 
         mockMvc.perform(get("/energies")).andExpect(status().isOk()).andExpect(view().name("energy/list"))
                 .andExpect(model().attributeExists("energyReadings", "energyTitles", "currentPage"))
                 .andExpect(model().attribute("energyReadings", hasSize(2)))
-                .andExpect(model().attribute("energyTitles", hasProperty("titleAmount1", is("conta 1"))));
+                .andExpect(model().attribute("energyTitles", is(energyTitle)));
 
     }
 

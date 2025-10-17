@@ -4,19 +4,20 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 
+import imoveis.aluguel.dtos.LandlordDtoResponse;
 import imoveis.aluguel.entities.Landlord;
 
 public interface LandlordService {
 
-    Landlord create(Landlord landlord);
+    LandlordDtoResponse create(Landlord landlord);
 
-    Landlord findByCpfCnpj(String cpfCnpj);
+    LandlordDtoResponse findByCpfCnpj(String cpfCnpj);
 
-    Landlord findById(Long id);
+    LandlordDtoResponse findById(Long id);
 
-    Landlord update(Long id, Landlord landlord);
+    LandlordDtoResponse update(Long id, Landlord landlord);
 
-    List<Landlord> list(Sort sort);
+    List<LandlordDtoResponse> list(Sort sort);
 
     void deleteById(Long id);
 

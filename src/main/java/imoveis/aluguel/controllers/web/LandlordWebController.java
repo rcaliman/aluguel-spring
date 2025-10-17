@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import imoveis.aluguel.entities.Landlord;
 import imoveis.aluguel.enums.ContactTypeEnum;
 import imoveis.aluguel.enums.MaritalStatusEnum;
+import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.repositories.LandlordRepository;
 import imoveis.aluguel.services.LandlordService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class LandlordWebController {
 
     private final LandlordService landlordService;
+    private final LandlordRepository landlordRepository;
 
     @GetMapping
     public String listLandlords(Model model) {
@@ -47,7 +50,9 @@ public class LandlordWebController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        Landlord landlord = landlordService.findById(id);
+        Landlord landlord = landlordRepository.findById(id).orElseThrow(
+            () -> new NotFoundException(String.format("Locador de id %d não encontrado", id))
+        );
 
         model.addAttribute("landlord", landlord);
         model.addAttribute("maritalStatusOptions", MaritalStatusEnum.values());

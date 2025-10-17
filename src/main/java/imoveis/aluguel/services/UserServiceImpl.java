@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == null) {
             user.setRole(RoleEnum.OPERADOR);
         }
+        
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);

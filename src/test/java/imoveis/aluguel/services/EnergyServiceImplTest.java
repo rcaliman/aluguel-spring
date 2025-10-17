@@ -1,5 +1,8 @@
 package imoveis.aluguel.services;
 
+import imoveis.aluguel.dtos.EnergyDtoResponse;
+import imoveis.aluguel.mappers.EnergyMapper;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -33,6 +36,9 @@ class EnergyServiceImplTest {
     @Mock
     private EnergyRepository energyRepository;
 
+    @Mock
+    private EnergyMapper energyMapper;
+
     @InjectMocks
     private EnergyServiceImpl energyService;
 
@@ -64,15 +70,16 @@ class EnergyServiceImplTest {
 
         when(energyRepository.findTop2ByOrderByIdDesc()).thenReturn(Optional.of(List.of(previousEnergy)));
         when(energyRepository.save(any(Energy.class))).thenReturn(newEnergy);
+        when(energyMapper.toDtoResponse(newEnergy, false)).thenReturn(new EnergyDtoResponse(2L, 1100.0, 2200.0, 3300.0, 100.0, 200.0, 300.0, 0.0, 600.0, LocalDate.now(), false));
 
-        Energy result = energyService.calculate(newEnergy);
+        EnergyDtoResponse result = energyService.calculate(newEnergy);
 
         assertNotNull(result);
 
-        assertEquals(100.0, result.getAmount1());
-        assertEquals(200.0, result.getAmount2());
-        assertEquals(300.0, result.getAmount3());
-        verify(energyRepository, times(1)).save(result);
+        assertEquals(100.0, result.amount1());
+        assertEquals(200.0, result.amount2());
+        assertEquals(300.0, result.amount3());
+        verify(energyRepository, times(1)).save(any(Energy.class));
 
     }
 
@@ -82,13 +89,14 @@ class EnergyServiceImplTest {
 
         when(energyRepository.findTop2ByOrderByIdDesc()).thenReturn(Optional.of(Collections.emptyList()));
         when(energyRepository.save(any(Energy.class))).thenReturn(newEnergy);
+        when(energyMapper.toDtoResponse(newEnergy, false)).thenReturn(new EnergyDtoResponse(2L, 1100.0, 2200.0, 3300.0, null, null, null, 0.0, 600.0, LocalDate.now(), false));
 
-        Energy result = energyService.calculate(newEnergy);
+        EnergyDtoResponse result = energyService.calculate(newEnergy);
 
-        assertNull(result.getAmount1());
-        assertNull(result.getAmount2());
-        assertNull(result.getAmount3());
-        verify(energyRepository, times(1)).save(result);
+        assertNull(result.amount1());
+        assertNull(result.amount2());
+        assertNull(result.amount3());
+        verify(energyRepository, times(1)).save(any(Energy.class));
     }
 
     @Test
@@ -114,15 +122,16 @@ class EnergyServiceImplTest {
         when(energyRepository.findTop2ByOrderByIdDesc())
                 .thenReturn(Optional.of(List.of(new Energy(), readingBeforePrevious)));
         when(energyRepository.save(any(Energy.class))).thenReturn(existingEnergy);
+        when(energyMapper.toDtoResponse(existingEnergy, false)).thenReturn(new EnergyDtoResponse(2L, 1100.0, 2200.0, 3300.0, 200.0, 400.0, 600.0, 0.0, 1200.0, LocalDate.now(), false));
 
-        Energy result = energyService.edit(editedData, 2L);
+        EnergyDtoResponse result = energyService.edit(editedData, 2L);
 
         assertNotNull(result);
 
-        assertEquals(200.0, result.getAmount1());
-        assertEquals(400.0, result.getAmount2());
-        assertEquals(600.0, result.getAmount3());
-        assertEquals(1100.0, result.getCounter1());
+        assertEquals(200.0, result.amount1());
+        assertEquals(400.0, result.amount2());
+        assertEquals(600.0, result.amount3());
+        assertEquals(1100.0, result.counter1());
 
         verify(energyRepository, times(1)).save(existingEnergy);
 

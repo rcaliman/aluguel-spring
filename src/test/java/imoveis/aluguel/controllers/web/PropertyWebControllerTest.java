@@ -29,8 +29,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import imoveis.aluguel.dtos.PropertyDtoResponse;
+import imoveis.aluguel.dtos.TenantDtoResponse;
 import imoveis.aluguel.entities.Property;
-import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
@@ -91,7 +92,7 @@ class PropertyWebControllerTest {
     @DisplayName("GET /properties/new - Deve exibir o formulário de criação de imóvel")
     void showCreateForm_ShouldReturnFormView() throws Exception {
 
-        when(tenantService.list(any())).thenReturn(Collections.singletonList(new Tenant()));
+        when(tenantService.list(any())).thenReturn(Collections.singletonList(new TenantDtoResponse(null, null, null, null, null, null, null, null, null, null, null, null, null)));
 
         mockMvc.perform(get("/properties/new")).andExpect(status().isOk()).andExpect(view().name("property/form"))
                 .andExpect(model().attributeExists("property", "tenants", "propertyTypes", "propertyUseTypes",
@@ -103,15 +104,13 @@ class PropertyWebControllerTest {
     @DisplayName("GET /properties/edit/{id} - Deve exibir o formulário de edição com os dados do imóvel")
     void showEditForm_WhenPropertyExists_ShouldReturnFormView() throws Exception {
 
-        Property property = new Property();
-        property.setId(1L);
-        property.setAddress("Rua Existente");
+        PropertyDtoResponse propertyDto = new PropertyDtoResponse(1L, null, null, "Rua Existente", null, null, null, null, null, null, null, null, null);
 
-        when(propertyService.findById(1L)).thenReturn(property);
+        when(propertyService.findById(1L)).thenReturn(propertyDto);
         when(tenantService.list(any())).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/properties/edit/1")).andExpect(status().isOk()).andExpect(view().name("property/form"))
-                .andExpect(model().attribute("property", property));
+                .andExpect(model().attribute("property", propertyDto));
 
     }
 

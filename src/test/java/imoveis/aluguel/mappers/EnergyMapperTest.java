@@ -1,10 +1,15 @@
 package imoveis.aluguel.mappers;
 
-import imoveis.aluguel.dtos.EnergyDtoResponseList;
-import imoveis.aluguel.entities.Energy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import static org.junit.jupiter.api.Assertions.*;
+
+import imoveis.aluguel.dtos.EnergyDtoResponse;
+import imoveis.aluguel.entities.Energy;
 
 class EnergyMapperTest {
 
@@ -17,8 +22,8 @@ class EnergyMapperTest {
         energy.setId(1L);
         energy.setCounter1(1000.0);
 
-        EnergyDtoResponseList resultForLast = energyMapper.toDtoResponseList(energy, true);
-        EnergyDtoResponseList resultForNotLast = energyMapper.toDtoResponseList(energy, false);
+        EnergyDtoResponse resultForLast = energyMapper.toDtoResponse(energy, true);
+        EnergyDtoResponse resultForNotLast = energyMapper.toDtoResponse(energy, false);
 
         assertNotNull(resultForLast);
         assertEquals(1L, resultForLast.id());

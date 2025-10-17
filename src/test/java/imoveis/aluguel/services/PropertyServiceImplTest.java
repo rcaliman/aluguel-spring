@@ -22,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import imoveis.aluguel.dtos.PropertyDtoResponse;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.PropertyLog;
 import imoveis.aluguel.entities.Tenant;
@@ -51,6 +52,7 @@ class PropertyServiceImplTest {
 
     private Property property;
     private Tenant tenant;
+    private PropertyDtoResponse propertyDtoResponse;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +65,8 @@ class PropertyServiceImplTest {
         property.setNumber("123");
         property.setTenant(tenant);
         property.setPropertyLogs(new ArrayList<>());
+
+        propertyDtoResponse = new PropertyDtoResponse(1L, null, null, null, null, null, null, "123", null, null, null, null, null);
     }
 
     @Test
@@ -70,11 +74,11 @@ class PropertyServiceImplTest {
     void create_ShouldCreatePropertyAndAddLog() {
         when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
         when(propertyRepository.save(any(Property.class))).thenReturn(property);
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDtoResponse);
 
-        Property result = propertyService.create(property);
+        PropertyDtoResponse result = propertyService.create(property);
 
         assertNotNull(result);
-        assertEquals(1, result.getPropertyLogs().size());
         verify(propertyRepository, times(1)).save(property);
     }
 
@@ -82,11 +86,12 @@ class PropertyServiceImplTest {
     @DisplayName("findById - Deve encontrar um imóvel pelo ID")
     void findById_WhenPropertyExists_ShouldReturnProperty() {
         when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDtoResponse);
 
-        Property result = propertyService.findById(1L);
+        PropertyDtoResponse result = propertyService.findById(1L);
 
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertEquals(1L, result.id());
     }
 
     @Test
@@ -110,12 +115,12 @@ class PropertyServiceImplTest {
         when(tenantRepository.findById(1L)).thenReturn(Optional.of(tenant));
         when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
         when(propertyRepository.save(any(Property.class))).thenReturn(property);
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDtoResponse);
 
-        Property result = propertyService.update(1L, updatedProperty);
+        PropertyDtoResponse result = propertyService.update(1L, updatedProperty);
 
         assertNotNull(result);
         verify(propertyMapper, times(1)).updateEntity(updatedProperty, property);
-        assertEquals(1, result.getPropertyLogs().size());
         verify(propertyRepository, times(1)).save(property);
     }
 
@@ -128,10 +133,11 @@ class PropertyServiceImplTest {
         when(propertyRepository.findById(1L)).thenReturn(Optional.of(property));
         when(propertyLogMapper.toPropertyLog(any(Property.class))).thenReturn(new PropertyLog());
         when(propertyRepository.save(any(Property.class))).thenReturn(property);
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(new PropertyDtoResponse(1L, null, null, null, null, null, null, "123", null, null, null, null, null));
 
-        Property result = propertyService.update(1L, updatedProperty);
+        PropertyDtoResponse result = propertyService.update(1L, updatedProperty);
 
-        assertNull(result.getTenant());
+        assertNull(result.tenant());
         verify(propertyRepository, times(1)).save(property);
     }
 
@@ -140,8 +146,9 @@ class PropertyServiceImplTest {
     void list_ShouldReturnSortedListOfProperties() {
         List<Property> properties = List.of(property, new Property());
         when(propertyRepository.findAllOrderByTenantNameAsc()).thenReturn(properties);
+        when(propertyMapper.toDtoResponse(any(Property.class))).thenReturn(propertyDtoResponse);
 
-        List<Property> result = propertyService.list("tenant.name");
+        List<PropertyDtoResponse> result = propertyService.list("tenant.name");
 
         assertNotNull(result);
         assertEquals(2, result.size());

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.ContactTypeEnum;
 import imoveis.aluguel.enums.MaritalStatusEnum;
+import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.repositories.TenantRepository;
 import imoveis.aluguel.services.TenantService;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class TenantWebController {
 
     private final TenantService tenantService;
+    private final TenantRepository tenantRepository;
 
     @GetMapping
     public String listTenants(Model model) {
@@ -47,7 +50,9 @@ public class TenantWebController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
 
-        Tenant tenant = tenantService.findById(id);
+        Tenant tenant = tenantRepository.findById(id).orElseThrow(
+            () -> new NotFoundException(String.format("Inquilino de id %d não encontrado", id))
+        );
 
         model.addAttribute("tenant", tenant);
         model.addAttribute("maritalStatusOptions", MaritalStatusEnum.values());
@@ -59,7 +64,7 @@ public class TenantWebController {
     }
 
     @PostMapping("/save")
-    public String saveTenant(@ModelAttribute("tenant") Tenant tenant) {
+    public String saveTenant(@ModelAttribute Tenant tenant) {
 
         if (tenant.getId() == null) {
             tenantService.create(tenant);

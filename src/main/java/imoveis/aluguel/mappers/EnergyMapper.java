@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 
 import imoveis.aluguel.dtos.EnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoResponse;
-import imoveis.aluguel.dtos.EnergyDtoResponseList;
 import imoveis.aluguel.entities.Energy;
 
 @Mapper(componentModel = "spring")
@@ -16,16 +15,9 @@ public interface EnergyMapper {
     @Mapping(target = "amount3", ignore = true)
     Energy toEnergy(EnergyDtoRequest energyDto);
 
-    @Mapping(target = "last", constant = "false")
-    EnergyDtoResponseList toDtoResponseList(Energy energy);
+    default EnergyDtoResponse toDtoResponse(Energy energy, boolean isLast) {
 
-    EnergyDtoResponse toDtoResponse(Energy energy);
-
-    EnergyDtoResponse toEnergyDtoResponse(Energy energy);
-
-    default EnergyDtoResponseList toDtoResponseList(Energy energy, boolean isLast) {
-
-        return new EnergyDtoResponseList(energy.getId(), energy.getCounter1(), energy.getCounter2(),
+        return new EnergyDtoResponse(energy.getId(), energy.getCounter1(), energy.getCounter2(),
                 energy.getCounter3(), energy.getAmount1(), energy.getAmount2(), energy.getAmount3(),
                 energy.getKwhValue(), energy.getBillAmount(), energy.getDate(), isLast);
                 

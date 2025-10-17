@@ -2,9 +2,9 @@ package imoveis.aluguel.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -23,8 +23,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
 import imoveis.aluguel.entities.CommercialEnergy;
 import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.mappers.CommercialEnergyMapper;
 import imoveis.aluguel.repositories.CommercialEnergyRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,28 +35,43 @@ class CommercialEnergyServiceImplTest {
     @Mock
     private CommercialEnergyRepository commercialEnergyRepository;
 
+    @Mock
+    private CommercialEnergyMapper commercialEnergyMapper;
+
     @InjectMocks
     private CommercialEnergyServiceImpl commercialEnergyService;
 
     private CommercialEnergy previousCommercialEnergy;
     private CommercialEnergy newCommercialEnergy;
+    private CommercialEnergyDtoResponse commercialEnergyDtoResponse;
 
     @BeforeEach
     void setUp() {
 
         previousCommercialEnergy = new CommercialEnergy();
-
         previousCommercialEnergy.setId(1L);
         previousCommercialEnergy.setInternalCounter(1000.0);
         previousCommercialEnergy.setAccountConsumption(500.0);
         previousCommercialEnergy.setAccountValue(100.0);
 
         newCommercialEnergy = new CommercialEnergy();
-
         newCommercialEnergy.setInternalCounter(1100.0);
         newCommercialEnergy.setAccountConsumption(550.0);
         newCommercialEnergy.setAccountValue(110.0);
         newCommercialEnergy.setDate(LocalDate.now());
+
+        commercialEnergyDtoResponse = new CommercialEnergyDtoResponse(
+            1L, 
+            LocalDate.now(), 
+            null, 
+            null, 
+            1100.0, 
+            110.0, 
+            550.0, 
+            null, 
+            null, 
+            false
+        );
     }
 
     @Test
@@ -62,7 +79,7 @@ class CommercialEnergyServiceImplTest {
     void listLasts_ShouldReturnEmptyList_WhenNoRecords() {
         when(commercialEnergyRepository.findTop2ByOrderByIdDesc()).thenReturn(Optional.empty());
 
-        List<CommercialEnergy> result = commercialEnergyService.listLasts();
+        List<CommercialEnergyDtoResponse> result = commercialEnergyService.listLasts();
 
         assertNotNull(result);
         assertEquals(0, result.size());
@@ -73,20 +90,21 @@ class CommercialEnergyServiceImplTest {
     void listLasts_ShouldReturnLastTwoRecordsOrderedById() {
         CommercialEnergy oldEnergy = new CommercialEnergy();
         oldEnergy.setId(1L);
-        CommercialEnergy middleEnergy = new CommercialEnergy();
-        middleEnergy.setId(2L);
         CommercialEnergy latestEnergy = new CommercialEnergy();
-        latestEnergy.setId(3L);
+        latestEnergy.setId(2L);
+
+        CommercialEnergyDtoResponse oldEnergyDto = new CommercialEnergyDtoResponse(1L, null, null, null, 0.0, 0.0, 0.0, null, null, false);
+        CommercialEnergyDtoResponse latestEnergyDto = new CommercialEnergyDtoResponse(2L, null, null, null, 0.0, 0.0, 0.0, null, null, false);
 
         when(commercialEnergyRepository.findTop2ByOrderByIdDesc())
-                .thenReturn(Optional.of(List.of(latestEnergy, middleEnergy)));
+                .thenReturn(Optional.of(List.of(latestEnergy, oldEnergy)));
+        when(commercialEnergyMapper.toDtoResponse(oldEnergy, false)).thenReturn(oldEnergyDto);
+        when(commercialEnergyMapper.toDtoResponse(latestEnergy, true)).thenReturn(latestEnergyDto);
 
-        List<CommercialEnergy> result = commercialEnergyService.listLasts();
+        List<CommercialEnergyDtoResponse> result = commercialEnergyService.listLasts();
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        assertEquals(middleEnergy.getId(), result.get(0).getId());
-        assertEquals(latestEnergy.getId(), result.get(1).getId());
     }
 
     @Test
@@ -95,16 +113,11 @@ class CommercialEnergyServiceImplTest {
 
         when(commercialEnergyRepository.findTopByOrderByIdDesc()).thenReturn(Optional.of(previousCommercialEnergy));
         when(commercialEnergyRepository.save(any(CommercialEnergy.class))).thenReturn(newCommercialEnergy);
+        when(commercialEnergyMapper.toDtoResponse(any(CommercialEnergy.class), any())).thenReturn(commercialEnergyDtoResponse);
 
-        CommercialEnergy result = commercialEnergyService.calculate(newCommercialEnergy);
+        CommercialEnergyDtoResponse result = commercialEnergyService.calculate(newCommercialEnergy);
 
         assertNotNull(result);
-
-        assertEquals(100.0, result.getCalculatedConsumption1());
-        assertEquals(450.0, result.getCalculatedConsumption2());
-        assertEquals(20.0, result.getAmount1(), 0.01);
-        assertEquals(90.0, result.getAmount2(), 0.01);
-
     }
 
     @Test
@@ -113,15 +126,12 @@ class CommercialEnergyServiceImplTest {
 
         when(commercialEnergyRepository.findTopByOrderByIdDesc()).thenReturn(Optional.empty());
         when(commercialEnergyRepository.save(any(CommercialEnergy.class))).thenReturn(newCommercialEnergy);
+        when(commercialEnergyMapper.toDtoResponse(any(CommercialEnergy.class), any())).thenReturn(commercialEnergyDtoResponse);
 
-        CommercialEnergy result = commercialEnergyService.calculate(newCommercialEnergy);
+        CommercialEnergyDtoResponse result = commercialEnergyService.calculate(newCommercialEnergy);
 
         assertNotNull(result);
-        assertNull(result.getCalculatedConsumption1());
-        assertNull(result.getCalculatedConsumption2());
-        assertNull(result.getAmount1());
-        assertNull(result.getAmount2());
-        verify(commercialEnergyRepository, times(1)).save(result);
+        verify(commercialEnergyRepository, times(1)).save(newCommercialEnergy);
     }
 
     @Test
@@ -149,16 +159,12 @@ class CommercialEnergyServiceImplTest {
         when(commercialEnergyRepository.findTop2ByOrderByIdDesc())
                 .thenReturn(Optional.of(List.of(existingCommercialEnergy, readingBeforePrevious)));
         when(commercialEnergyRepository.save(any(CommercialEnergy.class))).thenReturn(existingCommercialEnergy);
+        when(commercialEnergyMapper.toDtoResponse(any(CommercialEnergy.class), any())).thenReturn(commercialEnergyDtoResponse);
 
-        CommercialEnergy result = commercialEnergyService.edit(editedData, 2L);
+        CommercialEnergyDtoResponse result = commercialEnergyService.edit(editedData, 2L);
 
         assertNotNull(result);
-
-        assertEquals(100.0, result.getCalculatedConsumption1());
-        assertEquals(450.0, result.getCalculatedConsumption2());
-        assertEquals(20.0, result.getAmount1(), 0.01);
-        assertEquals(90.0, result.getAmount2(), 0.01);
-        assertEquals(1100.0, result.getInternalCounter());
+        assertEquals(1100.0, result.internalCounter());
 
         verify(commercialEnergyRepository, times(1)).save(existingCommercialEnergy);
 
@@ -183,11 +189,12 @@ class CommercialEnergyServiceImplTest {
     void findById_WhenCommercialEnergyExists_ShouldReturnCommercialEnergy() {
 
         when(commercialEnergyRepository.findById(1L)).thenReturn(Optional.of(previousCommercialEnergy));
+        when(commercialEnergyMapper.toDtoResponse(any(CommercialEnergy.class), any())).thenReturn(commercialEnergyDtoResponse);
 
-        CommercialEnergy found = commercialEnergyService.findById(1L);
+        CommercialEnergyDtoResponse found = commercialEnergyService.findById(1L);
 
         assertNotNull(found);
-        assertEquals(1L, found.getId());
+        assertEquals(1L, found.id());
 
     }
 

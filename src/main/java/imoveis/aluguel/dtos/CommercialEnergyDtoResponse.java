@@ -3,6 +3,7 @@ package imoveis.aluguel.dtos;
 import java.time.LocalDate;
 
 public record CommercialEnergyDtoResponse(
+    
     Long id, 
     LocalDate date, 
     Double amount1, 

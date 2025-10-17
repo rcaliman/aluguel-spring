@@ -52,7 +52,9 @@
                     ></i>
                   </span>
                 </td>
-                <td th:text="${landlord.name}">Nome do Locador</td>
+                <td th:text="${landlord.name}" th:title="${landlord.name}" class="name-cell">
+                  Nome do Locador
+                </td>
                 <td th:text="${landlord.cpfCnpj}">00.000.000/0000-00</td>
                 <td
                   th:text="${landlord.city != null ? landlord.city + ' - ' + landlord.state : ''}"

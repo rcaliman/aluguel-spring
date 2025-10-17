@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +25,7 @@ import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.Receipt;
 import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.PropertyTypeEnum;
+import imoveis.aluguel.repositories.PropertyRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ReceiptServiceImplTest {
@@ -31,7 +33,7 @@ class ReceiptServiceImplTest {
     @Mock
     private LandlordService landlordService;
     @Mock
-    private PropertyService propertyService;
+    private PropertyRepository propertyRepository;
 
     @InjectMocks
     private ReceiptServiceImpl receiptService;
@@ -82,10 +84,11 @@ class ReceiptServiceImplTest {
     void receipts_ShouldCreateAndSortReceipts_WhenDataIsValid() {
 
         ReceiptDtoRequest request = new ReceiptDtoRequest(List.of(2L, 1L), 100L, "Janeiro", "2025");
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(100L, "Sr. Locador", null, null, null, null, null, null, null, null, null, null, true);
 
-        when(landlordService.findById(100L)).thenReturn(landlord);
-        when(propertyService.findById(1L)).thenReturn(propertyA);
-        when(propertyService.findById(2L)).thenReturn(propertyB);
+        when(landlordService.findById(100L)).thenReturn(landlordDtoResponse);
+        when(propertyRepository.findById(1L)).thenReturn(Optional.of(propertyA));
+        when(propertyRepository.findById(2L)).thenReturn(Optional.of(propertyB));
 
         List<Receipt> receipts = receiptService.receipts(request);
 
@@ -101,20 +104,22 @@ class ReceiptServiceImplTest {
         assertEquals("99999-AAAA", firstReceipt.getTenantContact());
 
         verify(landlordService, times(1)).findById(100L);
-        verify(propertyService, times(1)).findById(1L); // Espera 1 chamada
-        verify(propertyService, times(1)).findById(2L); // Espera 1 chamada
+        verify(propertyRepository, times(1)).findById(1L); // Espera 1 chamada
+        verify(propertyRepository, times(1)).findById(2L); // Espera 1 chamada
 
     }
 
     @Test
-    @DisplayName("Deve lançar exceção se o inquilino não tiver contatos")
-    void receipts_ShouldThrowException_WhenTenantHasNoContacts() {
+    @DisplayName("Deve retornar contato vazio se o inquilino não tiver contatos")
+    void receipts_ShouldReturnEmptyContact_WhenTenantHasNoContacts() {
 
         tenantA.setContacts(new ArrayList<>());
         ReceiptDtoRequest request = new ReceiptDtoRequest(List.of(1L), 100L, "Janeiro", "2025");
 
-        when(landlordService.findById(100L)).thenReturn(landlord);
-        when(propertyService.findById(1L)).thenReturn(propertyA);
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(100L, "Sr. Locador", null, null, null, null, null, null, null, null, null, null, true);
+
+        when(landlordService.findById(100L)).thenReturn(landlordDtoResponse);
+        when(propertyRepository.findById(1L)).thenReturn(Optional.of(propertyA));
         List<Receipt> receipts = receiptService.receipts(request);
 
         assertNotNull(receipts);

@@ -59,11 +59,10 @@ class LandlordWebControllerTest {
     @DisplayName("GET /landlords - Deve exibir a lista de locadores")
     void listLandlords_ShouldReturnListView() throws Exception {
 
-        Landlord landlord = new Landlord();
-        landlord.setId(1L);
-        landlord.setName("Maria Souza");
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Maria Souza",
+                null, null, null, null, null, null, null, null, null, null, true);
 
-        when(landlordService.list(Sort.by("name"))).thenReturn(List.of(landlord));
+        when(landlordService.list(Sort.by("name"))).thenReturn(List.of(landlordDtoResponse));
 
         mockMvc.perform(get("/landlords")).andExpect(status().isOk()).andExpect(view().name("landlord/list"))
                 .andExpect(model().attributeExists("landlords")).andExpect(model().attribute("landlords", hasSize(1)))
@@ -86,13 +85,12 @@ class LandlordWebControllerTest {
     @DisplayName("GET /landlords/edit/{id} - Deve exibir o formulário de edição para um locador existente")
     void showEditForm_ShouldReturnFormViewWithLandlord() throws Exception {
 
-        Landlord landlord = new Landlord();
-        landlord.setId(1L);
-        landlord.setName("Carlos Pereira");
-        when(landlordService.findById(1L)).thenReturn(landlord);
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Carlos Pereira",
+                null, null, null, null, null, null, null, null, null, null, true);
+        when(landlordService.findById(1L)).thenReturn(landlordDtoResponse);
 
         mockMvc.perform(get("/landlords/edit/1")).andExpect(status().isOk()).andExpect(view().name("landlord/form"))
-                .andExpect(model().attribute("landlord", landlord));
+                .andExpect(model().attribute("landlord", landlordDtoResponse));
 
     }
 
@@ -100,7 +98,7 @@ class LandlordWebControllerTest {
     @DisplayName("POST /landlords/save - Deve criar um novo locador e redirecionar")
     void saveLandlord_ForCreate_ShouldCallServiceAndRedirect() throws Exception {
 
-        when(landlordService.create(any(Landlord.class))).thenReturn(new Landlord());
+        when(landlordService.create(any(Landlord.class))).thenReturn(new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Novo Locador", null, null, null, null, null, null, null, null, null, null, true));
 
         mockMvc.perform(
                 post("/landlords/save").with(csrf()).param("name", "Novo Locador").param("cpfCnpj", "111.222.333-44"))

@@ -71,12 +71,15 @@ class LandlordServiceImplTest {
     void create_ShouldSaveLandlord() {
 
         landlord.setMain(false);
-        when(landlordRepository.save(any(Landlord.class))).thenReturn(landlord);
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "João da Silva", null, null, null, null, null, null, null, null, null, null, false);
 
-        Landlord createdLandlord = landlordService.create(landlord);
+        when(landlordRepository.save(any(Landlord.class))).thenReturn(landlord);
+        when(landlordMapper.toDtoResponse(any(Landlord.class))).thenReturn(landlordDtoResponse);
+
+        imoveis.aluguel.dtos.LandlordDtoResponse createdLandlord = landlordService.create(landlord);
 
         assertNotNull(createdLandlord);
-        assertEquals("João da Silva", createdLandlord.getName());
+        assertEquals("João da Silva", createdLandlord.name());
         verify(landlordRepository, times(1)).save(landlord);
         verify(landlordRepository, never()).setAllMainToFalse();
 
@@ -105,10 +108,13 @@ class LandlordServiceImplTest {
         updatedInfo.setMain(true);
         updatedInfo.setContacts(new ArrayList<>());
 
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "João da Silva Santos", null, null, null, null, null, null, null, null, null, null, true);
+
         when(landlordRepository.findById(anyLong())).thenReturn(Optional.of(landlord));
         when(landlordRepository.saveAndFlush(any(Landlord.class))).thenReturn(landlord);
+        when(landlordMapper.toDtoResponse(any(Landlord.class))).thenReturn(landlordDtoResponse);
 
-        Landlord result = landlordService.update(1L, updatedInfo);
+        imoveis.aluguel.dtos.LandlordDtoResponse result = landlordService.update(1L, updatedInfo);
 
         assertNotNull(result);
         verify(landlordMapper, times(1)).updateEntity(updatedInfo, landlord);
@@ -134,12 +140,15 @@ class LandlordServiceImplTest {
     @DisplayName("Deve encontrar um locador pelo ID")
     void findById_WhenLandlordExists_ShouldReturnLandlord() {
 
-        when(landlordRepository.findById(1L)).thenReturn(Optional.of(landlord));
+        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "João da Silva", null, null, null, null, null, null, null, null, null, null, false);
 
-        Landlord found = landlordService.findById(1L);
+        when(landlordRepository.findById(1L)).thenReturn(Optional.of(landlord));
+        when(landlordMapper.toDtoResponse(any(Landlord.class))).thenReturn(landlordDtoResponse);
+
+        imoveis.aluguel.dtos.LandlordDtoResponse found = landlordService.findById(1L);
 
         assertNotNull(found);
-        assertEquals(1L, found.getId());
+        assertEquals(1L, found.id());
 
     }
 
@@ -164,8 +173,9 @@ class LandlordServiceImplTest {
         List<Landlord> landlords = List.of(landlord, new Landlord());
         Sort sort = Sort.by("name");
         when(landlordRepository.findAll(sort)).thenReturn(landlords);
+        when(landlordMapper.toDtoResponse(any(Landlord.class))).thenReturn(new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "João da Silva", null, null, null, null, null, null, null, null, null, null, false));
 
-        List<Landlord> result = landlordService.list(sort);
+        List<imoveis.aluguel.dtos.LandlordDtoResponse> result = landlordService.list(sort);
 
         assertNotNull(result);
         assertEquals(2, result.size());
