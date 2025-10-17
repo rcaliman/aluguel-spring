@@ -99,7 +99,7 @@ public class LandlordServiceImpl implements LandlordService {
     }
 
     @Override
-    @Cacheable("landlords")
+    @Cacheable(value = "landlords", key = "'list-' + #sort.toString()")
     public List<LandlordDtoResponse> list(Sort sort) {
 
         var orderedList = landlordRepository.findAll(sort);

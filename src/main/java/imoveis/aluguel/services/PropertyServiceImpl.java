@@ -39,14 +39,14 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    @Cacheable("properties")
+    @Cacheable(value = "properties", key = "#id")
     public PropertyDtoResponse findById(Long id) {
 
         var property = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Imovel de id %d não encontrado", id)));
 
         return propertyMapper.toDtoResponse(property);
-        
+
     }
 
     @Override
@@ -82,35 +82,35 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    @Cacheable(value = "properties")
+    @Cacheable(value = "properties", key = "'list-' + #sortField")
     public List<PropertyDtoResponse> list(String sortField) {
         return switch (sortField) {
-            case "tenant.name" -> 
+            case "tenant.name" ->
                     propertyRepository.findAllOrderByTenantNameAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();
 
-            case "propertyType" -> 
+            case "propertyType" ->
                     propertyRepository.findAllOrderByPropertyTypeAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();
 
-            case "number" -> 
+            case "number" ->
                     propertyRepository.findAllOrderByNumberAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();
 
-            case "paymentDay" -> 
+            case "paymentDay" ->
                     propertyRepository.findAllOrderByPaymentDayAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();
 
-            case "value" -> 
+            case "value" ->
                     propertyRepository.findAllOrderByValueAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();
 
-            default -> 
+            default ->
                     propertyRepository.findAllOrderByTenantNameAsc().stream()
                         .map(propertyMapper::toDtoResponse)
                         .toList();

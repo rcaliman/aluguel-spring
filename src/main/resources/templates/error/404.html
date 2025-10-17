@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
 <head>
     <title>Página não encontrada</title>
 </head>
+
 <body>
-    <h1>Página não encontrada</h1>
-    <p th:text="${errorMessage}"></p>
+    <section layout:fragment="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card-custom shadow-sm text-center mt-5">
+
+                        <div class="card-custom-header">
+                            <h1 class="h3 mb-0">Página Não Encontrada</h1>
+                        </div>
+
+                        <div class="card-custom-body p-5">
+                            <i class="bi bi-file-earmark-x-fill display-1 text-danger mb-3"></i>
+
+                            <p class="lead text-muted">
+                                A página que você está procurando não existe ou foi movida.
+                            </p>
+
+                            <div class="alert alert-info my-4" role="alert" th:if="${errorMessage}">
+                                <i class="bi bi-info-circle-fill me-2"></i>
+                                <strong th:text="${errorMessage}">
+                                    Mensagem de erro específica aqui.
+                                </strong>
+                            </div>
+
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <a href="javascript:history.back()" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left me-2"></i> Voltar
+                                </a>
+                                <a th:href="@{/}" class="btn btn-primary">
+                                    <i class="bi bi-house-door me-2"></i> Ir para a Página Inicial
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </body>
+
 </html>

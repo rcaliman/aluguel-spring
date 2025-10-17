@@ -25,7 +25,7 @@ public class CommercialEnergyServiceImpl implements CommercialEnergyService {
     private final CommercialEnergyMapper commercialEnergyMapper;
 
     @Override
-    @Cacheable("last-commercial-energies")
+    @Cacheable(value = "commercial-energies", key = "'list-lasts'")
     public List<CommercialEnergyDtoResponse> listLasts() {
 
         var lasts = commercialEnergyRepository.findTop2ByOrderByIdDesc().orElse(List.of());
@@ -49,8 +49,9 @@ public class CommercialEnergyServiceImpl implements CommercialEnergyService {
         return dtoListResponse;
     }
 
+    @Override
     @Transactional
-    @CacheEvict(value = "last-commercial-energies", allEntries = true)
+    @CacheEvict(value = "commercial-energies", allEntries = true)
     public CommercialEnergyDtoResponse calculate(CommercialEnergy energy) {
 
         CommercialEnergy lastEnergy = commercialEnergyRepository.findTopByOrderByIdDesc().orElse(null);
@@ -78,7 +79,7 @@ public class CommercialEnergyServiceImpl implements CommercialEnergyService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "last-commercial-energies", allEntries = true)
+    @CacheEvict(value = "commercial-energies", allEntries = true)
     public CommercialEnergyDtoResponse edit(CommercialEnergy editedEnergy, Long id) {
 
         CommercialEnergy energy = commercialEnergyRepository.findById(id).orElseThrow(
@@ -122,7 +123,7 @@ public class CommercialEnergyServiceImpl implements CommercialEnergyService {
     }
 
     @Override
-    @Cacheable("commercial-energy-by-id")
+    @Cacheable(value = "commercial-energies", key = "#id")
     public CommercialEnergyDtoResponse findById(Long id) {
 
         var energy = commercialEnergyRepository.findById(id)

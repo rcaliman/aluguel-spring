@@ -1,6 +1,17 @@
-/* style.css - Estilos modernos e otimizados para o sistema de aluguel de imóveis */
+/* ============================================================================
+   style.css - Estilos Modernos para o Sistema de Aluguel de Imóveis
 
-/* 1. GLOBAL VARIABLES (ROOT) */
+   Estrutura:
+   1. Variáveis Globais (CSS Custom Properties)
+   2. Reset e Estilos Base
+   3. Layout Principal
+   4. Componentes Reutilizáveis
+   5. Estilos Específicos de Páginas
+   6. Ícones e Utilitários
+   7. Responsividade
+   ============================================================================ */
+
+/* 1. VARIÁVEIS GLOBAIS (CSS CUSTOM PROPERTIES) */
 :root {
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
@@ -15,7 +26,7 @@
     --transition: all 0.3s ease;
 }
 
-/* 2. BASE STYLES AND RESET */
+/* 2. RESET E ESTILOS BASE */
 * {
     margin: 0;
     padding: 0;
@@ -32,7 +43,7 @@ body {
     line-height: 1.6;
 }
 
-/* 3. MAIN LAYOUT */
+/* 3. LAYOUT PRINCIPAL */
 main {
     flex: 1;
     padding-top: 2rem;
@@ -48,9 +59,9 @@ footer.site-footer {
     text-align: center;
 }
 
-/* 4. REUSABLE COMPONENTS */
+/* 4. COMPONENTES REUTILIZÁVEIS */
 
-/* Navegação */
+/* 4.1 Navegação */
 .navbar-dark.bg-dark {
     padding: 0.8rem 1rem;
     background-color: var(--primary-color) !important;
@@ -74,7 +85,7 @@ footer.site-footer {
     transform: translateY(-2px);
 }
 
-/* Botões */
+/* 4.2 Botões */
 .btn {
     padding: 0.6rem 1.5rem;
     font-weight: 600;
@@ -97,7 +108,7 @@ footer.site-footer {
     transform: translateY(-2px);
 }
 
-/* Cards */
+/* 4.3 Cards */
 .card-custom {
     margin-bottom: 2rem;
     background-color: #fff;
@@ -122,7 +133,7 @@ footer.site-footer {
     padding: 2rem;
 }
 
-/* Formulários */
+/* 4.4 Formulários */
 .form-label {
     color: var(--primary-color);
     font-weight: 600;
@@ -140,7 +151,7 @@ footer.site-footer {
     box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
 }
 
-/* NEW: Style for lighter placeholders */
+/* Estilo para placeholders mais suaves */
 .form-control::placeholder {
     color: #adb5bd; /* Um cinza mais claro e sutil */
     opacity: 1;    /* Garante a visibilidade em todos os navegadores */
@@ -152,7 +163,7 @@ footer.site-footer {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
-/* Tabelas */
+/* 4.5 Tabelas */
 .table-responsive {
     border-radius: 0 0 12px 12px;
 }
@@ -198,27 +209,31 @@ tr.table-active, tr.table-active:hover {
   cursor: pointer;
 }
 
-/* New classes to replace inline styles */
-.th-col-main { width: 70px; }
-.th-col-actions { width: 140px; }
+/* Classes utilitárias para colunas de tabela */
+.th-col-main {
+    width: 70px;
+}
 
+.th-col-actions {
+    width: 140px;
+}
 
-/* Alertas */
+/* 4.6 Alertas */
 .alert {
     padding: 1rem 1.5rem;
     border: none;
     border-radius: var(--border-radius);
 }
 
-/* Badges */
+/* 4.7 Badges */
 .badge.badge-vacant {
     background-color: var(--accent-color);
     color: white;
 }
 
-/* 5. SPECIFIC PAGE STYLES */
+/* 5. ESTILOS ESPECÍFICOS DE PÁGINAS */
 
-/* Página de Login */
+/* 5.1 Página de Login */
 .login-container {
     display: flex;
     justify-content: center;
@@ -236,7 +251,7 @@ tr.table-active, tr.table-active:hover {
     text-align: center;
 }
 
-/* Cabeçalho de Página (ex: Lista de Imóveis) */
+/* 5.2 Cabeçalho de Página */
 .page-header {
     margin-bottom: 1.5rem;
     padding: 1rem 1.25rem;
@@ -254,7 +269,7 @@ tr.table-active, tr.table-active:hover {
     font-size: 0.9rem;
 }
 
-/* Checkbox customizado */
+/* 5.3 Checkbox Customizado */
 .form-check-input.property-checkbox {
     width: 1.3em;
     height: 1.3em;
@@ -272,7 +287,7 @@ tr.table-active, tr.table-active:hover {
     cursor: not-allowed;
 }
 
-/* Página de Formulário de Imóvel */
+/* 5.4 Seção de Formulários */
 .form-section-title {
     display: flex;
     align-items: center;
@@ -289,13 +304,14 @@ tr.table-active, tr.table-active:hover {
     color: var(--secondary-color);
 }
 
-/* 6. ICONS AND UTILITIES */
-/* Align Bootstrap Icons vertically */
+/* 6. ÍCONES E UTILITÁRIOS */
+
+/* Alinhamento vertical de ícones Bootstrap */
 .bi {
     vertical-align: -0.125em;
 }
 
-/* 7. RESPONSIVENESS */
+/* 7. RESPONSIVIDADE */
 @media (max-width: 768px) {
     .page-header {
         text-align: center;

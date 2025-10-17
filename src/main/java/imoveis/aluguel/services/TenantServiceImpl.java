@@ -44,18 +44,18 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    @Cacheable("tenants")
+    @Cacheable(value = "tenants", key = "'cpfCnpj-' + #cpfCnpj")
     public TenantDtoResponse findByCpfCnpj(String cpfCnpj) {
 
         var tenant = tenantRepository.findByCpfCnpj(cpfCnpj)
-                .orElseThrow(() -> new NotFoundException(String.format("CPF/CNPJ %d não encontrado", cpfCnpj)));
+                .orElseThrow(() -> new NotFoundException(String.format("CPF/CNPJ %s não encontrado", cpfCnpj)));
 
         return tenantMapper.toDtoResponse(tenant);
 
     }
 
     @Override
-    @Cacheable("tenants")
+    @Cacheable(value = "tenants", key = "#id")
     public TenantDtoResponse findById(Long id) {
 
         var tenant = tenantRepository.findById(id)
@@ -99,7 +99,7 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    @Cacheable("tenants")
+    @Cacheable(value = "tenants", key = "'list-' + #sort.toString()")
     public List<TenantDtoResponse> list(Sort sort) {
 
         return tenantRepository.findAll(sort).stream()

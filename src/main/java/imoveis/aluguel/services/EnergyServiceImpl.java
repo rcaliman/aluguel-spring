@@ -25,7 +25,7 @@ public class EnergyServiceImpl implements EnergyService {
     private final EnergyMapper energyMapper;
 
     @Override
-    @Cacheable("energies")
+    @Cacheable(value = "energies", key = "'list-lasts'")
     public List<EnergyDtoResponse> listLasts() {
 
         var lasts = energyRepository.findTop3ByOrderByIdDesc().orElse(List.of());

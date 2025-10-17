@@ -1,50 +1,52 @@
 <!DOCTYPE html>
-<html
-  lang="pt-br"
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
->
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">
-      Aluguel de Imóveis
+        Aluguel de Imóveis
     </title>
 
-    <link
-      th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
-      rel="stylesheet"
-    />
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 
-    <link
-      th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}"
-      rel="stylesheet"
-    />
+    <!-- Bootstrap Icons -->
+    <link th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}" rel="stylesheet">
 
-    <link href="/css/style.css" rel="stylesheet" />
-  </head>
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
 
-  <body>
+<body>
+    <!-- Header -->
     <header th:replace="~{fragments/header :: cabecalho}"></header>
 
+    <!-- Main Content -->
     <main role="main" class="container">
-      <div layout:fragment="content">
-        <p>Conteúdo padrão que será substituído.</p>
-      </div>
+        <div layout:fragment="content">
+            <p>Conteúdo padrão que será substituído.</p>
+        </div>
     </main>
 
+    <!-- Footer -->
     <footer th:replace="~{fragments/footer :: rodape}"></footer>
 
+    <!-- jQuery -->
     <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
-    <script
-      th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"
-    ></script>
-    <script
-      th:src="@{/webjars/jquery-mask-plugin/1.14.16/dist/jquery.mask.min.js}"
-    ></script>
 
+    <!-- Bootstrap Bundle JS -->
+    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- jQuery Mask Plugin -->
+    <script th:src="@{/webjars/jquery-mask-plugin/1.14.16/dist/jquery.mask.min.js}"></script>
+
+    <!-- Custom JavaScript -->
     <script src="/js/script.js"></script>
-  </body>
+</body>
+
 </html>

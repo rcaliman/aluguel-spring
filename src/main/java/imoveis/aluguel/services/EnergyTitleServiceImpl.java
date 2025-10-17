@@ -18,7 +18,7 @@ public class EnergyTitleServiceImpl implements EnergyTitleService {
     private final EnergyTitleMapper energyTitleMapper;
 
     @Override
-    @CacheEvict(value = "energie-tiles", allEntries = true)
+    @CacheEvict(value = "energy-titles", allEntries = true)
     public void save(EnergyTitle energyTitle) {
 
         energyTitleRepository.save(energyTitle);
@@ -26,7 +26,7 @@ public class EnergyTitleServiceImpl implements EnergyTitleService {
     }
 
     @Override
-    @Cacheable(value = "energie-tiles")
+    @Cacheable(value = "energy-titles")
     public EnergyTitleDtoResponse findLast() {
 
         var titles = energyTitleRepository.findTopByOrderByIdDesc();
