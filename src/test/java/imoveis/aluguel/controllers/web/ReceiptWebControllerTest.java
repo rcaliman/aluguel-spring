@@ -1,5 +1,7 @@
 package imoveis.aluguel.controllers.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -23,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.dtos.ReceiptDtoResponse;
 import imoveis.aluguel.entities.Receipt;
+import imoveis.aluguel.exceptions.ValidationException;
 import imoveis.aluguel.mappers.ReceiptMapper;
 import imoveis.aluguel.services.ReceiptService;
 
@@ -64,6 +67,18 @@ class ReceiptWebControllerTest {
         mockMvc.perform(post("/receipts/generate").with(csrf()).param("propertyIds", "1", "2")
                 .param("landlordId", "100").param("month", "Janeiro").param("year", "2025")).andExpect(status().isOk())
                 .andExpect(view().name("receipt/list")).andExpect(model().attributeExists("receipts", "currentPage"));
+    }
+
+    @Test
+    @DisplayName("POST /generate - Deve lançar ValidationException quando propertyIds está ausente")
+    void generateReceipts_ShouldThrowValidationException_WhenPropertyIdsAreMissing() throws Exception {
+        mockMvc.perform(post("/receipts/generate").with(csrf())
+                .param("landlordId", "100")
+                .param("month", "Janeiro")
+                .param("year", "2025"))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ValidationException))
+                .andExpect(result -> assertEquals("Nenhum imóvel foi selecionado", result.getResolvedException().getMessage()));
     }
 
 

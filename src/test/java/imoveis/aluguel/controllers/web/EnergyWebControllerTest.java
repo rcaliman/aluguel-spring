@@ -163,4 +163,119 @@ class EnergyWebControllerTest {
         verify(energyTitleService, times(1)).save(title);
 
     }
+
+    @Test
+    @DisplayName("GET /energies/new - Deve exibir o formulário de nova leitura")
+    void showCreateForm_ShouldReturnFormView() throws Exception {
+
+        mockMvc.perform(get("/energies/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("energy/form"))
+                .andExpect(model().attributeExists("energy", "currentPage"))
+                .andExpect(model().attribute("currentPage", "energies"));
+
+    }
+
+    @Test
+    @DisplayName("GET /energies/edit/{id} - Deve exibir o formulário de edição")
+    void showEditForm_ShouldReturnFormViewWithEnergy() throws Exception {
+
+        EnergyDtoResponse energyDto = new EnergyDtoResponse(1L, 100.0, 200.0, 300.0, null, null, null, null, null, null, false);
+
+        when(energyService.findById(1L)).thenReturn(energyDto);
+
+        mockMvc.perform(get("/energies/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("energy/form"))
+                .andExpect(model().attributeExists("energy", "currentPage"));
+
+        verify(energyService, times(1)).findById(1L);
+
+    }
+
+    @Test
+    @DisplayName("GET /energies/titleform - Deve exibir o formulário de títulos")
+    void titleForm_ShouldReturnTitleFormView() throws Exception {
+
+        mockMvc.perform(get("/energies/titleform"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("energy/titleform"))
+                .andExpect(model().attributeExists("energyTitle", "currentPage"))
+                .andExpect(model().attribute("currentPage", "energies"));
+
+    }
+
+    @Test
+    @DisplayName("GET /energies/new-commercial - Deve exibir o formulário de energia comercial")
+    void showCreateFormCommercial_ShouldReturnCommercialFormView() throws Exception {
+
+        mockMvc.perform(get("/energies/new-commercial"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("energy/commercial-form"))
+                .andExpect(model().attributeExists("commercialEnergy", "currentPage"))
+                .andExpect(model().attribute("currentPage", "energies"));
+
+    }
+
+    @Test
+    @DisplayName("GET /energies/edit-commercial/{id} - Deve exibir o formulário de edição comercial")
+    void showEditFormCommercial_ShouldReturnCommercialFormWithEnergy() throws Exception {
+
+        imoveis.aluguel.dtos.CommercialEnergyDtoResponse commercialEnergyDto =
+            new imoveis.aluguel.dtos.CommercialEnergyDtoResponse(1L, null, 100.0, 200.0, 300.0, 50.0, 150.0, null, null, false);
+
+        when(commercialEnergyService.findById(1L)).thenReturn(commercialEnergyDto);
+
+        mockMvc.perform(get("/energies/edit-commercial/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("energy/commercial-form"))
+                .andExpect(model().attributeExists("commercialEnergy", "currentPage"));
+
+        verify(commercialEnergyService, times(1)).findById(1L);
+
+    }
+
+    @Test
+    @DisplayName("POST /energies/save-commercial (Create) - Deve criar energia comercial e redirecionar")
+    void saveCommercialEnergy_ForCreate_ShouldCallCalculateAndRedirect() throws Exception {
+
+        imoveis.aluguel.entities.CommercialEnergy commercialEnergySemId = new imoveis.aluguel.entities.CommercialEnergy();
+        commercialEnergySemId.setId(null);
+
+        when(commercialEnergyMapper.toEntity(any(imoveis.aluguel.dtos.CommercialEnergyDtoRequest.class)))
+                .thenReturn(commercialEnergySemId);
+
+        mockMvc.perform(post("/energies/save-commercial").with(csrf())
+                .param("amount1", "100.0")
+                .param("amount2", "200.0")
+                .param("internalCounter", "300.0"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/energies"));
+
+        verify(commercialEnergyService, times(1)).calculate(commercialEnergySemId);
+        verify(commercialEnergyService, never()).edit(any(), any());
+
+    }
+
+    @Test
+    @DisplayName("POST /energies/save-commercial (Update) - Deve editar energia comercial e redirecionar")
+    void saveCommercialEnergy_ForUpdate_ShouldCallEditAndRedirect() throws Exception {
+
+        imoveis.aluguel.entities.CommercialEnergy commercialEnergyComId = new imoveis.aluguel.entities.CommercialEnergy();
+        commercialEnergyComId.setId(1L);
+
+        when(commercialEnergyMapper.toEntity(any(imoveis.aluguel.dtos.CommercialEnergyDtoRequest.class)))
+                .thenReturn(commercialEnergyComId);
+
+        mockMvc.perform(post("/energies/save-commercial").with(csrf())
+                .param("id", "1")
+                .param("amount1", "110.0")
+                .param("amount2", "220.0"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/energies"));
+
+        verify(commercialEnergyService, times(1)).edit(commercialEnergyComId, 1L);
+        verify(commercialEnergyService, never()).calculate(any());
+
+    }
 }

@@ -60,11 +60,13 @@ class TenantWebControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private TenantService tenantService;
+    @Autowired
+    private TenantRepository tenantRepository;
 
     @BeforeEach
     void setUp() {
 
-        reset(tenantService);
+        reset(tenantService, tenantRepository);
 
     }
 
@@ -123,6 +125,24 @@ class TenantWebControllerTest {
                 .andExpect(redirectedUrl("/tenants"));
 
         verify(tenantService, times(1)).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("GET /tenants/edit/{id} - Deve exibir o formulário de edição com inquilino")
+    void showEditForm_ShouldReturnFormViewWithTenant() throws Exception {
+
+        Tenant tenant = new Tenant();
+        tenant.setId(1L);
+        tenant.setName("João Silva");
+
+        when(tenantRepository.findById(1L)).thenReturn(java.util.Optional.of(tenant));
+
+        mockMvc.perform(get("/tenants/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tenant/form"))
+                .andExpect(model().attributeExists("tenant", "maritalStatusOptions", "contactTypeOptions"));
+
+        verify(tenantRepository, times(1)).findById(1L);
     }
 
 }

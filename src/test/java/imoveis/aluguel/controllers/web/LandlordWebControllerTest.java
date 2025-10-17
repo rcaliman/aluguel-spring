@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -72,6 +73,8 @@ class LandlordWebControllerTest {
 
     @Autowired
     private LandlordService landlordService;
+    @Autowired
+    private LandlordRepository landlordRepository;
 
     @Test
     @DisplayName("GET /landlords - Deve exibir a lista de locadores")
@@ -113,5 +116,35 @@ class LandlordWebControllerTest {
         verify(landlordService, times(1)).create(any(Landlord.class));
         verify(landlordService, never()).update(anyLong(), any(Landlord.class));
 
+    }
+
+
+    @Test
+    @DisplayName("GET /landlords/edit/{id} - Deve exibir o formulário de edição com locador")
+    void showEditForm_ShouldReturnFormViewWithLandlord() throws Exception {
+
+        Landlord landlord = new Landlord();
+        landlord.setId(1L);
+        landlord.setName("Maria Souza");
+
+        when(landlordRepository.findById(1L)).thenReturn(java.util.Optional.of(landlord));
+
+        mockMvc.perform(get("/landlords/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("landlord/form"))
+                .andExpect(model().attributeExists("landlord", "maritalStatusOptions", "contactTypeOptions"));
+
+        verify(landlordRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("GET /landlords/delete/{id} - Deve chamar o serviço de exclusão e redirecionar")
+    void deleteLandlord_ShouldCallDeleteAndRedirect() throws Exception {
+
+        mockMvc.perform(get("/landlords/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/landlords"));
+
+        verify(landlordService, times(1)).deleteById(1L);
     }
 }
