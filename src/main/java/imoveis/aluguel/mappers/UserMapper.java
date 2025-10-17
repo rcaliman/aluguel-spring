@@ -7,7 +7,7 @@ import imoveis.aluguel.dtos.UserDtoRequest;
 import imoveis.aluguel.dtos.UserDtoResponse;
 import imoveis.aluguel.entities.User;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {})
 public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)

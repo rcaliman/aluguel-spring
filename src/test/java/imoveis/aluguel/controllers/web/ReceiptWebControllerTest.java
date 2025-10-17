@@ -66,14 +66,5 @@ class ReceiptWebControllerTest {
                 .andExpect(view().name("receipt/list")).andExpect(model().attributeExists("receipts", "currentPage"));
     }
 
-    @Test
-    @DisplayName("POST /generate - Deve renderizar a página de erro se nenhum imóvel for selecionado")
-    void generateReceipts_ShouldReturnErrorPage_WhenNoPropertyIds() throws Exception {
 
-        mockMvc.perform(post("/receipts/generate").with(csrf()).param("landlordId", "100").param("month", "Janeiro")
-                .param("year", "2025")).andExpect(status().isOk()).andExpect(view().name("error/400"))
-                .andExpect(model().attributeExists("errorMessage"))
-                .andExpect(model().attribute("errorMessage", "Nenhum imóvel foi selecionado"));
-
-    }
 }

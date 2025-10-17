@@ -7,7 +7,7 @@ import imoveis.aluguel.dtos.PropertyLogDtoResponse;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.entities.PropertyLog;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {})
 public interface PropertyLogMapper {
 
     @Mapping(target = "property", source = "property")

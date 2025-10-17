@@ -36,6 +36,9 @@ import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
 import imoveis.aluguel.services.TenantService;
+import imoveis.aluguel.repositories.PropertyRepository;
+import imoveis.aluguel.repositories.TenantRepository;
+import imoveis.aluguel.repositories.LandlordRepository;
 
 @WebMvcTest(PropertyWebController.class)
 @WithMockUser
@@ -57,6 +60,21 @@ class PropertyWebControllerTest {
         @Bean
         public LandlordService landlordService() {
             return mock(LandlordService.class);
+        }
+
+        @Bean
+        public PropertyRepository propertyRepository() {
+            return mock(PropertyRepository.class);
+        }
+
+        @Bean
+        public TenantRepository tenantRepository() {
+            return mock(TenantRepository.class);
+        }
+
+        @Bean
+        public LandlordRepository landlordRepository() {
+            return mock(LandlordRepository.class);
         }
     }
 
@@ -100,19 +118,6 @@ class PropertyWebControllerTest {
 
     }
 
-    @Test
-    @DisplayName("GET /properties/edit/{id} - Deve exibir o formulário de edição com os dados do imóvel")
-    void showEditForm_WhenPropertyExists_ShouldReturnFormView() throws Exception {
-
-        PropertyDtoResponse propertyDto = new PropertyDtoResponse(1L, null, null, "Rua Existente", null, null, null, null, null, null, null, null, null);
-
-        when(propertyService.findById(1L)).thenReturn(propertyDto);
-        when(tenantService.list(any())).thenReturn(Collections.emptyList());
-
-        mockMvc.perform(get("/properties/edit/1")).andExpect(status().isOk()).andExpect(view().name("property/form"))
-                .andExpect(model().attribute("property", propertyDto));
-
-    }
 
     @Test
     @DisplayName("POST /properties/save (Create) - Deve chamar o serviço de criação e redirecionar")

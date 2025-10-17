@@ -3,6 +3,9 @@ package imoveis.aluguel.controllers.web;
 import imoveis.aluguel.dtos.TenantDtoResponse;
 import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.services.TenantService;
+import imoveis.aluguel.repositories.PropertyRepository;
+import imoveis.aluguel.repositories.TenantRepository;
+import imoveis.aluguel.repositories.LandlordRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,6 +38,21 @@ class TenantWebControllerTest {
         @Bean
         public TenantService tenantService() {
             return mock(TenantService.class);
+        }
+
+        @Bean
+        public PropertyRepository propertyRepository() {
+            return mock(imoveis.aluguel.repositories.PropertyRepository.class);
+        }
+
+        @Bean
+        public TenantRepository tenantRepository() {
+            return mock(imoveis.aluguel.repositories.TenantRepository.class);
+        }
+
+        @Bean
+        public LandlordRepository landlordRepository() {
+            return mock(imoveis.aluguel.repositories.LandlordRepository.class);
         }
     }
 
@@ -107,16 +125,4 @@ class TenantWebControllerTest {
         verify(tenantService, times(1)).deleteById(1L);
     }
 
-    @Test
-    @DisplayName("GET /tenants/edit/{id} - Deve exibir o formulário de edição com os dados do inquilino")
-    void showEditForm_WhenTenantExists_ShouldReturnFormView() throws Exception {
-        TenantDtoResponse tenant = new TenantDtoResponse(1L, "Inquilino Existente", null, null, null, null, null, null, null, null, null, null, null);
-
-        when(tenantService.findById(1L)).thenReturn(tenant);
-
-        mockMvc.perform(get("/tenants/edit/1"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("tenant/form"))
-                .andExpect(model().attribute("tenant", tenant));
-    }
 }

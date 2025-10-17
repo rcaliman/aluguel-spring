@@ -7,7 +7,7 @@ import imoveis.aluguel.dtos.EnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoResponse;
 import imoveis.aluguel.entities.Energy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {})
 public interface EnergyMapper {
 
     @Mapping(target = "amount1", ignore = true)

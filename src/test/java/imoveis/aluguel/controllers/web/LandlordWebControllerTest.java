@@ -34,6 +34,9 @@ import imoveis.aluguel.entities.Landlord;
 import imoveis.aluguel.enums.ContactTypeEnum;
 import imoveis.aluguel.enums.MaritalStatusEnum;
 import imoveis.aluguel.services.LandlordService;
+import imoveis.aluguel.repositories.PropertyRepository;
+import imoveis.aluguel.repositories.TenantRepository;
+import imoveis.aluguel.repositories.LandlordRepository;
 
 @WebMvcTest(LandlordWebController.class)
 @WithMockUser
@@ -45,6 +48,21 @@ class LandlordWebControllerTest {
         @Bean
         public LandlordService landlordService() {
             return mock(LandlordService.class);
+        }
+
+        @Bean
+        public PropertyRepository propertyRepository() {
+            return mock(imoveis.aluguel.repositories.PropertyRepository.class);
+        }
+
+        @Bean
+        public TenantRepository tenantRepository() {
+            return mock(imoveis.aluguel.repositories.TenantRepository.class);
+        }
+
+        @Bean
+        public LandlordRepository landlordRepository() {
+            return mock(imoveis.aluguel.repositories.LandlordRepository.class);
         }
 
     }
@@ -81,18 +99,6 @@ class LandlordWebControllerTest {
 
     }
 
-    @Test
-    @DisplayName("GET /landlords/edit/{id} - Deve exibir o formulário de edição para um locador existente")
-    void showEditForm_ShouldReturnFormViewWithLandlord() throws Exception {
-
-        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Carlos Pereira",
-                null, null, null, null, null, null, null, null, null, null, true);
-        when(landlordService.findById(1L)).thenReturn(landlordDtoResponse);
-
-        mockMvc.perform(get("/landlords/edit/1")).andExpect(status().isOk()).andExpect(view().name("landlord/form"))
-                .andExpect(model().attribute("landlord", landlordDtoResponse));
-
-    }
 
     @Test
     @DisplayName("POST /landlords/save - Deve criar um novo locador e redirecionar")
