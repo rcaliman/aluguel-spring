@@ -26,10 +26,10 @@
           page-break-after: always;
         }
         .no-print {
-            display: none !important;
+          display: none !important;
         }
         .table-striped > tbody > tr:nth-of-type(odd) > * {
-            background-color: transparent !important;
+          background-color: transparent !important;
         }
       }
     </style>
@@ -60,21 +60,33 @@
         <div id="print-area">
           <div class="printable-page">
             <div class="card-custom">
-              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-list-ul me-2"></i> Leituras das quitinetes</span>
-                <a th:href="@{/energies/new}" class="btn btn-secondary shadow-sm">
+              <div
+                class="card-custom-header no-print d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="bi bi-list-ul me-2"></i> Leituras das
+                  quitinetes</span
+                >
+                <a
+                  th:href="@{/energies/new}"
+                  class="btn btn-secondary shadow-sm"
+                >
                   <i class="bi bi-plus-circle"></i> Nova Leitura
                 </a>
               </div>
               <div class="table-responsive">
-                <table class="table table-striped table-hover mb-0" id="table-residentials">
+                <table
+                  class="table table-striped table-hover mb-0"
+                  id="table-residentials"
+                >
                   <thead>
                     <tr>
                       <th class="text-end">Data</th>
-                      <th class="text-end">Relógio 1</th>
-                      <th class="text-end">Relógio 2</th>
-                      <th class="text-end">Relógio 3</th>
-                      <th class="text-end">Valor Conta R$</th>
+                      <th class="text-end">Conta mês (R$)</th>
+                      <th class="text-end">Medidor 1 (kWh)</th>
+                      <th class="text-end">Medidor 2 (kWh)</th>
+                      <th class="text-end">Medidor 3 (kWh)</th>
+
                       <th class="text-end name-cell">
                         <span th:text="${energyTitles.titleAmount1}"
                           >Valor Rateado 1 R$</span
@@ -124,28 +136,28 @@
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter1(), 1, 1, 'COMMA')}"
+                        th:text="${#numbers.formatCurrency(reading.billAmount())}"
+                        th:classappend="${reading.last()} ? 'text-decoration-underline' : ''"
+                      >
+                        R$ 500,00
+                      </td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(reading.counter1(), 1, 2, 'COMMA')}"
                       >
                         1000,0
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter2(), 1, 1, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(reading.counter2(), 1, 2, 'COMMA')}"
                       >
                         2000,0
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter3(), 1, 1, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(reading.counter3(), 1, 2, 'COMMA')}"
                       >
                         3000,0
-                      </td>
-                      <td
-                        class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(reading.billAmount())}"
-                        th:classappend="${reading.last()} ? 'text-decoration-underline' : ''"
-                      >
-                        R$ 500,00
                       </td>
                       <td
                         class="text-end font-monospace"
@@ -194,24 +206,25 @@
                 <dl class="mt-2 p-2 m-2 no-print">
                   <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
                   <dd>
-                    - Subtrai a leitura do mês atual pela do mês anterior de cada
-                    inquilino;
+                    - Subtrai a leitura do mês atual pela do mês anterior de
+                    cada inquilino;
                   </dd>
                   <dd>
                     - Soma o resultado dos três inquilinos para chegar ao total
                     gasto no mês, em kWh;
                   </dd>
                   <dd>
-                    - Calcula a porcentagem de kWh consumidos de cada inquilino em
-                    relação ao total;
+                    - Calcula a porcentagem de kWh consumidos de cada inquilino
+                    em relação ao total;
                   </dd>
                   <dd>
                     - A porcentagem que cada inquilino usou dos kWh totais
-                    consumidos no mês será a porcentagem que ele pagará da conta;
+                    consumidos no mês será a porcentagem que ele pagará da
+                    conta;
                   </dd>
                   <dd>
-                    - A porcentagem de cada inquilino sobre o total da conta aparece
-                    junto ao valor na tabela.
+                    - A porcentagem de cada inquilino sobre o total da conta
+                    aparece junto ao valor na tabela.
                   </dd>
                 </dl>
               </div>
@@ -220,14 +233,24 @@
 
           <div class="printable-page">
             <div class="card-custom mt-4">
-              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-list-ul me-2"></i> Leituras dos pontos</span>
-                <a th:href="@{/energies/new-commercial}" class="btn btn-secondary shadow-sm">
+              <div
+                class="card-custom-header no-print d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="bi bi-list-ul me-2"></i> Leituras dos pontos</span
+                >
+                <a
+                  th:href="@{/energies/new-commercial}"
+                  class="btn btn-secondary shadow-sm"
+                >
                   <i class="bi bi-plus-circle"></i> Nova Leitura
                 </a>
               </div>
               <div class="table-responsive mt-3">
-                <table class="table table-striped table-hover mb-0" id="table-commercials">
+                <table
+                  class="table table-striped table-hover mb-0"
+                  id="table-commercials"
+                >
                   <thead>
                     <tr>
                       <th class="text-end">Data</th>
@@ -264,24 +287,42 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr th:each="commercialReading : ${commercialEnergyReadings}">
+                    <tr
+                      th:each="commercialReading : ${commercialEnergyReadings}"
+                    >
                       <td
                         class="text-end font-monospace"
                         th:text="${#temporals.format(commercialReading.date(), 'dd/MM/yyyy')}"
                       ></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 2, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 2, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 2, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 2, 'COMMA')}"></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount1())}"
-                      th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
-                      
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 2, 'COMMA')}"
                       ></td>
-                      <td class="text-end font-monospace" th:text="${#numbers.formatCurrency(commercialReading.amount2())}"
-                      
-                      th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
-                      
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"
+                      ></td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 2, 'COMMA')}"
+                      ></td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 2, 'COMMA')}"
+                      ></td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 2, 'COMMA')}"
+                      ></td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(commercialReading.amount1())}"
+                        th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
+                      ></td>
+                      <td
+                        class="text-end font-monospace"
+                        th:text="${#numbers.formatCurrency(commercialReading.amount2())}"
+                        th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
                       ></td>
                       <td class="text-center no-print">
                         <a
@@ -296,29 +337,39 @@
                     </tr>
                     <tr th:if="${commercialEnergyReadings.empty}">
                       <td colspan="8" class="text-center py-4">
-                        <i class="bi bi-inbox display-4 text-muted d-block mb-2"></i>
-                        <span class="text-muted">Nenhuma leitura comercial cadastrada</span>
+                        <i
+                          class="bi bi-inbox display-4 text-muted d-block mb-2"
+                        ></i>
+                        <span class="text-muted"
+                          >Nenhuma leitura comercial cadastrada</span
+                        >
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                                <dl class="mt-2 p-2 m-2 no-print">
+                <dl class="mt-2 p-2 m-2 no-print">
                   <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
                   <dd>
-                    - Pega a quantidade total de kWh gastos no medidor do ponto e subtrai pelo do mês anterior para ter a quantidade de kWh gastos do ponto 1;
+                    - Pega a quantidade total de kWh gastos no medidor do ponto
+                    e subtrai pelo do mês anterior para ter a quantidade de kWh
+                    gastos do ponto 1;
                   </dd>
                   <dd>
-                    - Consulta na conta o consumo total do mês e subtrai pela quantidade calculada no ponto 1 para termos a quantidade de kWh gastos do ponto 2;
+                    - Consulta na conta o consumo total do mês e subtrai pela
+                    quantidade calculada no ponto 1 para termos a quantidade de
+                    kWh gastos do ponto 2;
                   </dd>
                   <dd>
-                    - Calcula a porcentagem de gasto do ponto 1 e do ponto 2 em relação ao total de kWh gastos no mês;
+                    - Calcula a porcentagem de gasto do ponto 1 e do ponto 2 em
+                    relação ao total de kWh gastos no mês;
                   </dd>
                   <dd>
-                    - Aplica a porcentagem que cada ponto gastou dos kWh totais ao valor da conta;
+                    - Aplica a porcentagem que cada ponto gastou dos kWh totais
+                    ao valor da conta;
                   </dd>
                   <dd>
-                    - A porcentagem de cada inquilino sobre o total da conta aparece
-                    junto ao valor na tabela.
+                    - A porcentagem de cada inquilino sobre o total da conta
+                    aparece junto ao valor na tabela.
                   </dd>
                 </dl>
               </div>
@@ -350,7 +401,9 @@
             return isNaN(value) ? 0 : value;
           };
 
-          const allResidentialRows = document.querySelectorAll("#table-residentials tbody tr");
+          const allResidentialRows = document.querySelectorAll(
+            "#table-residentials tbody tr"
+          );
           // Filtra para pegar apenas as linhas com dados
           const dataResidentialRows = Array.from(allResidentialRows).filter(
             (row) => row.querySelectorAll("td").length > 1
@@ -394,7 +447,9 @@
             }
           }
 
-          const allCommercialRows = document.querySelectorAll("#table-commercials tbody tr");
+          const allCommercialRows = document.querySelectorAll(
+            "#table-commercials tbody tr"
+          );
           const dataCommercialRows = Array.from(allCommercialRows).filter(
             (row) => row.querySelectorAll("td").length > 1
           );

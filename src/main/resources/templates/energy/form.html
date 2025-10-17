@@ -92,7 +92,7 @@
                     class="form-control"
                     id="counter1"
                     name="counter1"
-                    th:value="${energy.counter1 != null ? #numbers.formatDecimal(energy.counter1, 1, 1, 'POINT') : ''}"
+                    th:value="${energy.counter1 != null ? #numbers.formatDecimal(energy.counter1, 1, 2, 'POINT') : ''}"
                     required
                     placeholder="0.0"
                   />
@@ -105,7 +105,7 @@
                     class="form-control"
                     id="counter2"
                     name="counter2"
-                    th:value="${energy.counter2 != null ? #numbers.formatDecimal(energy.counter2, 1, 1, 'POINT') : ''}"
+                    th:value="${energy.counter2 != null ? #numbers.formatDecimal(energy.counter2, 1, 2, 'POINT') : ''}"
                     required
                     placeholder="0.0"
                   />
@@ -118,7 +118,7 @@
                     class="form-control"
                     id="counter3"
                     name="counter3"
-                    th:value="${energy.counter3 != null ? #numbers.formatDecimal(energy.counter3, 1, 1, 'POINT') : ''}"
+                    th:value="${energy.counter3 != null ? #numbers.formatDecimal(energy.counter3, 1, 2, 'POINT') : ''}"
                     required
                     placeholder="0.0"
                   />

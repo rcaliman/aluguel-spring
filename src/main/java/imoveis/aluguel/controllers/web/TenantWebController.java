@@ -66,6 +66,35 @@ public class TenantWebController {
     @PostMapping("/save")
     public String saveTenant(@ModelAttribute Tenant tenant) {
 
+        // Converter strings vazias em null para evitar violação de constraint única
+        if (tenant.getCpfCnpj() != null && tenant.getCpfCnpj().trim().isEmpty()) {
+            tenant.setCpfCnpj(null);
+        }
+
+        if (tenant.getDocument() != null && tenant.getDocument().trim().isEmpty()) {
+            tenant.setDocument(null);
+        }
+
+        if (tenant.getAddress() != null && tenant.getAddress().trim().isEmpty()) {
+            tenant.setAddress(null);
+        }
+
+        if (tenant.getLocation() != null && tenant.getLocation().trim().isEmpty()) {
+            tenant.setLocation(null);
+        }
+
+        if (tenant.getState() != null && tenant.getState().trim().isEmpty()) {
+            tenant.setState(null);
+        }
+
+        if (tenant.getCity() != null && tenant.getCity().trim().isEmpty()) {
+            tenant.setCity(null);
+        }
+
+        if (tenant.getNationality() != null && tenant.getNationality().trim().isEmpty()) {
+            tenant.setNationality(null);
+        }
+
         if (tenant.getId() == null) {
             tenantService.create(tenant);
         } else {

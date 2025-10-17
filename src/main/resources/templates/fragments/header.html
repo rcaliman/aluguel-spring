@@ -58,21 +58,26 @@
 
                     <!-- User Menu -->
                     <ul class="navbar-nav">
-                        <!-- Login Link (for anonymous users) -->
+                        <!-- Login Button (for anonymous users) -->
                         <li class="nav-item" sec:authorize="isAnonymous()">
-                            <a class="nav-link" th:href="@{/login}">
-                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                            <a th:href="@{/login}" class="nav-link" title="Entrar">
+                                login&nbsp;<i class="bi bi-box-arrow-in-right" style="font-size: 1.5rem;"></i>
                             </a>
                         </li>
 
-                        <!-- Logout Button (for authenticated users) -->
-                        <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <form th:action="@{/logout}" method="post" class="d-flex">
-                                <button type="submit" class="nav-link border-0 bg-transparent">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Sair
-                                    <span class="ms-1" sec:authentication="name"></span>
-                                </button>
-                            </form>
+                        <!-- User Dropdown (for authenticated users) -->
+                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                            <ul>
+                                <li>
+                                    <form th:action="@{/logout}" method="post" class="m-0">
+                                        <button type="submit" class="nav-link">
+                                            <span class="d-none d-lg-inline" th:text="${#authentication.name}"></span>&nbsp;
+                                            <i class="bi bi-box-arrow-right"></i>
+                                            &nbsp;sair
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

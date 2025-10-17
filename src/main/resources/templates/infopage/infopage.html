@@ -155,12 +155,12 @@
                   <tbody>
                     <tr th:each="log : ${propertyLog}">
                        <td>
-                        <small th:text="${#temporals.format(log.createdAt(), 'dd/MM/yyyy HH:mm')}"></small>
+                        <small th:text="${#temporals.format(log.getCreatedAt(), 'dd/MM/yyyy HH:mm')}"></small>
                        </td>
                        <td>
-                        <span th:text="${log.tenantName()}"></span>
+                        <span th:text="${log.getTenantName()}"></span>
                        </td>
-                       <td class="text-end fw-bold" th:text="${#numbers.formatCurrency(log.value())}"></td>
+                       <td class="text-end fw-bold" th:text="${#numbers.formatCurrency(log.getValue())}"></td>
                     </tr>
                      <tr th:if="${propertyLog.isEmpty()}">
                         <td colspan="3" class="text-center py-4 text-muted">
