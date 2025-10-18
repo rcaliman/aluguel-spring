@@ -50,8 +50,7 @@
               <div class="card-custom-body">
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">Tipo do Imóvel:</label>
-                    <p class="fw-normal" th:text="${property.propertyType().displayName}"></p>
+                    <p class="fw-bold" th:text="|${#strings.toUpperCase(property.propertyType().displayName)}&nbsp;${property.number()}|"></p>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">Tipo de Uso:</label>
@@ -59,7 +58,7 @@
                   </div>
                   <div class="col-12">
                     <label class="form-label">Endereço:</label>
-                    <p class="fw-normal" th:text="|${property.address()}, ${property.number()} - ${property.location()}, ${property.city()} - ${property.state()}|"></p>
+                    <p class="fw-normal" th:text="|${property.address()} - ${property.location()}, ${property.city()} - ${property.state()}|"></p>
                   </div>
                   <div class="col-md-6">
                     <label class="form-label">Complemento:</label>
@@ -104,7 +103,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">CPF/CNPJ:</label>
-                            <p class="fw-normal" th:text="${tenant.cpfCnpj()}"></p>
+                            <p class="fw-normal cpf-cnpj-display" th:text="${tenant.cpfCnpj()}"></p>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">RG:</label>

@@ -430,4 +430,45 @@ $(function () {
     cpfCnpjField.on('input', handleCpfCnpjInput);
   }
 
+  // ========================================================================
+  // 7. FORMATAÇÃO DE CPF/CNPJ EM LISTAGENS
+  // ========================================================================
+
+  /**
+   * Formata um CPF/CNPJ para exibição
+   * @param {string} value - CPF/CNPJ sem formatação
+   * @returns {string} - CPF/CNPJ formatado
+   */
+  function formatCpfCnpj(value) {
+    if (!value) return '';
+
+    const cleanValue = value.replace(/\D/g, '');
+
+    if (cleanValue.length === 11) {
+      // Formatar como CPF: XXX.XXX.XXX-XX
+      return cleanValue.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    } else if (cleanValue.length === 14) {
+      // Formatar como CNPJ: XX.XXX.XXX/XXXX-XX
+      return cleanValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+
+    return value; // Retorna o valor original se não for CPF nem CNPJ
+  }
+
+  // Aplicar formatação a todos os elementos com classe cpf-cnpj-display
+  $('.cpf-cnpj-display').each(function() {
+    const $element = $(this);
+
+    // Verificar se é um input ou elemento de texto
+    if ($element.is('input')) {
+      const rawValue = $element.val();
+      const formatted = formatCpfCnpj(rawValue);
+      $element.val(formatted);
+    } else {
+      const rawValue = $element.text().trim();
+      const formatted = formatCpfCnpj(rawValue);
+      $element.text(formatted);
+    }
+  });
+
 });

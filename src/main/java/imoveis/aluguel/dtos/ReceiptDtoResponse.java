@@ -1,9 +1,11 @@
 package imoveis.aluguel.dtos;
 
+import imoveis.aluguel.enums.PropertyTypeEnum;
+
 public record ReceiptDtoResponse(
         String tenant, 
         String value, 
-        String propertyType, 
+        PropertyTypeEnum propertyType, 
         String propertyNumber, 
         String observation,
         String locale,

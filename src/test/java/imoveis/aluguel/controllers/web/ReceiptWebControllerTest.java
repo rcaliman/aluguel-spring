@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.dtos.ReceiptDtoResponse;
 import imoveis.aluguel.entities.Receipt;
+import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.exceptions.ValidationException;
 import imoveis.aluguel.mappers.ReceiptMapper;
 import imoveis.aluguel.services.ReceiptService;
@@ -58,7 +59,7 @@ class ReceiptWebControllerTest {
     void generateReceipts_ShouldReturnListView_WhenDataIsValid() throws Exception {
 
         Receipt receipt = Receipt.builder().tenant("Inquilino Teste").build();
-        ReceiptDtoResponse dtoResponse = new ReceiptDtoResponse("Inquilino Teste", null, "APARTAMENTO", null, null, null, null,
+        ReceiptDtoResponse dtoResponse = new ReceiptDtoResponse("Inquilino Teste", null, PropertyTypeEnum.APARTAMENTO, null, null, null, null,
                 null, null, null, null, null, null);
 
         when(receiptService.receipts(any(ReceiptDtoRequest.class))).thenReturn(List.of(receipt));

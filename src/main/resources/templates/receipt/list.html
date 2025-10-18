@@ -156,7 +156,7 @@
         <div class="printable-page" th:each="receipt : ${receipts}">
           <!-- início da sessão de recibo de locação -->
 
-          <div th:if="${receipt.propertyType != 'condomínio'}">
+          <div th:if="${receipt.propertyType != T(imoveis.aluguel.enums.PropertyTypeEnum).CONDOMINIO}">
             <!-- início do primeiro recibo de locação -->
 
             <div class="receipt-copy top-copy">
@@ -174,10 +174,9 @@
                     importância de
                     <strong th:text="${receipt.value}"></strong>
                     referente ao aluguel do(a)
-                    <th:block th:text="${receipt.propertyType}" /> nº
+                    <th:block th:text="${#strings.toLowerCase(receipt.propertyType)}" /> nº
                     <strong th:text="${receipt.propertyNumber}"></strong>.&nbsp;
-                    <span th:text="${receipt.observation}"></span>. # . #
-                    . # . # . # . # . # . # . # . # . # . # . # . #
+                    <span th:text="${receipt.observation}"></span>. # . # . # . # . # . # . # . # . # . # . # . # . # . # . #
                   </p>
                 </div>
               </div>
@@ -220,10 +219,9 @@
                     <strong th:text="${receipt.value}"></strong>
 
                     referente ao aluguel do(a)
-                    <th:block th:text="${receipt.propertyType}" /> nº
+                    <th:block th:text="${#strings.toLowerCase(receipt.propertyType)}" /> nº
                     <strong th:text="${receipt.propertyNumber}"></strong>.&nbsp;
-                    <span th:text="${receipt.observation}"></span> # . #
-                    . # . # . # . # . # . # . # . # . # . # . # . #
+                    <span th:text="${receipt.observation}"></span>. # . # . # . # . # . # . # . # . # . # . # . # . # . # . #
                   </p>
                 </div>
               </div>
@@ -255,7 +253,7 @@
 
           <!-- início da sessão de recibo de condomínio -->
 
-          <div th:if="${receipt.propertyType.equalsIgnoreCase('condomínio')}">
+          <div th:if="${receipt.propertyType == T(imoveis.aluguel.enums.PropertyTypeEnum).CONDOMINIO}">
             <!-- início do primeiro recibo de condomínio -->
 
             <div class="receipt-copy top-copy">
@@ -273,16 +271,15 @@
                     importância de
                     <strong th:text="${receipt.value}"></strong>
 
-                    referente ao
-                    <th:block th:text="${receipt.propertyType}" /> do mês de
+                    referente ao pagamento do
+                    <th:block th:text="${#strings.toLowerCase(receipt.propertyType)}" /> do mês de
                     <strong
                       th:text="${#strings.toLowerCase(receipt.month)}"
                     ></strong>
                     de
-                    <strong th:text="${receipt.year}"></strong> de
-                    <strong th:text="${receipt.observation}"></strong> no
-                    Edifício Caliman. # . # . # . # . # . # . # . # . # . # . #
-                    . # . # . #
+                    <strong th:text="${receipt.year}"></strong>, correspondente a 
+                    <strong th:text="${receipt.observation}"></strong>, no
+                    Edifício Caliman. # . # . # . # . # . # . # . # . # . # . # . # . # . #
                   </p>
                 </div>
               </div>
@@ -309,7 +306,7 @@
 
             <!-- início do segundo recibo de condomínio -->
 
-            <div class="receipt-copy top-copy">
+            <div class="receipt-copy">
               <div>
                 <div
                   class="receipt-header d-flex justify-content-between align-items-center mb-4"
@@ -324,16 +321,15 @@
                     importância de
                     <strong th:text="${receipt.value}"></strong>
 
-                    referente ao
-                    <th:block th:text="${receipt.propertyType}" /> do mês de
+                    referente ao pagamento do
+                    <th:block th:text="${#strings.toLowerCase(receipt.propertyType)}" /> do mês de
                     <strong
                       th:text="${#strings.toLowerCase(receipt.month)}"
                     ></strong>
                     de
-                    <strong th:text="${receipt.year}"></strong> de
-                    <strong th:text="${receipt.observation}"></strong> no
-                    Edifício Caliman. # . # . # . # . # . # . # . # . # . # . #
-                    . # . # . #
+                    <strong th:text="${receipt.year}"></strong>, correspondente a 
+                    <strong th:text="${receipt.observation}"></strong>, no
+                    Edifício Caliman. # . # . # . # . # . # . # . # . # . # . # . # . # . #
                   </p>
                 </div>
               </div>

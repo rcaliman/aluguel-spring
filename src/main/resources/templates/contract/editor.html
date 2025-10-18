@@ -14,7 +14,7 @@
       .titulo-contrato { text-align: center; font-weight: bold; text-transform: uppercase; font-size: 14pt; margin-bottom: 2rem; }
       .paragrafo-contrato, .subparagrafo-contrato { text-align: justify; margin-bottom: 1rem; }
       .subparagrafo-contrato { padding-left: 2rem; }
-      .destacar { font-weight: bold; }
+      .destacar { font-weight: normal; }
       .paragrafo-contrato-data { text-align: center; margin-top: 3rem; }
       .paragrafo-contrato-assinatura { text-align: center; margin-top: 4rem; }
       .paragrafo-contrato-assinatura-dados { text-align: center; font-weight: bold; }
@@ -51,22 +51,22 @@
     <div id='textoContrato' class="container-contrato" contentEditable='true'>
         <div class="titulo-contrato">CONTRATO DE LOCAÇÃO DE IMÓVEL</div>
         <div class="paragrafo-contrato">
-            Os signatários que contratam nas qualidades indicadas neste instrumento, de um lado, <span class='destacar' th:text="${landlord.name}"></span>, de nacionalidade <span th:text="${landlord.nationality}"></span>, <span th:text="${landlord.maritalStatus.displayName}"></span>, residente na cidade de <span th:text="${landlord.city + '-' + landlord.state}"></span>, portador(a) do CPF nº <span th:text="${landlord.cpfCnpj}"></span>, doravante denominado simplesmente <span class='destacar'>LOCADOR(A)</span>, e de outro, <span class='destacar' th:text="${tenant.name}"></span>, 
-            de nacionalidade <th:block th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span th:text="${tenant.nationality}"></span></th:block><th:block th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><strong>PREENCHER COM A NACIONALIDADE</strong></th:block>, 
-            <th:block th:if="${tenant.maritalStatus != null}"><span th:text="${tenant.maritalStatus.displayName}"></span></th:block><th:block th:unless="${tenant.maritalStatus != null}"><strong>PREENCHER COM O ESTADO CIVIL</strong></th:block>,
-            portador(a) do CPF nº <th:block th:if="${tenant.cpfCnpj != null and !tenant.cpfCnpj.isEmpty()}"><span th:text="${tenant.cpfCnpj}"></span></th:block><th:block th:unless="${tenant.cpfCnpj != null and !tenant.cpfCnpj.isEmpty()}"><strong>PREENCHER COM O CPF</strong></th:block> 
-            e CI nº <th:block th:if="${tenant.document != null and !tenant.document.isEmpty()}"><span th:text="${tenant.document}"></span></th:block><th:block th:unless="${tenant.document != null and !tenant.document.isEmpty()}"><strong>PREENCHER COM O DOCUMENTO</strong></th:block>,
-            residente na cidade de <th:block th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span th:text="${tenant.city + '-' + tenant.state}"></span></th:block><th:block th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><strong>PREENCHER COM CIDADE E ESTADO</strong></th:block>, 
+            Os signatários que contratam nas qualidades indicadas neste instrumento, de um lado, <span class='destacar' th:text="${#strings.toUpperCase(landlord.name)}"></span>, <span th:text="${#strings.toLowerCase(landlord.nationality)}"></span>, <span th:text="${#strings.toLowerCase(landlord.maritalStatus.getDisplayName())}"></span>, residente na cidade de <span th:text="${landlord.city + '-' + landlord.state}"></span>, portador(a) do CPF nº <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span>, doravante denominado simplesmente <span class='destacar'>LOCADOR(A)</span>, e de outro, <span class='destacar' th:text="${#strings.toUpperCase(tenant.name)}"></span>,
+            <th:block th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span th:text="${#strings.toLowerCase(tenant.nationality)}"></span></th:block><th:block th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span>PREENCHER COM A NACIONALIDADE</span></th:block>,
+            <th:block th:if="${tenant.maritalStatus != null}"><span th:text="${#strings.toLowerCase(tenant.maritalStatus.getDisplayName())}"></span></th:block><th:block th:unless="${tenant.maritalStatus != null}"><span>PREENCHER COM O ESTADO CIVIL</span></th:block>,
+            portador(a) do CPF nº <th:block th:if="${tenant.cpfCnpj != null and !tenant.cpfCnpj.isEmpty()}"><span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span></th:block><th:block th:unless="${tenant.cpfCnpj != null and !tenant.cpfCnpj.isEmpty()}"><span>PREENCHER COM O CPF</span></th:block> 
+            e CI nº <th:block th:if="${tenant.document != null and !tenant.document.isEmpty()}"><span th:text="${tenant.document}"></span></th:block><th:block th:unless="${tenant.document != null and !tenant.document.isEmpty()}"><span>PREENCHER COM O DOCUMENTO</span></th:block>,
+            residente na cidade de <th:block th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span th:text="${tenant.city + '-' + tenant.state}"></span></th:block><th:block th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span>PREENCHER COM CIDADE E ESTADO</span></th:block>, 
             doravante denominado simplesmente <span class='destacar'>LOCATÁRIO(A)</span>, têm entre si justo e contratado o presente instrumento, mediante as cláusulas e condições que seguem:
         </div>
         <div class="paragrafo-contrato">
-            <span class='destacar'>CLÁUSULA PRIMEIRA</span> - DO OBJETO E PRAZO DE LOCAÇÃO: O(A) LOCADOR(A), sendo legítimo(a) possuidor(a) do imóvel para fins <span th:text="${property.useType.displayName}"></span> de número <span th:text="${property.number}"></span>, localizado(a) na <span th:text="${property.address}"></span>, na cidade de <span th:text="${property.city + '-' + property.state}"></span>, o dá em locação ao(à) LOCATÁRIO(A) pelo prazo de <span th:text="${period.get('months')}"></span> meses, a contar de <span th:text="${period.get('start')}"></span> até <span th:text="${period.get('stop')}"></span>.
+            <span class='destacar'>CLÁUSULA PRIMEIRA</span> - DO OBJETO E PRAZO DE LOCAÇÃO: O(A) LOCADOR(A), sendo legítimo(a) possuidor(a) do imóvel para fins <span th:text="${property.useType == T(imoveis.aluguel.enums.PropertyUseTypeEnum).RESIDENCIAL ? 'residenciais' : 'comerciais'}"></span> de número <span th:text="${property.number}"></span>, localizado(a) na <span th:text="${property.address}"></span>, na cidade de <span th:text="${property.city + '-' + property.state}"></span>, o dá em locação ao(à) LOCATÁRIO(A) pelo prazo de <span th:text="${period.get('months')}"></span> meses, a contar de <span th:text="${period.get('start')}"></span> até <span th:text="${period.get('stop')}"></span>.
         </div>
         <div class="paragrafo-contrato">
             PARÁGRAFO PRIMEIRO: O objeto da presente locação destina-se exclusivamente a 
             <th:block th:switch="${property.useType.name()}">
-                <span th:case="'RESIDENTIAL'">fins residenciais.</span>
-                <span th:case="'COMMERCIAL'">fins comerciais.</span>
+                <span th:case="'RESIDENCIAL'">fins residenciais.</span>
+                <span th:case="'COMERCIAL'">fins comerciais.</span>
             </th:block>
         </div>
         <div class="paragrafo-contrato">
@@ -131,17 +131,15 @@
         <div class="paragrafo-contrato-assinatura">
             ___________________________________________________________________
         </div>
-        <div
-            class="paragrafo-contrato-assinatura-dados"
-            th:text="${landlord.name + ' - CPF: ' + landlord.cpfCnpj + ' - LOCADOR(A)'}"
-        ></div>
+        <div class="paragrafo-contrato-assinatura-dados">
+            <span th:text="${landlord.name}"></span> - CPF: <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span> - LOCADOR(A)
+        </div>
         <div class="paragrafo-contrato-assinatura">
             ___________________________________________________________________
         </div>
-        <div
-            class="paragrafo-contrato-assinatura-dados"
-            th:text="${tenant.name + ' - CPF: ' + tenant.cpfCnpj + ' - LOCATÁRIO(A)'}"
-        ></div>
+        <div class="paragrafo-contrato-assinatura-dados">
+            <span th:text="${tenant.name}"></span> - CPF: <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span> - LOCATÁRIO(A)
+        </div>
     </div>
   </div>
 </section>

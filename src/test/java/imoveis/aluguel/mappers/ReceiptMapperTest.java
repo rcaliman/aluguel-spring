@@ -19,7 +19,7 @@ class ReceiptMapperTest {
         ReceiptDtoResponse dto = receiptMapper.dtoResponse(receipt);
 
         assertNotNull(dto);
-        assertEquals("apartamento", dto.propertyType());
+        assertEquals(PropertyTypeEnum.APARTAMENTO, dto.propertyType());
         assertEquals("Inquilino A", dto.tenant());
 
     }

@@ -15,7 +15,7 @@ public interface ReceiptMapper {
         return new ReceiptDtoResponse(
                     receipt.getTenant(), 
                     NumberToWordsConverter.convert(receipt.getValue()),
-                    receipt.getPropertyType().getDisplayName(), 
+                    receipt.getPropertyType(), 
                     receipt.getPropertyNumber(), 
                     receipt.getObservation(), 
                     receipt.getLocale(),

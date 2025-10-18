@@ -55,26 +55,26 @@
                 <td th:text="${landlord.name}" th:title="${landlord.name}" class="name-cell">
                   Nome do Locador
                 </td>
-                <td th:text="${landlord.cpfCnpj}">00.000.000/0000-00</td>
+                <td th:text="${landlord.cpfCnpj}" class="cpf-cnpj-display">00.000.000/0000-00</td>
                 <td
                   th:text="${landlord.city != null ? landlord.city + ' - ' + landlord.state : ''}"
                 ></td>
                 <td class="text-center">
-                  <div class="d-inline-flex gap-1">
+                  <div class="action-buttons">
                     <a
                       th:href="@{/landlords/edit/{id}(id=${landlord.id})}"
-                      class="btn btn-sm btn-primary"
+                      class="action-btn action-btn-edit"
                       title="Editar"
                     >
-                      <i class="bi bi-pencil-square"></i>
+                      <i class="bi bi-pencil"></i>
                     </a>
                     <a
                       th:href="@{/landlords/delete/{id}(id=${landlord.id})}"
-                      class="btn btn-sm btn-danger"
+                      class="action-btn action-btn-delete"
                       title="Excluir"
                       onclick="return confirm('Tem certeza que deseja excluir este locador?');"
                     >
-                      <i class="bi bi-trash3-fill"></i>
+                      <i class="bi bi-trash"></i>
                     </a>
                   </div>
                 </td>

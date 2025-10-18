@@ -64,7 +64,7 @@
                   >
                     Nome do Inquilino
                   </td>
-                  <td th:text="${tenant.cpfCnpj}">000.000.000-00</td>
+                  <td th:text="${tenant.cpfCnpj}" class="cpf-cnpj-display">000.000.000-00</td>
                   <td
                     th:text="${tenant.city != null ? tenant.city + ' - ' + tenant.state : ''}"
                   ></td>
@@ -75,17 +75,17 @@
                     ></small>
                   </td>
                   <td class="text-center">
-                    <div class="btn-group btn-group-sm" role="group">
+                    <div class="action-buttons">
                       <a
                         th:href="@{/tenants/edit/{id}(id=${tenant.id})}"
-                        class="btn btn-primary"
+                        class="action-btn action-btn-edit"
                         title="Editar"
                       >
-                        <i class="bi bi-pencil-square"></i>
+                        <i class="bi bi-pencil"></i>
                       </a>
                       <a
                         th:href="@{/tenants/delete/{id}(id=${tenant.id})}"
-                        class="btn btn-danger"
+                        class="action-btn action-btn-delete"
                         title="Excluir"
                         onclick="return confirm('Tem certeza que deseja excluir este inquilino?');"
                       >

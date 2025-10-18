@@ -181,14 +181,16 @@
                         R$ 200,00
                       </td>
                       <td class="text-center no-print">
-                        <a
-                          th:if="${reading.last()}"
-                          th:href="@{/energies/edit/{id}(id=${reading.id()})}"
-                          class="btn btn-sm btn-primary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil-square m-0"></i>
-                        </a>
+                        <div class="action-buttons">
+                          <a
+                            th:if="${reading.last()}"
+                            th:href="@{/energies/edit/{id}(id=${reading.id()})}"
+                            class="action-btn action-btn-edit"
+                            title="Editar"
+                          >
+                            <i class="bi bi-pencil"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                     <tr th:if="${energyReadings.empty}">
@@ -325,14 +327,16 @@
                         th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
                       ></td>
                       <td class="text-center no-print">
-                        <a
-                          th:if="${commercialReading.isLast()}"
-                          th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id()})}"
-                          class="btn btn-sm btn-primary"
-                          title="Editar"
-                        >
-                          <i class="bi bi-pencil-square m-0"></i>
-                        </a>
+                        <div class="action-buttons">
+                          <a
+                            th:if="${commercialReading.isLast()}"
+                            th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id()})}"
+                            class="action-btn action-btn-edit"
+                            title="Editar"
+                          >
+                            <i class="bi bi-pencil"></i>
+                          </a>
+                        </div>
                       </td>
                     </tr>
                     <tr th:if="${commercialEnergyReadings.empty}">
