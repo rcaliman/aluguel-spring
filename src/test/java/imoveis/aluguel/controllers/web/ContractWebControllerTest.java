@@ -128,9 +128,20 @@ class ContractWebControllerTest {
     @DisplayName("POST /editor - Deve gerar e exibir o editor de contrato com sucesso")
     void contractEditor_ShouldDisplayEditor_OnSuccess() throws Exception {
 
-        LandlordDtoResponse landlordDtoResponse = new LandlordDtoResponse(10L, "Locador Teste",
-
-                null, null, null, null, null, null, null, null, MaritalStatusEnum.SOLTEIRO, null, true);
+        LandlordDtoResponse landlordDtoResponse = new LandlordDtoResponse(
+                10L,
+                "Locador Teste",
+                List.of(),
+                "MG-12.345.678",
+                "333.333.333-33",
+                null,
+                "Rua dos Locadores",
+                "Centro",
+                "Colatina",
+                "ES",
+                MaritalStatusEnum.SOLTEIRO,
+                "Brasileiro(a)",
+                true);
 
         when(propertyService.findById(1L)).thenReturn(propertyDto);
 

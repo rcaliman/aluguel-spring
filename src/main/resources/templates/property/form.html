@@ -69,7 +69,7 @@
                                     <div class="col-12 mb-3">
                                         <label for="tenant" class="form-label">Inquilino</label>
                                         <select class="form-select" id="tenant" th:field="*{tenant}">
-                                            <option value="">Selecione (imóvel vago)</option>
+                                            <option value="">Selecione...</option>
                                             <option th:each="t : ${tenants}" th:value="${t.id}" th:text="${t.name}"></option>
                                         </select>
                                         <div class="form-text">Deixe em branco se o imóvel estiver vago.</div>
