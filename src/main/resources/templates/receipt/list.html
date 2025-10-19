@@ -58,6 +58,35 @@
         display: none;
       }
 
+      /* Responsividade para dispositivos móveis */
+      @media (max-width: 768px) {
+        .page-header .d-flex {
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .page-header > div > div {
+          width: 100%;
+        }
+        .page-header .btn {
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+        .receipt-copy {
+          padding: 1rem;
+        }
+        .receipt-body p {
+          font-size: 1rem;
+          line-height: 1.6;
+        }
+        .receipt-header {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+        }
+        .copy-indicator {
+          margin-top: 0.5rem;
+        }
+      }
+
       /* Estilos específicos para impressão */
       @media print {
         body,
