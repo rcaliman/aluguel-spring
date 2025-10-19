@@ -9,6 +9,11 @@
     <title>Leituras de Energia</title>
     <style>
       @media print {
+        @page {
+          size: A4 portrait;
+          margin: 1cm 0.8cm;
+        }
+
         body * {
           visibility: hidden;
         }
@@ -24,13 +29,177 @@
         }
         .printable-page {
           page-break-after: always;
+          page-break-inside: avoid;
         }
         .no-print {
           display: none !important;
         }
+
+        /* Mostrar método de cálculo na impressão */
+        .print-only-calc {
+          display: block !important;
+          margin-top: 1.5rem;
+          padding: 1rem;
+          border: 1px solid #ddd;
+          background-color: #f8f9fa;
+          font-size: 9pt;
+        }
+
+        .print-only-calc dt {
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+        }
+
+        .print-only-calc dd {
+          margin-left: 1rem;
+          margin-bottom: 0.3rem;
+        }
+
+        /* Estilos para as tabelas na impressão */
+        .card-custom {
+          border: none;
+          box-shadow: none;
+          margin-bottom: 2rem;
+        }
+
+        .card-custom-header {
+          display: block !important;
+          background-color: #2c3e50 !important;
+          color: white !important;
+          padding: 0.5rem 1rem;
+          margin-bottom: 0.5rem;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        /* Ocultar botões "Nova Leitura" na impressão */
+        .card-custom-header .btn {
+          display: none !important;
+        }
+
+        .card-custom-header a {
+          display: none !important;
+        }
+
+        /* Layout de duas linhas para as tabelas */
+        .table-responsive {
+          overflow: visible;
+        }
+
+        table {
+          width: 100%;
+          font-size: 7pt;
+          border-collapse: collapse;
+        }
+
+        table thead {
+          background-color: #2c3e50 !important;
+          color: white !important;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        table th,
+        table td {
+          padding: 0.15rem 0.1rem;
+          border: 1px solid #ddd;
+          text-align: right;
+          white-space: nowrap;
+          font-size: 6.5pt;
+        }
+
+        table th:first-child,
+        table td:first-child {
+          text-align: left;
+        }
+
+        /* Ajustes específicos para a primeira tabela (quitinetes) com 8 colunas */
+        #table-residentials th,
+        #table-residentials td {
+          max-width: 11%;
+        }
+
+        #table-residentials th:first-child,
+        #table-residentials td:first-child {
+          max-width: 9%;
+        }
+
+        /* Aumentar fonte das últimas 3 colunas da tabela de quitinetes (valores rateados) */
+        #table-residentials td:nth-child(6),
+        #table-residentials td:nth-child(7),
+        #table-residentials td:nth-child(8) {
+          font-size: 8pt !important;
+        }
+
+        /* Negrito apenas na última linha da tabela de quitinetes */
+        #table-residentials tbody tr:last-child td:nth-child(6),
+        #table-residentials tbody tr:last-child td:nth-child(7),
+        #table-residentials tbody tr:last-child td:nth-child(8) {
+          font-weight: bold !important;
+        }
+
+        /* Ajustes específicos para a segunda tabela (pontos) com 8 colunas */
+        #table-commercials th,
+        #table-commercials td {
+          max-width: 11%;
+        }
+
+        #table-commercials th:first-child,
+        #table-commercials td:first-child {
+          max-width: 9%;
+        }
+
+        /* Aumentar fonte das últimas 2 colunas da tabela de pontos (valores rateados) */
+        #table-commercials td:nth-child(7),
+        #table-commercials td:nth-child(8) {
+          font-size: 8pt !important;
+        }
+
+        /* Negrito apenas na última linha da tabela de pontos */
+        #table-commercials tbody tr:last-child td:nth-child(7),
+        #table-commercials tbody tr:last-child td:nth-child(8) {
+          font-weight: bold !important;
+        }
+
+        /* Reduzir tamanho de texto em células específicas */
+        .font-monospace {
+          font-size: 6pt !important;
+        }
+
+        /* Abreviar textos dos cabeçalhos na impressão */
+        table th {
+          font-size: 6pt;
+          line-height: 1.1;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+
         .table-striped > tbody > tr:nth-of-type(odd) > * {
           background-color: transparent !important;
         }
+
+        /* Remover elementos que ocupam espaço desnecessário */
+        .bi {
+          display: none;
+        }
+
+        /* Ocultar porcentagens pequenas para economizar espaço */
+        small.text-muted {
+          font-size: 5pt !important;
+        }
+
+        /* Título da tabela visível na impressão */
+        .print-table-title {
+          font-size: 12pt;
+          font-weight: bold;
+          margin-bottom: 0.5rem;
+          color: #2c3e50;
+        }
+      }
+
+      /* Esconder método de cálculo na tela (apenas mostrar na impressão) */
+      .print-only-calc {
+        display: none;
       }
     </style>
   </head>
@@ -229,6 +398,30 @@
                     aparece junto ao valor na tabela.
                   </dd>
                 </dl>
+                <dl class="print-only-calc">
+                  <dt>MÉTODO DE CÁLCULO:</dt>
+                  <dd>
+                    - Subtrai a leitura do mês atual pela do mês anterior de
+                    cada inquilino;
+                  </dd>
+                  <dd>
+                    - Soma o resultado dos três inquilinos para chegar ao total
+                    gasto no mês, em kWh;
+                  </dd>
+                  <dd>
+                    - Calcula a porcentagem de kWh consumidos de cada inquilino
+                    em relação ao total;
+                  </dd>
+                  <dd>
+                    - A porcentagem que cada inquilino usou dos kWh totais
+                    consumidos no mês será a porcentagem que ele pagará da
+                    conta;
+                  </dd>
+                  <dd>
+                    - A porcentagem de cada inquilino sobre o total da conta
+                    aparece junto ao valor na tabela.
+                  </dd>
+                </dl>
               </div>
             </div>
           </div>
@@ -353,6 +546,31 @@
                 </table>
                 <dl class="mt-2 p-2 m-2 no-print">
                   <dt class="mb-2">MÉTODO DE CÁLCULO:</dt>
+                  <dd>
+                    - Pega a quantidade total de kWh gastos no medidor do ponto
+                    e subtrai pelo do mês anterior para ter a quantidade de kWh
+                    gastos do ponto 1;
+                  </dd>
+                  <dd>
+                    - Consulta na conta o consumo total do mês e subtrai pela
+                    quantidade calculada no ponto 1 para termos a quantidade de
+                    kWh gastos do ponto 2;
+                  </dd>
+                  <dd>
+                    - Calcula a porcentagem de gasto do ponto 1 e do ponto 2 em
+                    relação ao total de kWh gastos no mês;
+                  </dd>
+                  <dd>
+                    - Aplica a porcentagem que cada ponto gastou dos kWh totais
+                    ao valor da conta;
+                  </dd>
+                  <dd>
+                    - A porcentagem de cada inquilino sobre o total da conta
+                    aparece junto ao valor na tabela.
+                  </dd>
+                </dl>
+                <dl class="print-only-calc">
+                  <dt>MÉTODO DE CÁLCULO:</dt>
                   <dd>
                     - Pega a quantidade total de kWh gastos no medidor do ponto
                     e subtrai pelo do mês anterior para ter a quantidade de kWh
