@@ -22,13 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import imoveis.aluguel.dtos.ContractDtoRequest;
 import imoveis.aluguel.dtos.LandlordDtoResponse;
-import imoveis.aluguel.entities.Property;
-import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.exceptions.NotFoundException;
-import imoveis.aluguel.mappers.LandlordMapper;
-import imoveis.aluguel.mappers.PropertyMapper;
-import imoveis.aluguel.mappers.TenantMapper;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
 import imoveis.aluguel.utils.NumberToWordsConverter;

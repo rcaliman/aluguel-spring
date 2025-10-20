@@ -1,8 +1,5 @@
 package imoveis.aluguel.controllers.web;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
 import imoveis.aluguel.dtos.EnergyDtoRequest;
-import imoveis.aluguel.dtos.EnergyDtoResponse;
 import imoveis.aluguel.entities.CommercialEnergy;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;

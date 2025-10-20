@@ -19,7 +19,6 @@ import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.enums.PropertyUseTypeEnum;
 import imoveis.aluguel.exceptions.NotFoundException;
-import imoveis.aluguel.repositories.LandlordRepository;
 import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.services.LandlordService;
 import imoveis.aluguel.services.PropertyService;
