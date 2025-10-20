@@ -22,7 +22,7 @@ public class RentalCorrectionServiceImpl implements RentalCorrectionService {
 
     @Override
     public RentalCorrectionDTO calculateCorrectedRentalValue(Long propertyId) {
-        // Buscar a última alteração relevante do imóvel
+        
         Optional<PropertyLog> lastChangeOpt = propertyLogService.findLastRelevantChangeByPropertyId(propertyId);
 
         if (lastChangeOpt.isEmpty()) {
@@ -37,11 +37,9 @@ public class RentalCorrectionServiceImpl implements RentalCorrectionService {
             return null;
         }
 
-        // Converter Instant para LocalDate
         LocalDate lastChangeDate = lastChange.getCreatedAt().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate today = LocalDate.now();
 
-        // Se a data da última alteração for hoje ou no futuro, não há correção
         if (!lastChangeDate.isBefore(today)) {
             log.info("A última alteração é da data de hoje ou futura. Não há correção a ser aplicada.");
             return RentalCorrectionDTO.builder()
@@ -54,14 +52,11 @@ public class RentalCorrectionServiceImpl implements RentalCorrectionService {
                     .build();
         }
 
-        // Calcular o IPCA acumulado
         Double accumulatedIpca = bacenService.calculateAccumulatedIpca(lastChangeDate, today);
 
-        // Calcular o valor corrigido
         Double originalValue = lastChange.getValue();
         Double correctedValue = originalValue * (1 + accumulatedIpca / 100);
 
-        // Criar descrição detalhada
         String detailedCalculation = String.format(
                 "Valor original: R$ %.2f | Data: %s | IPCA acumulado: %.2f%% | Valor corrigido: R$ %.2f",
                 originalValue,
