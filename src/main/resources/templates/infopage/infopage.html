@@ -72,6 +72,34 @@
                      <label class="form-label">Valor do Aluguel:</label>
                      <h4 class="text-success fw-normal" th:text="${#numbers.formatCurrency(property.value())}"></h4>
                   </div>
+                  <div class="col-12" th:if="${rentalCorrection != null}">
+                    <div class="alert alert-info mb-0">
+                      <h6 class="alert-heading mb-2">
+                        <h5>Estimativa de reajuste</h5>
+                        <i class="bi bi-graph-up-arrow me-2"></i>Correção pelo IPCA
+                      </h6>
+                      <div class="row g-2">
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Valor Original:</small>
+                          <strong th:text="${#numbers.formatCurrency(rentalCorrection.originalValue)}"></strong>
+                          <small class="text-muted ms-1" th:text="'em ' + ${#temporals.format(rentalCorrection.originalDate, 'dd/MM/yyyy')}"></small>
+                        </div>
+                        <div class="col-md-6">
+                          <small class="text-muted d-block">Valor Corrigido:</small>
+                          <strong class="text-primary" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue)}"></strong>
+                          <small class="text-muted ms-1" th:text="'hoje'"></small>
+                        </div>
+                        <div class="col-12 mt-2">
+                          <small class="text-muted d-block">IPCA Acumulado:</small>
+                          <strong th:text="${#numbers.formatDecimal(rentalCorrection.accumulatedIpcaPercentage, 1, 2)} + '%'"></strong>
+                        </div>
+                        <div class="col-12 mt-2">
+                          <small class="text-muted d-block">Diferença:</small>
+                          <strong class="text-danger" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue - rentalCorrection.originalValue)}"></strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                    <div class="col-12" th:if="${property.observation()}">
                     <label class="form-label">Observação:</label>
                     <p class="fw-normal fst-italic" th:text="${property.observation()}"></p>

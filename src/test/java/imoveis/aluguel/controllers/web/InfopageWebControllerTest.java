@@ -27,6 +27,7 @@ import imoveis.aluguel.enums.PropertyTypeEnum;
 import imoveis.aluguel.enums.PropertyUseTypeEnum;
 import imoveis.aluguel.services.PropertyLogService;
 import imoveis.aluguel.services.PropertyService;
+import imoveis.aluguel.services.RentalCorrectionService;
 import imoveis.aluguel.services.TenantService;
 
 @WebMvcTest(InfoPageWebController.class)
@@ -51,6 +52,11 @@ class InfoPageWebControllerTest {
             return mock(PropertyLogService.class);
         }
 
+        @Bean
+        public RentalCorrectionService rentalCorrectionService() {
+            return mock(RentalCorrectionService.class);
+        }
+
     }
 
     @Autowired
@@ -61,6 +67,8 @@ class InfoPageWebControllerTest {
     private TenantService tenantService;
     @Autowired
     private PropertyLogService propertyLogService;
+    @Autowired
+    private RentalCorrectionService rentalCorrectionService;
 
     private Tenant tenant;
     private PropertyLog propertyLog;
@@ -89,6 +97,7 @@ class InfoPageWebControllerTest {
 
         when(propertyService.findById(1L)).thenReturn(propertyDto);
         when(propertyLogService.findAllByPropertyId(1L)).thenReturn(new ArrayList<>());
+        when(rentalCorrectionService.calculateCorrectedRentalValue(1L)).thenReturn(null);
 
         mockMvc.perform(get("/infopage/1"))
             .andExpect(status().isOk())
