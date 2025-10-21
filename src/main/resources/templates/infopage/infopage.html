@@ -83,6 +83,12 @@
                           <small class="text-muted d-block">Valor Original:</small>
                           <strong th:text="${#numbers.formatCurrency(rentalCorrection.originalValue)}"></strong>
                           <small class="text-muted ms-1" th:text="'em ' + ${#temporals.format(rentalCorrection.originalDate, 'dd/MM/yyyy')}"></small>
+                          <div class="mt-1">
+                            <small class="text-muted fst-italic"
+                                   th:with="period = ${T(java.time.Period).between(T(java.time.LocalDate).ofInstant(rentalCorrection.originalDate, T(java.time.ZoneId).systemDefault()), T(java.time.LocalDate).now())}"
+                                   th:text="${period.years > 0 ? period.years + (period.years == 1 ? ' ano' : ' anos') + (period.months > 0 ? ' e ' + period.months + (period.months == 1 ? ' mês' : ' meses') : '') : (period.months > 0 ? period.months + (period.months == 1 ? ' mês' : ' meses') : 'menos de 1 mês')} + ' atrás'">
+                            </small>
+                          </div>
                         </div>
                         <div class="col-md-6">
                           <small class="text-muted d-block">Valor Corrigido:</small>
