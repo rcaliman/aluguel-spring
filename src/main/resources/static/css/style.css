@@ -14,19 +14,37 @@
 /* IMPORTAÇÃO DE FONTES */
 /* A fonte Inter está instalada localmente no sistema GNOME, então não é necessário importar do Google Fonts */
 
-/* 1. VARIÁVEIS GLOBAIS (CSS CUSTOM PROPERTIES) */
+/* 1. VARIÁVEIS GLOBAIS (CSS CUSTOM PROPERTIES) - Catppuccin Latte */
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --accent-color: #e74c3c;
-    --light-color: #ecf0f1;
-    --text-light: #f8f9fa;
-    --text-dark: #343a40;
-    --success-color: #27ae60;
-    --border-color: #dee2e6;
-    --hover-color: #FAFA33;
+    /* Catppuccin Latte - Base Colors */
+    --ctp-base: #eff1f5;       /* Background principal */
+    --ctp-mantle: #e6e9ef;     /* Background secundário */
+    --ctp-crust: #dce0e8;      /* Background terciário */
+    --ctp-surface0: #ccd0da;   /* Surface para cards */
+    --ctp-surface1: #bcc0cc;   /* Surface alternativo */
+    --ctp-surface2: #acb0be;   /* Surface escuro */
+
+    /* Text Colors */
+    --ctp-text: #4c4f69;       /* Texto principal */
+    --ctp-subtext0: #6c6f85;   /* Subtexto */
+    --ctp-subtext1: #5c5f77;   /* Subtexto alternativo */
+
+    /* Accent Colors */
+    --ctp-lavender: #7287fd;   /* Lavanda */
+    --ctp-sapphire: #209fb5;   /* Safira */
+    --ctp-teal: #179299;       /* Teal */
+    --ctp-green: #40a02b;      /* Verde */
+    --ctp-yellow: #df8e1d;     /* Amarelo */
+    --ctp-maroon: #e64553;     /* Marrom avermelhado */
+    --ctp-red: #d20f39;        /* Vermelho */
+    --ctp-mauve: #8839ef;      /* Malva */
+    --ctp-rosewater: #dc8a78;  /* Rosewater */
+
+    /* Application Variables */
+    --light-color: #eff1f5;         /* Base */
+    --text-dark: #4c4f69;           /* Text */
     --border-radius: 0px;
-    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --box-shadow: 0 5px 15px rgba(76, 79, 105, 0.08);
     --transition: all 0.3s ease;
 }
 
@@ -57,11 +75,11 @@ main {
 footer.site-footer {
     margin-top: auto;
     padding: 1.5rem 0;
-    background-color: var(--primary-color);
-    border-top: 4px solid var(--secondary-color);
-    color: var(--text-light);
+    background-color: var(--ctp-text);
+    border-top: 4px solid var(--ctp-lavender);
+    color: var(--ctp-base);
     text-align: center;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 8px rgba(76, 79, 105, 0.1);
 }
 
 /* 4. COMPONENTES REUTILIZÁVEIS */
@@ -69,13 +87,14 @@ footer.site-footer {
 /* 4.1 Navegação */
 .navbar-dark.bg-dark {
     padding: 0.8rem 1rem;
-    background-color: var(--primary-color) !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    background-color: var(--ctp-text) !important;
+    box-shadow: 0 2px 8px rgba(76, 79, 105, 0.15);
 }
 
 .navbar-brand {
     font-size: 1.4rem;
     font-weight: 700;
+    color: var(--ctp-base) !important;
 }
 
 .nav-link {
@@ -85,13 +104,13 @@ footer.site-footer {
     transition: var(--transition);
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: var(--ctp-base) !important;
     cursor: pointer;
 }
 
 .nav-link:hover, .nav-item.active .nav-link {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: var(--hover-color) !important;
+    background-color: var(--ctp-surface2);
+    color: var(--ctp-text) !important;
     transform: translateY(-2px);
 }
 
@@ -134,139 +153,139 @@ footer.site-footer {
 
 /* Botão Primário */
 .btn-primary {
-    color: white;
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    color: var(--ctp-base);
+    background-color: var(--ctp-lavender);
+    border-color: var(--ctp-lavender);
 }
 
 .btn-primary:hover {
-    color: var(--hover-color);
-    background-color: #2980b9;
-    border-color: #2980b9;
+    color: var(--ctp-base);
+    background-color: var(--ctp-mauve);
+    border-color: var(--ctp-mauve);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 4px 12px rgba(114, 135, 253, 0.3);
 }
 
 /* Botão Secundário */
 .btn-secondary {
-    color: var(--text-dark);
+    color: var(--ctp-text);
     background-color: transparent;
-    border-color: #6c757d;
+    border-color: var(--ctp-surface2);
 }
 
 .btn-secondary:hover {
-    color: var(--hover-color);
-    background-color: #6c757d;
-    border-color: #6c757d;
+    color: var(--ctp-base);
+    background-color: var(--ctp-surface2);
+    border-color: var(--ctp-surface2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.25);
+    box-shadow: 0 4px 12px rgba(172, 176, 190, 0.3);
 }
 
 /* Botão Secundário em fundos escuros (como card-custom-header, page-header) */
 .card-custom-header .btn-secondary,
 .page-header .btn-secondary {
-    color: white;
+    color: var(--ctp-base);
     background-color: transparent;
-    border-color: white;
+    border-color: var(--ctp-base);
 }
 
 .card-custom-header .btn-secondary:hover,
 .page-header .btn-secondary:hover {
-    color: var(--primary-color);
-    background-color: white;
-    border-color: white;
+    color: var(--ctp-text);
+    background-color: var(--ctp-base);
+    border-color: var(--ctp-base);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
 }
 
 /* Botão Success */
 .btn-success {
-    color: white;
-    background-color: var(--success-color);
-    border-color: var(--success-color);
+    color: var(--ctp-base);
+    background-color: var(--ctp-green);
+    border-color: var(--ctp-green);
 }
 
 .btn-success:hover {
-    color: var(--hover-color);
-    background-color: #229954;
-    border-color: #229954;
+    color: var(--ctp-base);
+    background-color: var(--ctp-teal);
+    border-color: var(--ctp-teal);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    box-shadow: 0 4px 12px rgba(64, 160, 43, 0.3);
 }
 
 /* Botão Danger */
 .btn-danger {
-    color: white;
-    background-color: #dc3545;
-    border-color: #dc3545;
+    color: var(--ctp-base);
+    background-color: var(--ctp-maroon);
+    border-color: var(--ctp-maroon);
 }
 
 .btn-danger:hover {
-    color: var(--hover-color);
-    background-color: #c82333;
-    border-color: #c82333;
+    color: var(--ctp-base);
+    background-color: var(--ctp-red);
+    border-color: var(--ctp-red);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+    box-shadow: 0 4px 12px rgba(230, 69, 83, 0.3);
 }
 
 /* Botão Info */
 .btn-info {
-    color: white;
-    background-color: #17a2b8;
-    border-color: #17a2b8;
+    color: var(--ctp-base);
+    background-color: var(--ctp-sapphire);
+    border-color: var(--ctp-sapphire);
 }
 
 .btn-info:hover {
-    color: var(--hover-color);
-    background-color: #138496;
-    border-color: #138496;
+    color: var(--ctp-base);
+    background-color: var(--ctp-teal);
+    border-color: var(--ctp-teal);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+    box-shadow: 0 4px 12px rgba(32, 159, 181, 0.3);
 }
 
 /* Botão Warning */
 .btn-warning {
-    color: var(--text-dark);
-    background-color: #ffc107;
-    border-color: #ffc107;
+    color: var(--ctp-base);
+    background-color: var(--ctp-yellow);
+    border-color: var(--ctp-yellow);
 }
 
 .btn-warning:hover {
-    color: var(--text-dark);
-    background-color: #e0a800;
-    border-color: #e0a800;
+    color: var(--ctp-base);
+    background-color: var(--ctp-rosewater);
+    border-color: var(--ctp-rosewater);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+    box-shadow: 0 4px 12px rgba(223, 142, 29, 0.3);
 }
 
 /* Botão Light */
 .btn-light {
-    color: var(--text-dark);
-    background-color: white;
-    border-color: #dee2e6;
+    color: var(--ctp-text);
+    background-color: var(--ctp-base);
+    border-color: var(--ctp-surface0);
 }
 
 .btn-light:hover {
-    color: var(--text-dark);
-    background-color: #f8f9fa;
-    border-color: #dee2e6;
+    color: var(--ctp-text);
+    background-color: var(--ctp-mantle);
+    border-color: var(--ctp-surface0);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(76, 79, 105, 0.1);
 }
 
 /* Botão Outline Light (para fundos escuros) */
 .btn-outline-light {
-    color: white;
+    color: var(--ctp-base);
     background-color: transparent;
-    border-color: white;
+    border-color: var(--ctp-base);
 }
 
 .btn-outline-light:hover {
-    color: var(--primary-color);
-    background-color: white;
-    border-color: white;
+    color: var(--ctp-text);
+    background-color: var(--ctp-base);
+    border-color: var(--ctp-base);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
 }
 
 /* Botões com tamanho pequeno */
@@ -284,7 +303,7 @@ footer.site-footer {
 /* 4.3 Cards */
 .card-custom {
     margin-bottom: 2rem;
-    background-color: #fff;
+    background-color: var(--ctp-base);
     border: none;
     border-radius: 0px;
     box-shadow: var(--box-shadow);
@@ -293,34 +312,35 @@ footer.site-footer {
 
 .card-custom-header {
     padding: 1rem 1.5rem;
-    background: var(--primary-color);
-    color: white;
+    background: var(--ctp-text);
+    color: var(--ctp-base);
     font-weight: 600;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(76, 79, 105, 0.1);
 }
 
 .card-custom-header.gradient {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, var(--ctp-text) 0%, var(--ctp-sapphire) 100%);
 }
 
 .card-custom-body {
     padding: 2rem;
+    background-color: var(--ctp-base);
 }
 
 /* Cards de navegação da home (atalhos) */
 .card-custom-body .card {
-    border: 2px solid #dee2e6;
+    border: 2px solid var(--ctp-surface0);
     border-radius: var(--border-radius);
     transition: all 0.2s ease-in-out;
     cursor: pointer;
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    background-color: var(--ctp-base);
+    box-shadow: 0 1px 3px rgba(76, 79, 105, 0.08);
 }
 
 .card-custom-body .card:hover {
-    border-color: var(--secondary-color);
+    border-color: var(--ctp-lavender);
     transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.25);
+    box-shadow: 0 8px 20px rgba(114, 135, 253, 0.25);
 }
 
 .card-custom-body .card i {
@@ -329,62 +349,69 @@ footer.site-footer {
 
 .card-custom-body .card:hover i {
     transform: scale(1.15);
-    color: var(--secondary-color) !important;
+    color: var(--ctp-lavender) !important;
 }
 
 .card-custom-body .card h5 {
-    color: var(--text-dark);
+    color: var(--ctp-text);
     transition: color 0.2s ease-in-out;
 }
 
 .card-custom-body .card:hover h5 {
-    color: var(--secondary-color);
+    color: var(--ctp-lavender);
 }
 
 /* 4.4 Formulários */
 .form-label {
-    color: var(--primary-color);
+    color: var(--ctp-text);
     font-weight: 600;
 }
 
 .form-control, .form-select {
     padding: 0.75rem 1rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--ctp-surface0);
     border-radius: var(--border-radius);
     transition: var(--transition);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: var(--ctp-base);
+    color: var(--ctp-text);
+    box-shadow: 0 1px 2px rgba(76, 79, 105, 0.05);
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+    border-color: var(--ctp-lavender);
+    box-shadow: 0 0 0 0.25rem rgba(114, 135, 253, 0.25);
+    background-color: var(--ctp-base);
+    color: var(--ctp-text);
 }
 
 /* Estilo para placeholders mais suaves */
 .form-control::placeholder {
-    color: #adb5bd; /* Um cinza mais claro e sutil */
-    opacity: 1;    /* Garante a visibilidade em todos os navegadores */
+    color: var(--ctp-subtext0);
+    opacity: 1;
 }
 
 .input-group-text {
-    background-color: var(--light-color);
-    border: 1px solid var(--border-color);
+    background-color: var(--ctp-mantle);
+    border: 1px solid var(--ctp-surface0);
     border-radius: var(--border-radius) 0 0 var(--border-radius);
+    color: var(--ctp-text);
 }
 
 /* 4.5 Tabelas */
 .table-responsive {
     border-radius: 0px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px rgba(76, 79, 105, 0.12);
 }
 
 .table {
     margin-bottom: 0;
+    background-color: var(--ctp-base);
+    color: var(--ctp-text);
 }
 
 .table thead {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--ctp-text);
+    color: var(--ctp-base);
     font-weight: 600;
 }
 
@@ -393,9 +420,9 @@ footer.site-footer {
     border: none;
 }
 
-/* Links dentro do thead (como ícones de edição) devem ser brancos */
+/* Links dentro do thead (como ícones de edição) devem ter cor da base */
 .table thead a {
-    color: white;
+    color: var(--ctp-base);
     text-decoration: none;
     transition: all 0.2s ease-in-out;
     opacity: 0.9;
@@ -403,21 +430,22 @@ footer.site-footer {
 
 .table thead a:hover {
     opacity: 1;
-    color: white;
+    color: var(--ctp-lavender);
     transform: scale(1.15);
 }
 
 .table td {
     padding: 1rem;
     vertical-align: middle;
+    border-bottom: 1px solid var(--ctp-surface0);
 }
 
 .table-hover tbody tr:hover {
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: var(--ctp-mantle);
 }
 
 tr.table-active, tr.table-active:hover {
-    background-color: rgba(52, 152, 219, 0.2) !important;
+    background-color: var(--ctp-surface0) !important;
 }
 
 .table-sm th,
@@ -447,13 +475,33 @@ tr.table-active, tr.table-active:hover {
     padding: 1rem 1.5rem;
     border: none;
     border-radius: var(--border-radius);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 4px rgba(76, 79, 105, 0.1);
+}
+
+.alert-success {
+    background-color: var(--ctp-green);
+    color: var(--ctp-base);
+}
+
+.alert-danger {
+    background-color: var(--ctp-maroon);
+    color: var(--ctp-base);
+}
+
+.alert-warning {
+    background-color: var(--ctp-yellow);
+    color: var(--ctp-base);
+}
+
+.alert-info {
+    background-color: var(--ctp-sapphire);
+    color: var(--ctp-base);
 }
 
 /* 4.7 Badges */
 .badge.badge-vacant {
-    background-color: var(--accent-color);
-    color: white;
+    background-color: var(--ctp-maroon);
+    color: var(--ctp-base);
 }
 
 /* 5. ESTILOS ESPECÍFICOS DE PÁGINAS */
@@ -481,32 +529,35 @@ tr.table-active, tr.table-active:hover {
 .page-header {
     margin-bottom: 1.5rem;
     padding: 1rem 1.25rem;
-    color: white;
+    color: var(--ctp-base);
     border-radius: 0px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+    background: linear-gradient(135deg, var(--ctp-text) 0%, var(--ctp-sapphire) 100%);
+    box-shadow: 0 2px 6px rgba(76, 79, 105, 0.12);
 }
 
 .page-header h1 {
     margin-bottom: 0.25rem;
     font-size: 1.5rem;
+    color: var(--ctp-base);
 }
 
 .page-header p {
     font-size: 0.9rem;
+    color: var(--ctp-mantle);
 }
 
 /* 5.3 Checkbox Customizado */
 .form-check-input.property-checkbox {
     width: 1.3em;
     height: 1.3em;
-    border: 2px solid var(--border-color); /* Usando variável */
+    border: 2px solid var(--ctp-surface0);
     cursor: pointer;
+    background-color: var(--ctp-base);
 }
 
 .form-check-input.property-checkbox:checked {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    background-color: var(--ctp-lavender);
+    border-color: var(--ctp-lavender);
 }
 
 .form-check-input.property-checkbox:disabled {
@@ -521,14 +572,14 @@ tr.table-active, tr.table-active:hover {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--secondary-color);
-    color: var(--primary-color);
+    border-bottom: 2px solid var(--ctp-lavender);
+    color: var(--ctp-text);
     font-weight: 600;
 }
 
 .form-section-title i {
     margin-right: 0.75rem;
-    color: var(--secondary-color);
+    color: var(--ctp-lavender);
 }
 
 /* 6. ÍCONES E UTILITÁRIOS */
@@ -561,32 +612,32 @@ tr.table-active, tr.table-active:hover {
 
 /* Botão Editar */
 .action-btn-edit {
-    color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    color: var(--ctp-lavender);
+    border-color: var(--ctp-lavender);
     background-color: transparent;
 }
 
 .action-btn-edit:hover {
-    color: var(--hover-color);
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
+    color: var(--ctp-base);
+    background-color: var(--ctp-lavender);
+    border-color: var(--ctp-lavender);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 4px 8px rgba(114, 135, 253, 0.3);
 }
 
 /* Botão Excluir */
 .action-btn-delete {
-    color: #dc3545;
-    border-color: #dc3545;
+    color: var(--ctp-maroon);
+    border-color: var(--ctp-maroon);
     background-color: transparent;
 }
 
 .action-btn-delete:hover {
-    color: var(--hover-color);
-    background-color: #dc3545;
-    border-color: #dc3545;
+    color: var(--ctp-base);
+    background-color: var(--ctp-maroon);
+    border-color: var(--ctp-maroon);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    box-shadow: 0 4px 8px rgba(230, 69, 83, 0.3);
 }
 
 /* Container dos botões de ação */
@@ -603,6 +654,19 @@ tr.table-active, tr.table-active:hover {
     font-variant-ligatures: normal; /* Ativa ligaduras para fontes que suportam */
 }
 
+/* 6.2 Classes de Cores Catppuccin - Substituindo Bootstrap */
+
+/* Background Colors */
+.bg-ctp-lavender { background-color: var(--ctp-lavender) !important; }
+.bg-ctp-sapphire { background-color: var(--ctp-sapphire) !important; }
+.bg-ctp-maroon { background-color: var(--ctp-maroon) !important; }
+.bg-ctp-surface2 { background-color: var(--ctp-surface2) !important; }
+
+/* Text Colors */
+.text-ctp-lavender { color: var(--ctp-lavender) !important; }
+.text-ctp-green { color: var(--ctp-green) !important; }
+.text-ctp-maroon { color: var(--ctp-maroon) !important; }
+
 /* 7. RESPONSIVIDADE */
 @media (max-width: 768px) {
     .page-header {
@@ -612,7 +676,7 @@ tr.table-active, tr.table-active:hover {
         margin-top: 1rem;
         width: 100%;
     }
-    .login-body, .card-custom-body {
+    .card-custom-body {
         padding: 1.5rem;
     }
 }

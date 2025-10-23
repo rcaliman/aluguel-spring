@@ -70,7 +70,7 @@
                   </div>
                   <div class="col-12">
                      <label class="form-label">Valor do Aluguel:</label>
-                     <h4 class="text-success fw-normal" th:text="${#numbers.formatCurrency(property.value())}"></h4>
+                     <h4 class="text-ctp-green fw-normal" th:text="${#numbers.formatCurrency(property.value())}"></h4>
                   </div>
                   <div class="col-12" th:if="${rentalCorrection != null}">
                     <div class="alert alert-info mb-0">
@@ -92,7 +92,7 @@
                         </div>
                         <div class="col-md-6">
                           <small class="text-muted d-block">Valor Corrigido:</small>
-                          <strong class="text-primary" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue)}"></strong>
+                          <strong class="text-ctp-lavender" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue)}"></strong>
                           <small class="text-muted ms-1" th:text="'hoje'"></small>
                         </div>
                         <div class="col-12 mt-2">
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-12 mt-2">
                           <small class="text-muted d-block">Diferença:</small>
-                          <strong class="text-danger" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue - rentalCorrection.originalValue)}"></strong>
+                          <strong class="text-ctp-maroon" th:text="${#numbers.formatCurrency(rentalCorrection.correctedValue - rentalCorrection.originalValue)}"></strong>
                         </div>
                       </div>
                     </div>
