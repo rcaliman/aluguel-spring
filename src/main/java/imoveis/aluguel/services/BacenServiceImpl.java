@@ -41,9 +41,13 @@ public class BacenServiceImpl implements BacenService {
 
             return Arrays.asList(response);
 
+        } catch (org.springframework.web.client.HttpClientErrorException.NotFound e) {
+            log.warn("Dados de IPCA não disponíveis para o período {} a {} (404 Not Found). IPCA é divulgado mensalmente.",
+                    startDate, endDate);
+            return List.of();
         } catch (Exception e) {
             log.error("Erro ao consultar API do Bacen", e);
-            throw new RuntimeException("Erro ao consultar dados do IPCA no Bacen", e);
+            return List.of();
         }
     }
 

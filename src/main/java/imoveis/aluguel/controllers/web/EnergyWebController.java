@@ -44,7 +44,7 @@ public class EnergyWebController {
         model.addAttribute("currentPage", "energies");
 
         var commercialEnergiesReadings = commercialEnergyService.listLasts();
-                                                        
+
         model.addAttribute("commercialEnergyReadings", commercialEnergiesReadings);
 
         return "energy/list";

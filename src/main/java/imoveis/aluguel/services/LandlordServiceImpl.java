@@ -81,12 +81,14 @@ public class LandlordServiceImpl implements LandlordService {
         landlordRepository.flush();
 
         if (updatedLandlord.getContacts() != null) {
+
             updatedLandlord.getContacts().forEach(contact -> {
                 contact.setId(null);
                 contact.setTenant(null);
 
                 contact.setLandlord(landlord);
                 landlord.getContacts().add(contact);
+                
             });
         }
 

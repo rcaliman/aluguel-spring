@@ -13,8 +13,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import imoveis.aluguel.dtos.UserDtoResponse;
 import imoveis.aluguel.entities.User;
 import imoveis.aluguel.enums.RoleEnum;
+import imoveis.aluguel.mappers.UserMapper;
 import imoveis.aluguel.repositories.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +27,9 @@ class UserServiceImplTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private UserMapper userMapper;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -41,14 +46,17 @@ class UserServiceImplTest {
     @Test
     @DisplayName("saveUser - Deve salvar um usuário com a role padrão OPERADOR")
     void saveUser_ShouldSaveUserWithDefaultRole() {
+        UserDtoResponse expectedResponse = new UserDtoResponse(1L, "testuser", "encodedPassword", RoleEnum.OPERADOR, null, null);
+
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userMapper.dtoResponse(any(User.class))).thenReturn(expectedResponse);
 
-        User result = userService.saveUser(user);
+        UserDtoResponse result = userService.create(user);
 
         assertNotNull(result);
-        assertEquals(RoleEnum.OPERADOR, result.getRole());
-        assertEquals("encodedPassword", result.getPassword());
+        assertEquals(RoleEnum.OPERADOR, result.role());
+        assertEquals("encodedPassword", result.password());
         verify(userRepository, times(1)).save(user);
     }
 
@@ -56,14 +64,17 @@ class UserServiceImplTest {
     @DisplayName("saveUser - Deve salvar um usuário com a role especificada")
     void saveUser_ShouldSaveUserWithSpecifiedRole() {
         user.setRole(RoleEnum.ADMIN);
+        UserDtoResponse expectedResponse = new UserDtoResponse(1L, "testuser", "encodedPassword", RoleEnum.ADMIN, null, null);
+
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userMapper.dtoResponse(any(User.class))).thenReturn(expectedResponse);
 
-        User result = userService.saveUser(user);
+        UserDtoResponse result = userService.create(user);
 
         assertNotNull(result);
-        assertEquals(RoleEnum.ADMIN, result.getRole());
-        assertEquals("encodedPassword", result.getPassword());
+        assertEquals(RoleEnum.ADMIN, result.role());
+        assertEquals("encodedPassword", result.password());
         verify(userRepository, times(1)).save(user);
     }
 }

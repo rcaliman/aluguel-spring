@@ -10,13 +10,10 @@ import imoveis.aluguel.entities.User;
 @Mapper(componentModel = "spring", uses = {})
 public interface UserMapper {
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "role", ignore = true)
     User toUser(UserDtoRequest dtoRequest);
 
-    @Mapping(target = "role", ignore = true)
     UserDtoResponse dtoResponse(User user);
 
 }

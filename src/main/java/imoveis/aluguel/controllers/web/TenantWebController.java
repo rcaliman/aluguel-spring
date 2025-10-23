@@ -1,6 +1,7 @@
 package imoveis.aluguel.controllers.web;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class TenantWebController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAnyAutority('ADMIN', 'OPERADOR')")
     public String showCreateForm(Model model) {
 
         model.addAttribute("tenant", new Tenant());
@@ -48,6 +50,7 @@ public class TenantWebController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAutority('ADMIN', 'OPERADOR')")
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Tenant tenant = tenantRepository.findById(id).orElseThrow(
@@ -64,6 +67,7 @@ public class TenantWebController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAutority('ADMIN', 'OPERADOR')")
     public String saveTenant(@ModelAttribute Tenant tenant) {
 
         // Converter strings vazias em null para evitar violação de constraint única
@@ -106,6 +110,7 @@ public class TenantWebController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAutority('ADMIN', 'OPERADOR')")
     public String deleteTenant(@PathVariable Long id) {
 
         tenantService.deleteById(id);

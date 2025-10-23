@@ -14,8 +14,8 @@ class UserMapperTest {
 
     @Test
     void shouldMapDtoToUser() {
-       
-        UserDtoRequest dto = new UserDtoRequest("usuario", "senha123", RoleEnum.OPERADOR);
+
+        UserDtoRequest dto = new UserDtoRequest(null, "usuario", "senha123", RoleEnum.OPERADOR, null, null);
 
         User user = userMapper.toUser(dto);
 
@@ -23,7 +23,7 @@ class UserMapperTest {
         assertEquals("usuario", user.getUsername());
         assertEquals("senha123", user.getPassword());
         assertNull(user.getId());
-        assertNull(user.getRole());
-        
+        assertEquals(RoleEnum.OPERADOR, user.getRole());
+
     }
 }

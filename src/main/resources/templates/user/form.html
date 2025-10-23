@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title
+      th:text="${user.id == null} ? 'Novo Usuário' : 'Editar Usuário'"
+    >
+      Formulário de Usuário
+    </title>
+  </head>
+
+  <body>
+    <section layout:fragment="content">
+      <div class="container">
+        <div class="page-header">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+          >
+            <div>
+              <h1
+                class="h3 mb-1"
+                th:text="${user.id == null} ? 'Adicionar Novo Usuário' : 'Editar Usuário'"
+              ></h1>
+              <p class="mb-0 opacity-75">Preencha os dados do usuário abaixo</p>
+            </div>
+            <a th:href="@{/users}" class="btn btn-secondary">
+              <i class="bi bi-arrow-left-circle"></i> Voltar para a Lista
+            </a>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card-custom">
+              <div class="card-custom-header">
+                <span
+                  ><i class="bi bi-pencil-square me-2"></i> Dados do
+                  Usuário</span
+                >
+              </div>
+
+              <div class="card-custom-body">
+                <form
+                  th:action="@{/users}"
+                  th:object="${user}"
+                  method="post"
+                >
+                  <input type="hidden" th:field="*{id}" />
+
+                  <h5 class="form-section-title">
+                    <i class="bi bi-person-vcard"></i> Informações de Acesso
+                  </h5>
+
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <label for="username" class="form-label">Nome de Usuário</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="username"
+                        th:field="*{username}"
+                        required
+                        placeholder="Digite o nome de usuário"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="password" class="form-label">
+                        Senha
+                        <span th:if="${user.id != null}" class="text-muted">(deixe em branco para não alterar)</span>
+                      </label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        th:field="*{password}"
+                        th:required="${user.id == null}"
+                        placeholder="Digite a senha"
+                      />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="role" class="form-label">Perfil</label>
+                      <select class="form-select" id="role" th:field="*{role}" required>
+                        <option value="">Selecione...</option>
+                        <option
+                          th:each="roleOption : ${roles}"
+                          th:value="${roleOption.name()}"
+                          th:text="${roleOption.displayName}"
+                        ></option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div
+                    class="d-flex justify-content-end gap-3 pt-4 mt-3 border-top"
+                  >
+                    <a th:href="@{/users}" class="btn btn-secondary">
+                      <i class="bi bi-x-circle"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                      <i class="bi bi-check-circle"></i> Salvar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -3,7 +3,7 @@ package imoveis.aluguel.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum RoleEnum {
-    ADMIN("administrador"), OPERADOR("operador");
+    ADMIN("administrador"), OPERADOR("operador"), LEITOR("leitor");
 
     private final String displayName;
 
