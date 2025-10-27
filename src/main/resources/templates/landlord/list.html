@@ -1,82 +1,118 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layout}">
+<!doctype html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout}"
+>
+  <head>
+    <title>Locadores</title>
+  </head>
 
-<head>
-  <title>Locadores</title>
-</head>
-
-<body>
-  <section layout:fragment="content">
-    <div class="container">
-      <div class="page-header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
-          <div>
-            <h1 class="h3 mb-1">
-              <i class="bi bi-people-fill me-2"></i> Lista de Locadores
-            </h1>
-            <p class="mb-0 opacity-75">
-              Gerencie os proprietários dos imóveis.
-            </p>
+  <body>
+    <section layout:fragment="content">
+      <div class="container">
+        <div class="page-header">
+          <div
+            class="d-flex justify-content-between align-items-center flex-wrap"
+          >
+            <div>
+              <h1 class="h3 mb-1">
+                <i class="bi bi-people-fill me-2"></i> Lista de Locadores
+              </h1>
+              <p class="mb-0 opacity-75">
+                Gerencie os proprietários dos imóveis.
+              </p>
+            </div>
+            <a
+              th:href="@{/landlords/new}"
+              class="btn btn-secondary"
+              sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+            >
+              <i class="bi bi-plus-circle"></i> Novo Locador
+            </a>
           </div>
-          <a th:href="@{/landlords/new}" class="btn btn-secondary">
-            <i class="bi bi-plus-circle"></i> Novo locador
-          </a>
+        </div>
+
+        <div class="card-custom">
+          <div class="card-custom-header">
+            <i class="bi bi-list-ul me-2"></i> Locadores Cadastrados
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped mb-0 table-sm">
+              <thead>
+                <tr>
+                  <th class="text-center th-col-main">Principal</th>
+                  <th>Nome</th>
+                  <th>CPF/CNPJ</th>
+                  <th>Cidade/Estado</th>
+                  <th
+                    class="text-center th-col-actions"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                  >
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="landlord : ${landlords}">
+                  <td class="text-center">
+                    <span th:if="${landlord.main}">
+                      <i
+                        class="bi bi-check2-square text-ctp-lavender fs-5"
+                        title="Locador Principal"
+                      ></i>
+                    </span>
+                  </td>
+                  <td
+                    th:text="${landlord.name}"
+                    th:title="${landlord.name}"
+                    class="name-cell"
+                  >
+                    Nome do Locador
+                  </td>
+                  <td th:text="${landlord.cpfCnpj}" class="cpf-cnpj-display">
+                    00.000.000/0000-00
+                  </td>
+                  <td
+                    th:text="${landlord.city != null ? landlord.city + ' - ' + landlord.state : ''}"
+                  ></td>
+                  <td
+                    class="text-center"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                  >
+                    <div class="action-buttons">
+                      <a
+                        th:href="@{/landlords/edit/{id}(id=${landlord.id})}"
+                        class="action-btn action-btn-edit"
+                        title="Editar"
+                      >
+                        <i class="bi bi-pencil"></i>
+                      </a>
+                      <a
+                        th:href="@{/landlords/delete/{id}(id=${landlord.id})}"
+                        class="action-btn action-btn-delete"
+                        title="Excluir"
+                        onclick="return confirm('Tem certeza que deseja excluir este locador?');"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(landlords)}">
+                  <td colspan="8" class="text-center py-4">
+                    <i
+                      class="bi bi-inbox display-4 text-muted d-block mb-2"
+                    ></i>
+                    <span class="text-muted">Nenhum locador cadastrado</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-
-      <div class="card-custom">
-        <div class="card-custom-header">
-          <i class="bi bi-list-ul me-2"></i> Locadores Cadastrados
-        </div>
-        <div class="table-responsive">
-          <table class="table table-hover table-striped mb-0 table-sm">
-            <thead>
-              <tr>
-                <th class="text-center th-col-main">Principal</th>
-                <th>Nome</th>
-                <th>CPF/CNPJ</th>
-                <th>Cidade/Estado</th>
-                <th class="text-center th-col-actions">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="landlord : ${landlords}">
-                <td class="text-center">
-                  <span th:if="${landlord.main}">
-                    <i class="bi bi-check2-square text-ctp-lavender fs-5" title="Locador Principal"></i>
-                  </span>
-                </td>
-                <td th:text="${landlord.name}" th:title="${landlord.name}" class="name-cell">
-                  Nome do Locador
-                </td>
-                <td th:text="${landlord.cpfCnpj}" class="cpf-cnpj-display">00.000.000/0000-00</td>
-                <td th:text="${landlord.city != null ? landlord.city + ' - ' + landlord.state : ''}"></td>
-                <td class="text-center">
-                  <div class="action-buttons">
-                    <a th:href="@{/landlords/edit/{id}(id=${landlord.id})}" class="action-btn action-btn-edit"
-                      title="Editar">
-                      <i class="bi bi-pencil"></i>
-                    </a>
-                    <a th:href="@{/landlords/delete/{id}(id=${landlord.id})}" class="action-btn action-btn-delete"
-                      title="Excluir" onclick="return confirm('Tem certeza que deseja excluir este locador?');">
-                      <i class="bi bi-trash"></i>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-              <tr th:if="${#lists.isEmpty(landlords)}">
-                <td colspan="8" class="text-center py-4">
-                  <i class="bi bi-inbox display-4 text-muted d-block mb-2"></i>
-                  <span class="text-muted">Nenhum locador cadastrado</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-</body>
-
+    </section>
+  </body>
 </html>

@@ -16,442 +16,456 @@
 
 /* 1. VARIÁVEIS GLOBAIS (CSS CUSTOM PROPERTIES) - Catppuccin Latte */
 :root {
-    /* Catppuccin Latte - Base Colors */
-    --ctp-base: #eff1f5;       /* Background principal */
-    --ctp-mantle: #e6e9ef;     /* Background secundário */
-    --ctp-crust: #dce0e8;      /* Background terciário */
-    --ctp-surface0: #ccd0da;   /* Surface para cards */
-    --ctp-surface1: #bcc0cc;   /* Surface alternativo */
-    --ctp-surface2: #acb0be;   /* Surface escuro */
+  /* Catppuccin Latte - Base Colors */
+  --ctp-base: #eff1f5; /* Background principal */
+  --ctp-mantle: #e6e9ef; /* Background secundário */
+  --ctp-crust: #dce0e8; /* Background terciário */
+  --ctp-surface0: #ccd0da; /* Surface para cards */
+  --ctp-surface1: #bcc0cc; /* Surface alternativo */
+  --ctp-surface2: #acb0be; /* Surface escuro */
 
-    /* Text Colors */
-    --ctp-text: #4c4f69;       /* Texto principal */
-    --ctp-subtext0: #6c6f85;   /* Subtexto */
-    --ctp-subtext1: #5c5f77;   /* Subtexto alternativo */
+  /* Text Colors */
+  --ctp-text: #4c4f69; /* Texto principal */
+  --ctp-subtext0: #6c6f85; /* Subtexto */
+  --ctp-subtext1: #5c5f77; /* Subtexto alternativo */
 
-    /* Accent Colors */
-    --ctp-lavender: #7287fd;   /* Lavanda */
-    --ctp-sapphire: #209fb5;   /* Safira */
-    --ctp-teal: #179299;       /* Teal */
-    --ctp-green: #40a02b;      /* Verde */
-    --ctp-yellow: #df8e1d;     /* Amarelo */
-    --ctp-maroon: #e64553;     /* Marrom avermelhado */
-    --ctp-red: #d20f39;        /* Vermelho */
-    --ctp-mauve: #8839ef;      /* Malva */
-    --ctp-rosewater: #dc8a78;  /* Rosewater */
+  /* Accent Colors */
+  --ctp-lavender: #7287fd; /* Lavanda */
+  --ctp-sapphire: #209fb5; /* Safira */
+  --ctp-teal: #179299; /* Teal */
+  --ctp-green: #40a02b; /* Verde */
+  --ctp-yellow: #df8e1d; /* Amarelo */
+  --ctp-maroon: #e64553; /* Marrom avermelhado */
+  --ctp-red: #d20f39; /* Vermelho */
+  --ctp-mauve: #8839ef; /* Malva */
+  --ctp-rosewater: #dc8a78; /* Rosewater */
 
-    /* Application Variables */
-    --light-color: #eff1f5;         /* Base */
-    --text-dark: #4c4f69;           /* Text */
-    --border-radius: 0px;
-    --box-shadow: 0 5px 15px rgba(76, 79, 105, 0.08);
-    --transition: all 0.3s ease;
+  /* Application Variables */
+  --light-color: #eff1f5; /* Base */
+  --text-dark: #4c4f69; /* Text */
+  --border-radius: 0px;
+  --box-shadow: 0 5px 15px rgba(76, 79, 105, 0.08);
+  --transition: all 0.3s ease;
 }
 
 /* 2. RESET E ESTILOS BASE */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--light-color);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text-dark);
-    line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--light-color);
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
 }
 
 /* 3. LAYOUT PRINCIPAL */
 main {
-    flex: 1;
-    padding-top: 2rem;
-    padding-bottom: 3rem;
+  flex: 1;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
 }
 
 footer.site-footer {
-    margin-top: auto;
-    padding: 1.5rem 0;
-    background-color: var(--ctp-text);
-    border-top: 4px solid var(--ctp-lavender);
-    color: var(--ctp-base);
-    text-align: center;
-    box-shadow: 0 -2px 8px rgba(76, 79, 105, 0.1);
+  margin-top: auto;
+  padding: 1.5rem 0;
+  background-color: var(--ctp-text);
+  border-top: 4px solid var(--ctp-lavender);
+  color: var(--ctp-base);
+  text-align: center;
+  box-shadow: 0 -2px 8px rgba(76, 79, 105, 0.1);
 }
 
 /* 4. COMPONENTES REUTILIZÁVEIS */
 
 /* 4.1 Navegação */
 .navbar-dark.bg-dark {
-    padding: 0.8rem 1rem;
-    background-color: var(--ctp-text) !important;
-    box-shadow: 0 2px 8px rgba(76, 79, 105, 0.15);
+  padding: 0.8rem 1rem;
+  background-color: var(--ctp-text) !important;
+  box-shadow: 0 2px 8px rgba(76, 79, 105, 0.15);
 }
 
 .navbar-brand {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--ctp-base) !important;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ctp-base) !important;
 }
 
 .nav-link {
-    padding: 0.5rem 1rem !important;
-    font-weight: 500;
-    border-radius: 0px;
-    transition: var(--transition);
-    border: none;
-    background: transparent;
-    color: var(--ctp-base) !important;
-    cursor: pointer;
+  padding: 0.5rem 1rem !important;
+  font-weight: 500;
+  border-radius: 0px;
+  transition: var(--transition);
+  border: none;
+  background: transparent;
+  color: var(--ctp-base) !important;
+  cursor: pointer;
 }
 
-.nav-link:hover, .nav-item.active .nav-link {
-    background-color: var(--ctp-surface2);
-    color: var(--ctp-text) !important;
-    transform: translateY(-2px);
+.nav-link:hover,
+.nav-item.active .nav-link {
+  background-color: var(--ctp-surface2);
+  color: var(--ctp-text) !important;
+  transform: translateY(-2px);
 }
 
 /* Botão de logout no header */
 .navbar-nav button.nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 /* Links principais de navegação */
 .navbar-nav .nav-item .nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 /* 4.2 Botões Retangulares - Design Elegante e Minimalista */
 .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.65rem 1.5rem;
-    font-weight: 600;
-    font-size: 0.95rem;
-    border: 2px solid;
-    border-radius: var(--border-radius);
-    transition: all 0.2s ease-in-out;
-    text-decoration: none;
-    line-height: 1.5;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 2px solid;
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px rgba(76, 79, 105, 0.1);
 }
 
 .btn i {
-    margin: 0;
-    font-size: 1rem;
-    line-height: 1;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 /* Botão Primário */
 .btn-primary {
-    color: var(--ctp-base);
-    background-color: var(--ctp-lavender);
-    border-color: var(--ctp-lavender);
+  color: var(--ctp-base);
+  background-color: var(--ctp-lavender);
+  border-color: var(--ctp-lavender);
 }
 
 .btn-primary:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-mauve);
-    border-color: var(--ctp-mauve);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(114, 135, 253, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-mauve);
+  border-color: var(--ctp-mauve);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(114, 135, 253, 0.3);
 }
 
 /* Botão Secundário */
 .btn-secondary {
-    color: var(--ctp-text);
-    background-color: transparent;
-    border-color: var(--ctp-surface2);
+  color: var(--ctp-text);
+  background-color: transparent;
+  border-color: var(--ctp-surface2);
 }
 
 .btn-secondary:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-surface2);
-    border-color: var(--ctp-surface2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(172, 176, 190, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-surface2);
+  border-color: var(--ctp-surface2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(172, 176, 190, 0.3);
 }
 
 /* Botão Secundário em fundos escuros (como card-custom-header, page-header) */
 .card-custom-header .btn-secondary,
 .page-header .btn-secondary {
-    color: var(--ctp-base);
-    background-color: transparent;
-    border-color: var(--ctp-base);
+  color: var(--ctp-base);
+  background-color: transparent;
+  border-color: var(--ctp-base);
 }
 
 .card-custom-header .btn-secondary:hover,
 .page-header .btn-secondary:hover {
-    color: var(--ctp-text);
-    background-color: var(--ctp-base);
-    border-color: var(--ctp-base);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
+  color: var(--ctp-text);
+  background-color: var(--ctp-base);
+  border-color: var(--ctp-base);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
 }
 
 /* Botão Success */
 .btn-success {
-    color: var(--ctp-base);
-    background-color: var(--ctp-green);
-    border-color: var(--ctp-green);
+  color: var(--ctp-base);
+  background-color: var(--ctp-green);
+  border-color: var(--ctp-green);
 }
 
 .btn-success:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-teal);
-    border-color: var(--ctp-teal);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(64, 160, 43, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-teal);
+  border-color: var(--ctp-teal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(64, 160, 43, 0.3);
 }
 
 /* Botão Danger */
 .btn-danger {
-    color: var(--ctp-base);
-    background-color: var(--ctp-maroon);
-    border-color: var(--ctp-maroon);
+  color: var(--ctp-base);
+  background-color: var(--ctp-maroon);
+  border-color: var(--ctp-maroon);
 }
 
 .btn-danger:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-red);
-    border-color: var(--ctp-red);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(230, 69, 83, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-red);
+  border-color: var(--ctp-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 69, 83, 0.3);
 }
 
 /* Botão Info */
 .btn-info {
-    color: var(--ctp-base);
-    background-color: var(--ctp-sapphire);
-    border-color: var(--ctp-sapphire);
+  color: var(--ctp-base);
+  background-color: var(--ctp-sapphire);
+  border-color: var(--ctp-sapphire);
 }
 
 .btn-info:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-teal);
-    border-color: var(--ctp-teal);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(32, 159, 181, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-teal);
+  border-color: var(--ctp-teal);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(32, 159, 181, 0.3);
 }
 
 /* Botão Warning */
 .btn-warning {
-    color: var(--ctp-base);
-    background-color: var(--ctp-yellow);
-    border-color: var(--ctp-yellow);
+  color: var(--ctp-base);
+  background-color: var(--ctp-yellow);
+  border-color: var(--ctp-yellow);
 }
 
 .btn-warning:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-rosewater);
-    border-color: var(--ctp-rosewater);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(223, 142, 29, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-rosewater);
+  border-color: var(--ctp-rosewater);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(223, 142, 29, 0.3);
 }
 
 /* Botão Light */
 .btn-light {
-    color: var(--ctp-text);
-    background-color: var(--ctp-base);
-    border-color: var(--ctp-surface0);
+  color: var(--ctp-text);
+  background-color: var(--ctp-base);
+  border-color: var(--ctp-surface0);
 }
 
 .btn-light:hover {
-    color: var(--ctp-text);
-    background-color: var(--ctp-mantle);
-    border-color: var(--ctp-surface0);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76, 79, 105, 0.1);
+  color: var(--ctp-text);
+  background-color: var(--ctp-mantle);
+  border-color: var(--ctp-surface0);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 79, 105, 0.1);
 }
 
 /* Botão Outline Light (para fundos escuros) */
 .btn-outline-light {
-    color: var(--ctp-base);
-    background-color: transparent;
-    border-color: var(--ctp-base);
+  color: var(--ctp-base);
+  background-color: transparent;
+  border-color: var(--ctp-base);
 }
 
 .btn-outline-light:hover {
-    color: var(--ctp-text);
-    background-color: var(--ctp-base);
-    border-color: var(--ctp-base);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
+  color: var(--ctp-text);
+  background-color: var(--ctp-base);
+  border-color: var(--ctp-base);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 241, 245, 0.3);
 }
 
 /* Botões com tamanho pequeno */
 .btn-sm {
-    padding: 0.45rem 1rem;
-    font-size: 0.875rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.875rem;
 }
 
 /* Botões com tamanho grande */
 .btn-lg {
-    padding: 0.75rem 2rem;
-    font-size: 1.1rem;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
 }
 
 /* 4.3 Cards */
 .card-custom {
-    margin-bottom: 2rem;
-    background-color: var(--ctp-base);
-    border: none;
-    border-radius: 0px;
-    box-shadow: var(--box-shadow);
-    overflow: hidden;
+  margin-bottom: 2rem;
+  background-color: var(--ctp-base);
+  border: none;
+  border-radius: 0px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
 }
 
 .card-custom-header {
-    padding: 1rem 1.5rem;
-    background: var(--ctp-text);
-    color: var(--ctp-base);
-    font-weight: 600;
-    box-shadow: 0 2px 4px rgba(76, 79, 105, 0.1);
+  padding: 1rem 1.5rem;
+  background: var(--ctp-text);
+  color: var(--ctp-base);
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(76, 79, 105, 0.1);
 }
 
 .card-custom-header.gradient {
-    background: linear-gradient(135deg, var(--ctp-text) 0%, var(--ctp-sapphire) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--ctp-text) 0%,
+    var(--ctp-sapphire) 100%
+  );
 }
 
 .card-custom-body {
-    padding: 2rem;
-    background-color: var(--ctp-base);
+  padding: 2rem;
+  background-color: var(--ctp-base);
 }
 
 /* Cards de navegação da home (atalhos) */
 .card-custom-body .card {
-    border: 2px solid var(--ctp-surface0);
-    border-radius: var(--border-radius);
-    transition: all 0.2s ease-in-out;
-    cursor: pointer;
-    background-color: var(--ctp-base);
-    box-shadow: 0 1px 3px rgba(76, 79, 105, 0.08);
+  border: 2px solid var(--ctp-surface0);
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  background-color: var(--ctp-base);
+  box-shadow: 0 1px 3px rgba(76, 79, 105, 0.08);
 }
 
 .card-custom-body .card:hover {
-    border-color: var(--ctp-lavender);
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(114, 135, 253, 0.25);
+  border-color: var(--ctp-lavender);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(114, 135, 253, 0.25);
 }
 
 .card-custom-body .card i {
-    transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 .card-custom-body .card:hover i {
-    transform: scale(1.15);
-    color: var(--ctp-lavender) !important;
+  transform: scale(1.15);
+  color: var(--ctp-lavender) !important;
 }
 
 .card-custom-body .card h5 {
-    color: var(--ctp-text);
-    transition: color 0.2s ease-in-out;
+  color: var(--ctp-text);
+  transition: color 0.2s ease-in-out;
 }
 
 .card-custom-body .card:hover h5 {
-    color: var(--ctp-lavender);
+  color: var(--ctp-lavender);
 }
 
 /* 4.4 Formulários */
 .form-label {
-    color: var(--ctp-text);
-    font-weight: 600;
+  color: var(--ctp-text);
+  font-weight: 600;
 }
 
-.form-control, .form-select {
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--ctp-surface0);
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-    background-color: var(--ctp-base);
-    color: var(--ctp-text);
-    box-shadow: 0 1px 2px rgba(76, 79, 105, 0.05);
+.form-control,
+.form-select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ctp-surface0);
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  background-color: var(--ctp-base);
+  color: var(--ctp-text);
+  box-shadow: 0 1px 2px rgba(76, 79, 105, 0.05);
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: var(--ctp-lavender);
-    box-shadow: 0 0 0 0.25rem rgba(114, 135, 253, 0.25);
-    background-color: var(--ctp-base);
-    color: var(--ctp-text);
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--ctp-lavender);
+  box-shadow: 0 0 0 0.25rem rgba(114, 135, 253, 0.25);
+  background-color: var(--ctp-base);
+  color: var(--ctp-text);
 }
 
 /* Estilo para placeholders mais suaves */
 .form-control::placeholder {
-    color: var(--ctp-subtext0);
-    opacity: 1;
+  color: var(--ctp-subtext0);
+  opacity: 1;
 }
 
 .input-group-text {
-    background-color: var(--ctp-mantle);
-    border: 1px solid var(--ctp-surface0);
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
-    color: var(--ctp-text);
+  background-color: var(--ctp-mantle);
+  border: 1px solid var(--ctp-surface0);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  color: var(--ctp-text);
 }
 
 /* 4.5 Tabelas */
 .table-responsive {
-    border-radius: 0px;
-    box-shadow: 0 1px 3px rgba(76, 79, 105, 0.12);
+  border-radius: 0px;
+  box-shadow: 0 1px 3px rgba(76, 79, 105, 0.12);
 }
 
 .table {
-    margin-bottom: 0;
-    background-color: var(--ctp-base);
-    color: var(--ctp-text);
+  margin-bottom: 0;
+  background-color: var(--ctp-base);
+  color: var(--ctp-text);
 }
 
 .table thead {
-    background-color: var(--ctp-text);
-    color: var(--ctp-base);
-    font-weight: 600;
+  background-color: var(--ctp-text);
+  color: var(--ctp-base);
+  font-weight: 600;
 }
 
 .table th {
-    padding: 1rem;
-    border: none;
+  padding: 1rem;
+  border: none;
 }
 
 /* Links dentro do thead (como ícones de edição) devem ter cor da base */
 .table thead a {
-    color: var(--ctp-base);
-    text-decoration: none;
-    transition: all 0.2s ease-in-out;
-    opacity: 0.9;
+  color: var(--ctp-base);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.9;
 }
 
 .table thead a:hover {
-    opacity: 1;
-    color: var(--ctp-lavender);
-    transform: scale(1.15);
+  opacity: 1;
+  color: var(--ctp-lavender);
+  transform: scale(1.15);
 }
 
 .table td {
-    padding: 1rem;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--ctp-surface0);
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--ctp-surface0);
 }
 
 .table-hover tbody tr:hover {
-    background-color: var(--ctp-mantle);
+  background-color: var(--ctp-mantle);
 }
 
-tr.table-active, tr.table-active:hover {
-    background-color: var(--ctp-surface0) !important;
+tr.table-active,
+tr.table-active:hover {
+  background-color: var(--ctp-surface0) !important;
 }
 
 .table-sm th,
 .table-sm td {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
 }
 
 .name-cell {
@@ -463,220 +477,258 @@ tr.table-active, tr.table-active:hover {
 
 /* Classes utilitárias para colunas de tabela */
 .th-col-main {
-    width: 70px;
+  width: 70px;
 }
 
 .th-col-actions {
-    width: 140px;
+  width: 140px;
 }
 
 /* 4.6 Alertas */
 .alert {
-    padding: 1rem 1.5rem;
-    border: none;
-    border-radius: var(--border-radius);
-    box-shadow: 0 1px 4px rgba(76, 79, 105, 0.1);
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 1px 4px rgba(76, 79, 105, 0.1);
 }
 
 .alert-success {
-    background-color: var(--ctp-green);
-    color: var(--ctp-base);
+  background-color: var(--ctp-green);
+  color: var(--ctp-base);
 }
 
 .alert-danger {
-    background-color: var(--ctp-maroon);
-    color: var(--ctp-base);
+  background-color: var(--ctp-maroon);
+  color: var(--ctp-base);
 }
 
 .alert-warning {
-    background-color: var(--ctp-yellow);
-    color: var(--ctp-base);
+  background-color: var(--ctp-yellow);
+  color: var(--ctp-base);
 }
 
 .alert-info {
-    background-color: var(--ctp-sapphire);
-    color: var(--ctp-base);
+  background-color: var(--ctp-sapphire);
+  color: var(--ctp-base);
 }
 
 /* 4.7 Badges */
 .badge.badge-vacant {
-    background-color: var(--ctp-maroon);
-    color: var(--ctp-base);
+  background-color: var(--ctp-maroon);
+  color: var(--ctp-base);
 }
 
 /* 5. ESTILOS ESPECÍFICOS DE PÁGINAS */
 
 /* 5.1 Página de Login */
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
 }
 
 .login-card {
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 12px rgba(76, 79, 105, 0.15);
 }
 
 .login-header {
-    text-align: center;
+  text-align: center;
 }
 
 /* 5.2 Cabeçalho de Página */
 .page-header {
-    margin-bottom: 1.5rem;
-    padding: 1rem 1.25rem;
-    color: var(--ctp-base);
-    border-radius: 0px;
-    background: linear-gradient(135deg, var(--ctp-text) 0%, var(--ctp-sapphire) 100%);
-    box-shadow: 0 2px 6px rgba(76, 79, 105, 0.12);
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  color: var(--ctp-base);
+  border-radius: 0px;
+  background: linear-gradient(
+    135deg,
+    var(--ctp-text) 0%,
+    var(--ctp-sapphire) 100%
+  );
+  box-shadow: 0 2px 6px rgba(76, 79, 105, 0.12);
 }
 
 .page-header h1 {
-    margin-bottom: 0.25rem;
-    font-size: 1.5rem;
-    color: var(--ctp-base);
+  margin-bottom: 0.25rem;
+  font-size: 1.5rem;
+  color: var(--ctp-base);
 }
 
 .page-header p {
-    font-size: 0.9rem;
-    color: var(--ctp-mantle);
+  font-size: 0.9rem;
+  color: var(--ctp-mantle);
 }
 
 /* 5.3 Checkbox Customizado */
 .form-check-input.property-checkbox {
-    width: 1.3em;
-    height: 1.3em;
-    border: 2px solid var(--ctp-surface0);
-    cursor: pointer;
-    background-color: var(--ctp-base);
+  width: 1.3em;
+  height: 1.3em;
+  border: 2px solid var(--ctp-surface0);
+  cursor: pointer;
+  background-color: var(--ctp-base);
 }
 
 .form-check-input.property-checkbox:checked {
-    background-color: var(--ctp-lavender);
-    border-color: var(--ctp-lavender);
+  background-color: var(--ctp-lavender);
+  border-color: var(--ctp-lavender);
 }
 
 .form-check-input.property-checkbox:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 /* 5.4 Seção de Formulários */
 .form-section-title {
-    display: flex;
-    align-items: center;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--ctp-lavender);
-    color: var(--ctp-text);
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--ctp-lavender);
+  color: var(--ctp-text);
+  font-weight: 600;
 }
 
 .form-section-title i {
-    margin-right: 0.75rem;
-    color: var(--ctp-lavender);
+  margin-right: 0.75rem;
+  color: var(--ctp-lavender);
 }
 
 /* 6. ÍCONES E UTILITÁRIOS */
 
 /* Alinhamento vertical de ícones Bootstrap */
 .bi {
-    vertical-align: -0.125em;
+  vertical-align: -0.125em;
 }
 
 /* Botões de ação - Design minimalista e elegante */
 .action-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border: 2px solid;
-    border-radius: 0px;
-    transition: all 0.2s ease-in-out;
-    text-decoration: none;
-    font-size: 0.95rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 2px solid;
+  border-radius: 0px;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  font-size: 0.95rem;
+  box-shadow: 0 1px 3px rgba(76, 79, 105, 0.1);
 }
 
 .action-btn i {
-    margin: 0;
-    line-height: 1;
+  margin: 0;
+  line-height: 1;
 }
 
 /* Botão Editar */
 .action-btn-edit {
-    color: var(--ctp-lavender);
-    border-color: var(--ctp-lavender);
-    background-color: transparent;
+  color: var(--ctp-lavender);
+  border-color: var(--ctp-lavender);
+  background-color: transparent;
 }
 
 .action-btn-edit:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-lavender);
-    border-color: var(--ctp-lavender);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(114, 135, 253, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-lavender);
+  border-color: var(--ctp-lavender);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(114, 135, 253, 0.3);
 }
 
 /* Botão Excluir */
 .action-btn-delete {
-    color: var(--ctp-maroon);
-    border-color: var(--ctp-maroon);
-    background-color: transparent;
+  color: var(--ctp-maroon);
+  border-color: var(--ctp-maroon);
+  background-color: transparent;
 }
 
 .action-btn-delete:hover {
-    color: var(--ctp-base);
-    background-color: var(--ctp-maroon);
-    border-color: var(--ctp-maroon);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(230, 69, 83, 0.3);
+  color: var(--ctp-base);
+  background-color: var(--ctp-maroon);
+  border-color: var(--ctp-maroon);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(230, 69, 83, 0.3);
 }
 
 /* Container dos botões de ação */
 .action-buttons {
-    display: inline-flex;
-    gap: 0.5rem;
-    align-items: center;
-    justify-content: center;
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 6.1 Fonte Monospace Customizada */
 .font-monospace {
-    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, 'Cascadia Code', 'Consolas', monospace !important;
-    font-variant-ligatures: normal; /* Ativa ligaduras para fontes que suportam */
+  font-family:
+    "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Code", "Consolas",
+    monospace !important;
+  font-variant-ligatures: normal; /* Ativa ligaduras para fontes que suportam */
 }
 
 /* 6.2 Classes de Cores Catppuccin - Substituindo Bootstrap */
 
 /* Background Colors */
-.bg-ctp-lavender { background-color: var(--ctp-lavender) !important; }
-.bg-ctp-sapphire { background-color: var(--ctp-sapphire) !important; }
-.bg-ctp-maroon { background-color: var(--ctp-maroon) !important; }
-.bg-ctp-surface2 { background-color: var(--ctp-surface2) !important; }
+.bg-ctp-lavender {
+  background-color: var(--ctp-lavender) !important;
+}
+.bg-ctp-sapphire {
+  background-color: var(--ctp-sapphire) !important;
+}
+.bg-ctp-maroon {
+  background-color: var(--ctp-maroon) !important;
+}
+.bg-ctp-surface2 {
+  background-color: var(--ctp-surface2) !important;
+}
 
 /* Text Colors */
-.text-ctp-lavender { color: var(--ctp-lavender) !important; }
-.text-ctp-green { color: var(--ctp-green) !important; }
-.text-ctp-maroon { color: var(--ctp-maroon) !important; }
+.text-ctp-lavender {
+  color: var(--ctp-lavender) !important;
+}
+.text-ctp-green {
+  color: var(--ctp-green) !important;
+}
+.text-ctp-maroon {
+  color: var(--ctp-maroon) !important;
+}
+
+/* 6.3 Customização de Tooltips do Bootstrap */
+.tooltip {
+  font-size: 0.875rem;
+}
+
+.tooltip-inner {
+  background-color: #4c4f69;
+  color: #eff1f5;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0px;
+  box-shadow: 0 2px 8px rgba(76, 79, 105, 0.2);
+}
+
+.tooltip .tooltip-arrow::before {
+  border-top-color: #4c4f69 !important;
+  border-bottom-color: #4c4f69 !important;
+}
 
 /* 7. RESPONSIVIDADE */
 @media (max-width: 768px) {
-    .page-header {
-        text-align: center;
-    }
-    .page-header .btn {
-        margin-top: 1rem;
-        width: 100%;
-    }
-    .card-custom-body {
-        padding: 1.5rem;
-    }
+  .page-header {
+    text-align: center;
+  }
+  .page-header .btn {
+    margin-top: 1rem;
+    width: 100%;
+  }
+  .card-custom-body {
+    padding: 1.5rem;
+  }
 }

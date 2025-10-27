@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,6 +57,7 @@ public class PropertyWebController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showCreateForm(Model model) {
 
         model.addAttribute("property", new Property());
@@ -69,6 +71,7 @@ public class PropertyWebController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String saveProperty(@ModelAttribute("property") Property property) {
 
         if (property.getId() == null) {
@@ -82,6 +85,7 @@ public class PropertyWebController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Property property = propertyRepository.findById(id).orElseThrow(
@@ -99,6 +103,7 @@ public class PropertyWebController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String deleteProperty(@PathVariable Long id) {
 
         propertyService.deleteById(id);

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -7,16 +7,7 @@
 >
   <head>
     <title>Gerar Contrato de Aluguel</title>
-    <style>
-      .contract-form input[readonly].form-control {
-        color: #6c757d;
-        background-color: #f8f9fa;
-      }
-      .contract-form .editable-field {
-        background-color: #ffffe0;
-        font-weight: 500;
-      }
-    </style>
+    <link href="/css/contract-form.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -48,8 +39,19 @@
               <input
                 type="hidden"
                 name="propertyId"
-                th:value="${property.id()}"
+                th:value="${property.id}"
               />
+
+              <div class="info-box mb-4">
+                <i
+                  class="bi bi-info-circle me-2"
+                  style="color: var(--ctp-maroon)"
+                ></i>
+                Os campos que têm a mesma cor da página só podem ser editados
+                pelos formulários de cadastro do imóvel ou do inquilino,
+                acessíveis pelos links acima.
+              </div>
+
               <h5 class="form-section-title">
                 <i class="bi bi-people"></i> Partes Envolvidas
               </h5>
@@ -67,9 +69,9 @@
                     <option value="">Selecione o locador...</option>
                     <option
                       th:each="l : ${landlords}"
-                      th:value="${l.id()}"
-                      th:text="${l.name()}"
-                      th:selected="${l.main()}"
+                      th:value="${l.id}"
+                      th:text="${l.name}"
+                      th:selected="${l.main}"
                     ></option>
                   </select>
                 </div>
@@ -80,46 +82,114 @@
               </h5>
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="propertyType" class="form-label">Tipo de Imóvel</label>
-                  <input type="text" class="form-control" id="propertyType" name="propertyType" th:value="${property.propertyType() != null ? property.propertyType().getDisplayName() : ''}" readonly />
+                  <label for="propertyType" class="form-label"
+                    >Tipo de Imóvel</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyType"
+                    name="propertyType"
+                    th:value="${property.propertyType != null ? property.propertyType.getDisplayName() : ''}"
+                    readonly
+                  />
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="useType" class="form-label">Tipo de Uso</label>
-                  <input type="text" class="form-control" id="useType" name="useType" th:value="${property.useType() != null ? property.useType().getDisplayName() : ''}" readonly />
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="useType"
+                    name="useType"
+                    th:value="${property.useType != null ? property.useType.getDisplayName() : ''}"
+                    readonly
+                  />
                 </div>
               </div>
               <div class="row">
-                  <div class="col-md-9 mb-3">
-                      <label for="propertyAddress" class="form-label">Logradouro (Rua, Av.)</label>
-                      <input type="text" class="form-control" id="propertyAddress" th:value="${(property.address() ?: '') + (property.number() != null ? ', ' + property.number() : '')}" readonly>
-                  </div>
-                  <div class="col-md-3 mb-3">
-                      <label for="propertyComplement" class="form-label">Complemento</label>
-                      <input type="text" class="form-control" id="propertyComplement" th:value="${property.complement() ?: ''}" readonly>
-                  </div>
+                <div class="col-md-9 mb-3">
+                  <label for="propertyAddress" class="form-label"
+                    >Logradouro (Rua, Av.)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyAddress"
+                    th:value="${(property.address ?: '') + (property.number != null ? ', ' + property.number : '')}"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="propertyComplement" class="form-label"
+                    >Complemento</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyComplement"
+                    th:value="${property.complement ?: ''}"
+                    readonly
+                  />
+                </div>
               </div>
               <div class="row">
-                  <div class="col-md-5 mb-3">
-                      <label for="propertyLocation" class="form-label">Bairro</label>
-                      <input type="text" class="form-control" id="propertyLocation" th:value="${property.location() ?: ''}" readonly>
-                  </div>
-                  <div class="col-md-5 mb-3">
-                      <label for="propertyCity" class="form-label">Cidade</label>
-                      <input type="text" class="form-control" id="propertyCity" th:value="${property.city() ?: ''}" readonly>
-                  </div>
-                  <div class="col-md-2 mb-3">
-                      <label for="propertyState" class="form-label">Estado</label>
-                      <input type="text" class="form-control" id="propertyState" th:value="${property.state() ?: ''}" readonly>
-                  </div>
+                <div class="col-md-5 mb-3">
+                  <label for="propertyLocation" class="form-label"
+                    >Bairro</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyLocation"
+                    th:value="${property.location ?: ''}"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label for="propertyCity" class="form-label">Cidade</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyCity"
+                    th:value="${property.city ?: ''}"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-2 mb-3">
+                  <label for="propertyState" class="form-label">Estado</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyState"
+                    th:value="${property.state ?: ''}"
+                    readonly
+                  />
+                </div>
               </div>
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="propertyValue" class="form-label">Valor do Aluguel</label>
-                  <input type="text" class="form-control" id="propertyValue" th:value="${#numbers.formatCurrency(property.value())}" readonly />
+                  <label for="propertyValue" class="form-label"
+                    >Valor do Aluguel</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyValue"
+                    th:value="${#numbers.formatCurrency(property.value)}"
+                    readonly
+                  />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label for="propertyPaymentDay" class="form-label">Dia do Vencimento</label>
-                  <input type="text" class="form-control" id="propertyPaymentDay" th:value="${property.paymentDay()}" readonly />
+                  <label for="propertyPaymentDay" class="form-label"
+                    >Dia do Vencimento</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="propertyPaymentDay"
+                    th:value="${property.paymentDay}"
+                    readonly
+                  />
                 </div>
               </div>
 
@@ -127,39 +197,83 @@
                 <i class="bi bi-person"></i> Dados do Inquilino
               </h5>
               <div class="row">
-                  <div class="col-12 mb-3">
-                      <label for="tenantName" class="form-label">Nome do Inquilino</label>
-                      <input type="text" class="form-control" id="tenantName" th:value="${tenant.name() ?: ''}" readonly>
-                  </div>
+                <div class="col-12 mb-3">
+                  <label for="tenantName" class="form-label"
+                    >Nome do Inquilino</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenantName"
+                    th:value="${tenant.name ?: ''}"
+                    readonly
+                  />
+                </div>
               </div>
               <div class="row">
-                  <div class="col-md-6 mb-3">
-                      <label for="tenantCpfCnpj" class="form-label">CPF/CNPJ</label>
-                      <input type="text" class="form-control cpf-cnpj-display" id="tenantCpfCnpj" th:value="${tenant.cpfCnpj() ?: ''}" readonly>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                      <label for="tenantDocument" class="form-label">Documento (RG)</label>
-                      <input type="text" class="form-control" id="tenantDocument" th:value="${tenant.document() ?: ''}" readonly>
-                  </div>
+                <div class="col-md-6 mb-3">
+                  <label for="tenantCpfCnpj" class="form-label">CPF/CNPJ</label>
+                  <input
+                    type="text"
+                    class="form-control cpf-cnpj-display"
+                    id="tenantCpfCnpj"
+                    th:value="${tenant.cpfCnpj ?: ''}"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="tenantDocument" class="form-label"
+                    >Documento (RG)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenantDocument"
+                    th:value="${tenant.document ?: ''}"
+                    readonly
+                  />
+                </div>
               </div>
               <div class="row">
-                  <div class="col-md-6 mb-3">
-                      <label for="tenantMaritalStatus" class="form-label">Estado Civil</label>
-                      <input type="text" class="form-control" id="tenantMaritalStatus" th:value="${tenant.maritalStatus() != null ? tenant.maritalStatus().getDisplayName() : ''}" readonly>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                      <label for="nationality" class="form-label">Nacionalidade</label>
-                      <input type="text" class="form-control" id="nationality" th:value="${tenant.nationality ?: ''}" readonly>
-                  </div>
+                <div class="col-md-6 mb-3">
+                  <label for="tenantMaritalStatus" class="form-label"
+                    >Estado Civil</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenantMaritalStatus"
+                    th:value="${tenant.maritalStatus != null ? tenant.maritalStatus.getDisplayName() : ''}"
+                    readonly
+                  />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="nationality" class="form-label"
+                    >Nacionalidade</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nationality"
+                    th:value="${tenant.nationality ?: ''}"
+                    readonly
+                  />
+                </div>
               </div>
               <div class="row">
-                  <div class="col-12 mb-3">
-                      <label for="tenantAddress" class="form-label">Endereço do Inquilino</label>
-                      <input type="text" class="form-control" id="tenantAddress" 
-                             th:value="${(tenant.address() != null ? tenant.address() : '') + (tenant.location() != null ? ', ' + tenant.location() : '') + (tenant.city() != null ? ' - ' + tenant.city() : '') + (tenant.state() != null ? '/' + tenant.state() : '')}" readonly>
-                  </div>
+                <div class="col-12 mb-3">
+                  <label for="tenantAddress" class="form-label"
+                    >Endereço do Inquilino</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tenantAddress"
+                    th:value="${(tenant.address != null ? tenant.address : '') + (tenant.location != null ? ', ' + tenant.location : '') + (tenant.city != null ? ' - ' + tenant.city : '') + (tenant.state != null ? '/' + tenant.state : '')}"
+                    readonly
+                  />
+                </div>
               </div>
-
 
               <h5 class="form-section-title">
                 <i class="bi bi-calendar-range"></i> Período do Contrato

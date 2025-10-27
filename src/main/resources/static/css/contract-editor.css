@@ -1,0 +1,193 @@
+/**
+ * ============================================================================
+ * contract-editor.css - Estilos para o editor de contrato
+ * ============================================================================
+ */
+
+@page {
+  size: A4;
+  margin-top: 3cm;
+  margin-left: 3cm;
+  margin-bottom: 2cm;
+  margin-right: 2cm;
+}
+
+.toolbar {
+  background-color: #eff1f5;
+  padding: 0.75rem;
+  border: 1px solid #dce0e8;
+  border-radius: 0px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar .ms-auto {
+  margin-left: auto !important;
+}
+
+.container-contrato {
+  background: #fbfcfd;
+  border: 1px solid #dce0e8;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 5px 15px rgba(76, 79, 105, 0.05);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 12pt;
+  line-height: 1.5;
+  text-align: justify;
+  color: #4c4f69;
+}
+
+.titulo-contrato {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12pt;
+  margin-bottom: 1cm;
+}
+
+.paragrafo-contrato,
+.subparagrafo-contrato {
+  text-align: justify;
+  margin-bottom: 0;
+  text-indent: 1.25cm;
+  font-size: 12pt;
+}
+
+.subparagrafo-contrato {
+  padding-left: 2rem;
+  margin-top: 0;
+}
+
+.clausula-contrato {
+  text-align: justify;
+  margin-top: 0.55cm;
+  margin-bottom: 0;
+  text-indent: 0;
+  font-size: 12pt;
+}
+
+.destacar {
+  font-weight: bold;
+}
+
+.paragrafo-contrato-data {
+  text-align: center;
+  margin-top: 1.2cm;
+  text-indent: 0;
+  font-size: 12pt;
+}
+
+.paragrafo-contrato-assinatura {
+  text-align: center;
+  margin-top: 1cm;
+  text-indent: 0;
+  font-size: 12pt;
+}
+
+.paragrafo-contrato-assinatura-dados {
+  text-align: center;
+  font-weight: normal;
+  text-indent: 0;
+  font-size: 12pt;
+}
+
+.testemunhas-container {
+  margin-top: 1cm;
+  display: flex;
+  justify-content: space-between;
+  gap: 1cm;
+}
+
+.testemunha {
+  flex: 1;
+  text-align: center;
+}
+
+.testemunha-assinatura {
+  border-top: 1px solid #4c4f69;
+  margin-top: 0.8cm;
+  padding-top: 0.2cm;
+  font-size: 10pt;
+}
+
+.testemunha-dados {
+  font-size: 10pt;
+  margin-top: 0.3cm;
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .toolbar .ms-auto {
+    margin-left: 0 !important;
+    margin-top: 0.5rem;
+  }
+  .toolbar button {
+    width: 100%;
+  }
+  .page-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .page-header > div {
+    width: 100%;
+  }
+  .page-header .btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .testemunhas-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .no-print {
+    display: none;
+  }
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+  }
+  .container-contrato {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    color: #4c4f69;
+  }
+  .titulo-contrato {
+    font-size: 12pt;
+  }
+  .paragrafo-contrato,
+  .subparagrafo-contrato,
+  .paragrafo-contrato-data,
+  .paragrafo-contrato-assinatura,
+  .paragrafo-contrato-assinatura-dados {
+    font-size: 12pt;
+  }
+  .testemunhas-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1cm;
+  }
+}

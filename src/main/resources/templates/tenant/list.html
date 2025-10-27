@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -24,8 +24,12 @@
                 Gerencie todos os inquilinos do sistema
               </p>
             </div>
-            <a th:href="@{/tenants/new}" class="btn btn-secondary">
-              <i class="bi bi-plus-circle"></i> Novo inquilino
+            <a
+              th:href="@{/tenants/new}"
+              class="btn btn-secondary"
+              sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+            >
+              <i class="bi bi-plus-circle"></i> Novo Inquilino
             </a>
           </div>
         </div>
@@ -50,7 +54,13 @@
                   <th>CPF/CNPJ</th>
                   <th>Cidade/Estado</th>
                   <th>Contatos</th>
-                  <th class="text-center" width="120">Ações</th>
+                  <th
+                    class="text-center"
+                    width="120"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                  >
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -63,7 +73,9 @@
                   >
                     Nome do Inquilino
                   </td>
-                  <td th:text="${tenant.cpfCnpj}" class="cpf-cnpj-display">000.000.000-00</td>
+                  <td th:text="${tenant.cpfCnpj}" class="cpf-cnpj-display">
+                    000.000.000-00
+                  </td>
                   <td
                     th:text="${tenant.city != null ? tenant.city + ' - ' + tenant.state : ''}"
                   ></td>
@@ -73,7 +85,10 @@
                       th:text="${contact.contact} + (${iterStat.last} ? '' : ', ')"
                     ></small>
                   </td>
-                  <td class="text-center">
+                  <td
+                    class="text-center"
+                    sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                  >
                     <div class="action-buttons">
                       <a
                         th:href="@{/tenants/edit/{id}(id=${tenant.id})}"

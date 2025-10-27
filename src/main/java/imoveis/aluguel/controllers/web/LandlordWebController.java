@@ -37,7 +37,7 @@ public class LandlordWebController {
     }
 
     @GetMapping("/new")
-    @PreAuthorize("hasAnyHole('ADMIN', 'OPERADOR')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showCreateForm(Model model) {
 
         model.addAttribute("landlord", new Landlord());
@@ -50,6 +50,7 @@ public class LandlordWebController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Landlord landlord = landlordRepository.findById(id).orElseThrow(
@@ -66,6 +67,7 @@ public class LandlordWebController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String saveLandlord(@ModelAttribute("landlord") Landlord landlord) {
 
         if (landlord.getId() == null) {
@@ -79,6 +81,7 @@ public class LandlordWebController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String deleteLandlord(@PathVariable Long id) {
 
         landlordService.deleteById(id);

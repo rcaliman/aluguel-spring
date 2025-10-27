@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -7,201 +7,7 @@
 >
   <head>
     <title>Leituras de Energia</title>
-    <style>
-      @media print {
-        @page {
-          size: A4 portrait;
-          margin: 1cm 0.8cm;
-        }
-
-        body * {
-          visibility: hidden;
-        }
-        #print-area,
-        #print-area * {
-          visibility: visible;
-        }
-        #print-area {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-        }
-        .printable-page {
-          page-break-after: always;
-          page-break-inside: avoid;
-        }
-        .no-print {
-          display: none !important;
-        }
-
-        /* Mostrar método de cálculo na impressão */
-        .print-only-calc {
-          display: block !important;
-          margin-top: 1.5rem;
-          padding: 1rem;
-          border: 1px solid #ddd;
-          background-color: #f8f9fa;
-          font-size: 9pt;
-        }
-
-        .print-only-calc dt {
-          font-weight: bold;
-          margin-bottom: 0.5rem;
-        }
-
-        .print-only-calc dd {
-          margin-left: 1rem;
-          margin-bottom: 0.3rem;
-        }
-
-        /* Estilos para as tabelas na impressão */
-        .card-custom {
-          border: none;
-          box-shadow: none;
-          margin-bottom: 2rem;
-        }
-
-        .card-custom-header {
-          display: block !important;
-          background-color: #2c3e50 !important;
-          color: white !important;
-          padding: 0.5rem 1rem;
-          margin-bottom: 0.5rem;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-
-        /* Ocultar botões "Nova Leitura" na impressão */
-        .card-custom-header .btn {
-          display: none !important;
-        }
-
-        .card-custom-header a {
-          display: none !important;
-        }
-
-        /* Layout de duas linhas para as tabelas */
-        .table-responsive {
-          overflow: visible;
-        }
-
-        table {
-          width: 100%;
-          font-size: 7pt;
-          border-collapse: collapse;
-        }
-
-        table thead {
-          background-color: #2c3e50 !important;
-          color: white !important;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
-        }
-
-        table th,
-        table td {
-          padding: 0.15rem 0.1rem;
-          border: 1px solid #ddd;
-          text-align: right;
-          white-space: nowrap;
-          font-size: 6.5pt;
-        }
-
-        table th:first-child,
-        table td:first-child {
-          text-align: left;
-        }
-
-        /* Ajustes específicos para a primeira tabela (quitinetes) com 8 colunas */
-        #table-residentials th,
-        #table-residentials td {
-          max-width: 11%;
-        }
-
-        #table-residentials th:first-child,
-        #table-residentials td:first-child {
-          max-width: 9%;
-        }
-
-        /* Aumentar fonte das últimas 3 colunas da tabela de quitinetes (valores rateados) */
-        #table-residentials td:nth-child(6),
-        #table-residentials td:nth-child(7),
-        #table-residentials td:nth-child(8) {
-          font-size: 8pt !important;
-        }
-
-        /* Negrito apenas na última linha da tabela de quitinetes */
-        #table-residentials tbody tr:last-child td:nth-child(6),
-        #table-residentials tbody tr:last-child td:nth-child(7),
-        #table-residentials tbody tr:last-child td:nth-child(8) {
-          font-weight: bold !important;
-        }
-
-        /* Ajustes específicos para a segunda tabela (pontos) com 8 colunas */
-        #table-commercials th,
-        #table-commercials td {
-          max-width: 11%;
-        }
-
-        #table-commercials th:first-child,
-        #table-commercials td:first-child {
-          max-width: 9%;
-        }
-
-        /* Aumentar fonte das últimas 2 colunas da tabela de pontos (valores rateados) */
-        #table-commercials td:nth-child(7),
-        #table-commercials td:nth-child(8) {
-          font-size: 8pt !important;
-        }
-
-        /* Negrito apenas na última linha da tabela de pontos */
-        #table-commercials tbody tr:last-child td:nth-child(7),
-        #table-commercials tbody tr:last-child td:nth-child(8) {
-          font-weight: bold !important;
-        }
-
-        /* Reduzir tamanho de texto em células específicas */
-        .font-monospace {
-          font-size: 6pt !important;
-        }
-
-        /* Abreviar textos dos cabeçalhos na impressão */
-        table th {
-          font-size: 6pt;
-          line-height: 1.1;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-        }
-
-        .table-striped > tbody > tr:nth-of-type(odd) > * {
-          background-color: transparent !important;
-        }
-
-        /* Remover elementos que ocupam espaço desnecessário */
-        .bi {
-          display: none;
-        }
-
-        /* Ocultar porcentagens pequenas para economizar espaço */
-        small.text-muted {
-          font-size: 5pt !important;
-        }
-
-        /* Título da tabela visível na impressão */
-        .print-table-title {
-          font-size: 12pt;
-          font-weight: bold;
-          margin-bottom: 0.5rem;
-          color: #2c3e50;
-        }
-      }
-
-      /* Esconder método de cálculo na tela (apenas mostrar na impressão) */
-      .print-only-calc {
-        display: none;
-      }
-    </style>
+    <link href="/css/energy-list.css" rel="stylesheet" />
   </head>
 
   <body>
@@ -227,11 +33,17 @@
         <div id="print-area">
           <div class="printable-page">
             <div class="card-custom">
-              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-list-ul me-2"></i> Leituras das quitinetes</span>
+              <div
+                class="card-custom-header no-print d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="bi bi-list-ul me-2"></i> Leituras das
+                  quitinetes</span
+                >
                 <a
                   th:href="@{/energies/new}"
                   class="btn btn-secondary btn-sm"
+                  sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                 >
                   <i class="bi bi-plus-circle"></i> Nova leitura quitinetes
                 </a>
@@ -244,7 +56,7 @@
                   <thead>
                     <tr>
                       <th class="text-end">Data</th>
-                      <th class="text-end">Conta mês (R$)</th>
+                      <th class="text-end">Conta do mês (R$)</th>
                       <th class="text-end">Medidor 1 (kWh)</th>
                       <th class="text-end">Medidor 2 (kWh)</th>
                       <th class="text-end">Medidor 3 (kWh)</th>
@@ -257,6 +69,7 @@
                           th:href="@{/energies/titleform}"
                           class="ms-1 no-print"
                           title="Editar Título"
+                          sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
@@ -269,6 +82,7 @@
                           th:href="@{/energies/titleform}"
                           class="ms-1 no-print"
                           title="Editar Título"
+                          sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
@@ -281,72 +95,106 @@
                           th:href="@{/energies/titleform}"
                           class="ms-1 no-print"
                           title="Editar Título"
+                          sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
                       </th>
-                      <th class="text-center no-print"></th>
+                      <th
+                        class="text-center no-print"
+                        sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                      ></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr th:each="reading : ${energyReadings}">
                       <td
                         class="text-end font-monospace"
-                        th:text="${#temporals.format(reading.date(), 'dd/MM/yyyy')}"
+                        th:text="${#temporals.format(reading.date, 'dd/MM/yyyy')}"
                       >
                         01/01/2025
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(reading.billAmount())}"
-                        th:classappend="${reading.last()} ? 'text-decoration-underline' : ''"
+                        th:text="${#numbers.formatCurrency(reading.billAmount)}"
+                        th:classappend="${reading.last} ? 'text-decoration-underline' : ''"
                       >
                         R$ 500,00
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter1(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(reading.counter1, 1, 2, 'COMMA')}"
                       >
                         1000,0
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter2(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(reading.counter2, 1, 2, 'COMMA')}"
                       >
                         2000,0
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(reading.counter3(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(reading.counter3, 1, 2, 'COMMA')}"
                       >
                         3000,0
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(reading.amount1())}"
-                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                        th:classappend="${reading.last} ? 'fw-bold' : ''"
                       >
-                        R$ 150,00
+                        <span
+                          th:text="${#numbers.formatCurrency(reading.amount1)}"
+                          >R$ 150,00</span
+                        >
+                        <span
+                          th:if="${reading.billAmount != null and reading.billAmount > 0}"
+                          class="text-muted small"
+                          th:text="'(' + ${#numbers.formatDecimal((reading.amount1 / reading.billAmount) * 100, 1, 2, 'COMMA')} + '%)'"
+                        >
+                          (30,00%)</span
+                        >
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(reading.amount2())}"
-                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                        th:classappend="${reading.last} ? 'fw-bold' : ''"
                       >
-                        R$ 150,00
+                        <span
+                          th:text="${#numbers.formatCurrency(reading.amount2)}"
+                          >R$ 150,00</span
+                        >
+                        <span
+                          th:if="${reading.billAmount != null and reading.billAmount > 0}"
+                          class="text-muted small"
+                          th:text="'(' + ${#numbers.formatDecimal((reading.amount2 / reading.billAmount) * 100, 1, 2, 'COMMA')} + '%)'"
+                        >
+                          (30,00%)</span
+                        >
                       </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(reading.amount3())}"
-                        th:classappend="${reading.last()} ? 'fw-bold' : ''"
+                        th:classappend="${reading.last} ? 'fw-bold' : ''"
                       >
-                        R$ 200,00
+                        <span
+                          th:text="${#numbers.formatCurrency(reading.amount3)}"
+                          >R$ 200,00</span
+                        >
+                        <span
+                          th:if="${reading.billAmount != null and reading.billAmount > 0}"
+                          class="text-muted small"
+                          th:text="'(' + ${#numbers.formatDecimal((reading.amount3 / reading.billAmount) * 100, 1, 2, 'COMMA')} + '%)'"
+                        >
+                          (40,00%)</span
+                        >
                       </td>
-                      <td class="text-center no-print">
+                      <td
+                        class="text-center no-print"
+                        sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                      >
                         <div class="action-buttons">
                           <a
-                            th:if="${reading.last()}"
-                            th:href="@{/energies/edit/{id}(id=${reading.id()})}"
+                            th:if="${reading.last}"
+                            th:href="@{/energies/edit/{id}(id=${reading.id})}"
                             class="action-btn action-btn-edit"
                             title="Editar"
                           >
@@ -421,11 +269,16 @@
 
           <div class="printable-page">
             <div class="card-custom mt-4">
-              <div class="card-custom-header no-print d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-list-ul me-2"></i> Leituras dos pontos</span>
+              <div
+                class="card-custom-header no-print d-flex justify-content-between align-items-center"
+              >
+                <span
+                  ><i class="bi bi-list-ul me-2"></i> Leituras dos pontos</span
+                >
                 <a
                   th:href="@{/energies/new-commercial}"
                   class="btn btn-secondary btn-sm"
+                  sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                 >
                   <i class="bi bi-plus-circle"></i> Nova leitura pontos
                 </a>
@@ -438,8 +291,8 @@
                   <thead>
                     <tr>
                       <th class="text-end">Data</th>
-                      <th class="text-end">Consumo mês (kWh)</th>
-                      <th class="text-end">Conta mês (R$)</th>
+                      <th class="text-end">Consumo do mês (kWh)</th>
+                      <th class="text-end">Conta do mês (R$)</th>
                       <th class="text-end">Medidor (kWh)</th>
                       <th class="text-end">Ponto 1 (kWh)</th>
                       <th class="text-end">Ponto 2 (kWh)</th>
@@ -451,6 +304,7 @@
                           th:href="@{/energies/titleform}"
                           class="ms-1 no-print"
                           title="Editar Título"
+                          sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
@@ -463,11 +317,15 @@
                           th:href="@{/energies/titleform}"
                           class="ms-1 no-print"
                           title="Editar Título"
+                          sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
                         >
                           <i class="bi bi-pencil-square"></i>
                         </a>
                       </th>
-                      <th class="text-center no-print"></th>
+                      <th
+                        class="text-center no-print"
+                        sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                      ></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -476,43 +334,76 @@
                     >
                       <td
                         class="text-end font-monospace"
-                        th:text="${#temporals.format(commercialReading.date(), 'dd/MM/yyyy')}"
+                        th:text="${#temporals.format(commercialReading.date, 'dd/MM/yyyy')}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(commercialReading.accountConsumption(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(commercialReading.accountConsumption, 1, 2, 'COMMA')}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(commercialReading.accountValue())}"
+                        th:text="${#numbers.formatCurrency(commercialReading.accountValue)}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(commercialReading.internalCounter(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(commercialReading.internalCounter, 1, 2, 'COMMA')}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption1, 1, 2, 'COMMA')}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2(), 1, 2, 'COMMA')}"
+                        th:text="${#numbers.formatDecimal(commercialReading.calculatedConsumption2, 1, 2, 'COMMA')}"
                       ></td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(commercialReading.amount1())}"
-                        th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
-                      ></td>
+                        th:classappend="${commercialReading.isLast} ? 'fw-bold' : ''"
+                      >
+                        <span
+                          th:if="${commercialReading.amount1 != null}"
+                          th:text="${#numbers.formatCurrency(commercialReading.amount1)}"
+                          >R$ 150,00</span
+                        >
+                        <span th:if="${commercialReading.amount1 == null}"
+                          >-</span
+                        >
+                        <span
+                          th:if="${commercialReading.amount1 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}"
+                          class="text-muted small"
+                          th:text="'(' + ${#numbers.formatDecimal((commercialReading.amount1 / commercialReading.accountValue) * 100, 1, 2, 'COMMA')} + '%)'"
+                        >
+                          (30,00%)</span
+                        >
+                      </td>
                       <td
                         class="text-end font-monospace"
-                        th:text="${#numbers.formatCurrency(commercialReading.amount2())}"
-                        th:classappend="${commercialReading.isLast()} ? 'fw-bold' : ''"
-                      ></td>
-                      <td class="text-center no-print">
+                        th:classappend="${commercialReading.isLast} ? 'fw-bold' : ''"
+                      >
+                        <span
+                          th:if="${commercialReading.amount2 != null}"
+                          th:text="${#numbers.formatCurrency(commercialReading.amount2)}"
+                          >R$ 150,00</span
+                        >
+                        <span th:if="${commercialReading.amount2 == null}"
+                          >-</span
+                        >
+                        <span
+                          th:if="${commercialReading.amount2 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}"
+                          class="text-muted small"
+                          th:text="'(' + ${#numbers.formatDecimal((commercialReading.amount2 / commercialReading.accountValue) * 100, 1, 2, 'COMMA')} + '%)'"
+                        >
+                          (30,00%)</span
+                        >
+                      </td>
+                      <td
+                        class="text-center no-print"
+                        sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                      >
                         <div class="action-buttons">
                           <a
-                            th:if="${commercialReading.isLast()}"
-                            th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id()})}"
+                            th:if="${commercialReading.isLast}"
+                            th:href="@{/energies/edit-commercial/{id}(id=${commercialReading.id})}"
                             class="action-btn action-btn-edit"
                             title="Editar"
                           >
@@ -589,110 +480,7 @@
         </div>
       </div>
 
-      <script th:inline="javascript">
-        /*<![CDATA[*/
-        document.addEventListener("DOMContentLoaded", function () {
-          // Lógica do botão de imprimir
-          const printButton = document.getElementById("printButton");
-          if (printButton) {
-            printButton.addEventListener("click", function () {
-              window.print();
-            });
-          }
-
-          // Lógica do cálculo de porcentagem
-          const parseCurrency = (text) => {
-            if (!text) return 0;
-            const cleanedText = text
-              .replace("R$", "")
-              .trim()
-              .replace(/\./g, "")
-              .replace(",", ".");
-            const value = parseFloat(cleanedText);
-            return isNaN(value) ? 0 : value;
-          };
-
-          const allResidentialRows = document.querySelectorAll(
-            "#table-residentials tbody tr"
-          );
-          // Filtra para pegar apenas as linhas com dados
-          const dataResidentialRows = Array.from(allResidentialRows).filter(
-            (row) => row.querySelectorAll("td").length > 1
-          );
-
-          // Executa o cálculo apenas se houverem linhas de dados
-          if (dataResidentialRows.length > 0) {
-            const lastRow = dataResidentialRows[dataResidentialRows.length - 1]; // Pega a última linha
-            const cells = lastRow.querySelectorAll("td");
-
-            const billAmountText = cells[4].textContent;
-            const billAmount = parseCurrency(billAmountText);
-
-            if (billAmount > 0) {
-              // Processa Amount 1 (célula de índice 5)
-              const amount1Text = cells[5].textContent;
-              const amount1 = parseCurrency(amount1Text);
-              const percentage1 = ((amount1 / billAmount) * 100).toFixed(1);
-              cells[5].innerHTML += `<br><small class="text-muted">(${percentage1.replace(
-                ".",
-                ","
-              )}%)</small>`;
-
-              // Processa Amount 2 (célula de índice 6)
-              const amount2Text = cells[6].textContent;
-              const amount2 = parseCurrency(amount2Text);
-              const percentage2 = ((amount2 / billAmount) * 100).toFixed(1);
-              cells[6].innerHTML += `<br><small class="text-muted">(${percentage2.replace(
-                ".",
-                ","
-              )}%)</small>`;
-
-              // Processa Amount 3 (célula de índice 7)
-              const amount3Text = cells[7].textContent;
-              const amount3 = parseCurrency(amount3Text);
-              const percentage3 = ((amount3 / billAmount) * 100).toFixed(1);
-              cells[7].innerHTML += `<br><small class="text-muted">(${percentage3.replace(
-                ".",
-                ","
-              )}%)</small>`;
-            }
-          }
-
-          const allCommercialRows = document.querySelectorAll(
-            "#table-commercials tbody tr"
-          );
-          const dataCommercialRows = Array.from(allCommercialRows).filter(
-            (row) => row.querySelectorAll("td").length > 1
-          );
-
-          if (dataCommercialRows.length > 0) {
-            const lastRow = dataCommercialRows[dataCommercialRows.length - 1];
-            const cells = lastRow.querySelectorAll("td");
-
-            const billAmountText = cells[2].textContent;
-            const billAmount = parseCurrency(billAmountText);
-
-            if (billAmount > 0) {
-              const amount1Text = cells[6].textContent;
-              const amount1 = parseCurrency(amount1Text);
-              const percentage1 = ((amount1 / billAmount) * 100).toFixed(1);
-              cells[6].innerHTML += `<br><small class="text-muted">(${percentage1.replace(
-                ".",
-                ","
-              )}%)</small>`;
-
-              const amount2Text = cells[7].textContent;
-              const amount2 = parseCurrency(amount2Text);
-              const percentage2 = ((amount2 / billAmount) * 100).toFixed(1);
-              cells[7].innerHTML += `<br><small class="text-muted">(${percentage2.replace(
-                ".",
-                ","
-              )}%)</small>`;
-            }
-          }
-        });
-        /*]]>*/
-      </script>
+      <script src="/js/energy-list.js"></script>
     </section>
   </body>
 </html>

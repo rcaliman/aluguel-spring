@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -6,9 +6,7 @@
   layout:decorate="~{layout}"
 >
   <head>
-    <title
-      th:text="${landlord.id == null} ? 'Novo Locador' : 'Editar Locador'"
-    >
+    <title th:text="${landlord.id == null} ? 'Novo Locador' : 'Editar Locador'">
       Formulário de Locador
     </title>
   </head>
@@ -82,7 +80,9 @@
                       <div class="invalid-feedback" id="cpfCnpjFeedback"></div>
                     </div>
                     <div class="col-md-6 mb-3">
-                      <label for="document" class="form-label">Documento (RG)</label>
+                      <label for="document" class="form-label"
+                        >Documento (RG)</label
+                      >
                       <input
                         type="text"
                         class="form-control"
@@ -95,8 +95,14 @@
 
                   <div class="row">
                     <div class="col-md-4 mb-3">
-                      <label for="maritalStatus" class="form-label">Estado Civil</label>
-                      <select class="form-select" id="maritalStatus" th:field="*{maritalStatus}">
+                      <label for="maritalStatus" class="form-label"
+                        >Estado Civil</label
+                      >
+                      <select
+                        class="form-select"
+                        id="maritalStatus"
+                        th:field="*{maritalStatus}"
+                      >
                         <option value="">Selecione...</option>
                         <option
                           th:each="status : ${maritalStatusOptions}"
@@ -106,7 +112,9 @@
                       </select>
                     </div>
                     <div class="col-md-4 mb-3">
-                      <label for="dateOfBirth" class="form-label">Data de Nascimento</label>
+                      <label for="dateOfBirth" class="form-label"
+                        >Data de Nascimento</label
+                      >
                       <input
                         type="date"
                         class="form-control"
@@ -116,66 +124,141 @@
                       />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="nationality" class="form-label">Nacionalidade</label>
-                        <input type="text" class="form-control" id="nationality" th:field="*{nationality}" placeholder="Ex: Brasileiro(a)">
+                      <label for="nationality" class="form-label"
+                        >Nacionalidade</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="nationality"
+                        th:field="*{nationality}"
+                        placeholder="Ex: Brasileiro(a)"
+                      />
                     </div>
                   </div>
 
                   <div class="form-check form-switch mb-4">
-                    <input class="form-check-input" type="checkbox" role="switch" id="main" th:field="*{main}"/>
-                    <label class="form-check-label" for="main"><strong>Marcar como locador principal</strong></label>
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="main"
+                      th:field="*{main}"
+                    />
+                    <label class="form-check-label" for="main"
+                      ><strong>Marcar como locador principal</strong></label
+                    >
                   </div>
 
                   <h5 class="form-section-title">
                     <i class="bi bi-geo-alt"></i> Endereço e Contatos
                   </h5>
-                  
+
                   <div class="row">
                     <div class="col-md-9 mb-3">
-                        <label for="address" class="form-label">Logradouro (Rua, Av.)</label>
-                        <input type="text" class="form-control" id="address" th:field="*{address}" placeholder="Ex: Rua das Flores, 123"/>
+                      <label for="address" class="form-label"
+                        >Logradouro (Rua, Av.)</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="address"
+                        th:field="*{address}"
+                        placeholder="Ex: Rua das Flores, 123"
+                      />
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label for="location" class="form-label">Bairro</label>
-                        <input type="text" class="form-control" id="location" th:field="*{location}" placeholder="Ex: Centro"/>
+                      <label for="location" class="form-label">Bairro</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="location"
+                        th:field="*{location}"
+                        placeholder="Ex: Centro"
+                      />
                     </div>
                   </div>
-                   <div class="row">
+                  <div class="row">
                     <div class="col-md-8 mb-3">
-                        <label for="city" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="city" th:field="*{city}" placeholder="Ex: Colatina"/>
+                      <label for="city" class="form-label">Cidade</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="city"
+                        th:field="*{city}"
+                        placeholder="Ex: Colatina"
+                      />
                     </div>
                     <div class="col-md-4 mb-3">
-                        <label for="state" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="state" th:field="*{state}" placeholder="Ex: ES"/>
+                      <label for="state" class="form-label">Estado</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="state"
+                        th:field="*{state}"
+                        placeholder="Ex: ES"
+                      />
                     </div>
                   </div>
-
 
                   <div id="contacts-container">
-                    <div th:each="contact, iterStat : *{contacts}" class="row contact-row g-2 mb-2">
-                        <input type="hidden" th:field="*{contacts[__${iterStat.index}__].id}"/>
-                        <div class="col-md-4">
-                            <label th:for="${'contacts' + iterStat.index + 'type'}" class="visually-hidden">Tipo</label>
-                            <select class="form-select" th:id="${'contacts' + iterStat.index + 'type'}" th:field="*{contacts[__${iterStat.index}__].type}">
-                                <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
-                                        th:text="${typeOpt.displayName}"></option>
-                            </select>
-                        </div>
-                        <div class="col-md-7">
-                             <label th:for="${'contacts' + iterStat.index + 'contact'}" class="visually-hidden">Contato</label>
-                            <input type="text" class="form-control" placeholder="Digite o contato" th:id="${'contacts' + iterStat.index + 'contact'}"
-                                   th:field="*{contacts[__${iterStat.index}__].contact}"/>
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-danger remove-contact-btn w-100" title="Remover Contato">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
+                    <div
+                      th:each="contact, iterStat : *{contacts}"
+                      class="row contact-row g-2 mb-2"
+                    >
+                      <input
+                        type="hidden"
+                        th:field="*{contacts[__${iterStat.index}__].id}"
+                      />
+                      <div class="col-md-4">
+                        <label
+                          th:for="${'contacts' + iterStat.index + 'type'}"
+                          class="visually-hidden"
+                          >Tipo</label
+                        >
+                        <select
+                          class="form-select"
+                          th:id="${'contacts' + iterStat.index + 'type'}"
+                          th:field="*{contacts[__${iterStat.index}__].type}"
+                        >
+                          <option
+                            th:each="typeOpt : ${contactTypeOptions}"
+                            th:value="${typeOpt.name()}"
+                            th:text="${typeOpt.displayName}"
+                          ></option>
+                        </select>
+                      </div>
+                      <div class="col-md-7">
+                        <label
+                          th:for="${'contacts' + iterStat.index + 'contact'}"
+                          class="visually-hidden"
+                          >Contato</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Digite o contato"
+                          th:id="${'contacts' + iterStat.index + 'contact'}"
+                          th:field="*{contacts[__${iterStat.index}__].contact}"
+                        />
+                      </div>
+                      <div class="col-md-1">
+                        <button
+                          type="button"
+                          class="btn btn-danger remove-contact-btn w-100"
+                          title="Remover Contato"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <button type="button" id="add-contact-btn" class="btn btn-primary mt-2">
-                      <i class="bi bi-plus-circle"></i> Adicionar Contato
+                  <button
+                    type="button"
+                    id="add-contact-btn"
+                    class="btn btn-primary mt-2"
+                  >
+                    <i class="bi bi-plus-circle"></i> Adicionar Contato
                   </button>
 
                   <div
@@ -194,27 +277,49 @@
           </div>
         </div>
       </div>
-    </section>
-      
-    <template id="contact-template">
+
+      <!-- Template para novos contatos -->
+      <template id="contact-template">
         <div class="row contact-row g-2 mb-2">
-            <div class="col-md-4">
-                <label for="contactsINDEXtype" class="visually-hidden">Tipo</label>
-                <select class="form-select" id="contactsINDEXtype" name="contacts[INDEX].type">
-                    <option th:each="typeOpt : ${contactTypeOptions}" th:value="${typeOpt.name()}"
-                            th:text="${typeOpt.displayName}" th:selected="${typeOpt.name() == 'CELULAR'}"></option>
-                </select>
-            </div>
-            <div class="col-md-7">
-                <label for="contactsINDEXcontact" class="visually-hidden">Contato</label>
-                <input type="text" class="form-control" id="contactsINDEXcontact" name="contacts[INDEX].contact" placeholder="Digite o contato" required/>
-            </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn-danger remove-contact-btn w-100" title="Remover Contato">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </div>
+          <div class="col-md-4">
+            <label for="contactsINDEXtype" class="visually-hidden">Tipo</label>
+            <select
+              class="form-select"
+              id="contactsINDEXtype"
+              name="contacts[INDEX].type"
+            >
+              <option
+                th:each="typeOpt : ${contactTypeOptions}"
+                th:value="${typeOpt.name()}"
+                th:text="${typeOpt.displayName}"
+                th:selected="${typeOpt.name() == 'CELULAR'}"
+              ></option>
+            </select>
+          </div>
+          <div class="col-md-7">
+            <label for="contactsINDEXcontact" class="visually-hidden"
+              >Contato</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="contactsINDEXcontact"
+              name="contacts[INDEX].contact"
+              placeholder="Digite o contato"
+              required
+            />
+          </div>
+          <div class="col-md-1">
+            <button
+              type="button"
+              class="btn btn-danger remove-contact-btn w-100"
+              title="Remover Contato"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
         </div>
-    </template>
+      </template>
+    </section>
   </body>
 </html>

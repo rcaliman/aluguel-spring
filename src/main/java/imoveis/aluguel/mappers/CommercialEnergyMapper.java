@@ -1,7 +1,6 @@
 package imoveis.aluguel.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
 import imoveis.aluguel.entities.CommercialEnergy;
@@ -9,9 +8,6 @@ import imoveis.aluguel.entities.CommercialEnergy;
 @Mapper(componentModel = "spring")
 public interface CommercialEnergyMapper {
 
-    @Mapping(target = "calculatedConsumption1", ignore = true)
-    @Mapping(target = "calculatedConsumption2", ignore = true)
-    CommercialEnergy toEntity(imoveis.aluguel.dtos.CommercialEnergyDtoRequest commercialEnergyDtoRequest);
 
     default CommercialEnergyDtoResponse toDtoResponse(CommercialEnergy commercialEnergy, Boolean isLast) {
         

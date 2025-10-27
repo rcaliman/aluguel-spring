@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -24,8 +24,12 @@
                 Gerencie todos os imóveis do sistema
               </p>
             </div>
-            <a th:href="@{/properties/new}" class="btn btn-secondary">
-              <i class="bi bi-plus-circle"></i> Novo imóvel
+            <a
+              th:href="@{/properties/new}"
+              class="btn btn-secondary"
+              sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+            >
+              <i class="bi bi-plus-circle"></i> Novo Imóvel
             </a>
           </div>
         </div>
@@ -52,7 +56,9 @@
                         class="form-check-input property-checkbox"
                         type="checkbox"
                         id="checkAllTable"
-                        title="Selecionar Todos"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Clique aqui para marcar todos"
                       />
                     </th>
                     <th width="150">
@@ -116,7 +122,13 @@
                         ></span>
                       </a>
                     </th>
-                    <th width="120" class="text-center">Ações</th>
+                    <th
+                      width="120"
+                      class="text-center"
+                      sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                    >
+                      Ações
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -151,7 +163,9 @@
                         <a
                           th:href="@{/infopage/{id}(id=${prop.id})}"
                           class="me-2 text-ctp-lavender"
-                          title="Ver Detalhes"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Clique aqui para ver mais informações"
                         >
                           <i class="bi bi-info-circle-fill"></i>
                         </a>
@@ -167,7 +181,9 @@
                         <a
                           th:href="@{/contracts/form/{id}(id=${prop.id})}"
                           class="me-2 text-ctp-maroon"
-                          title="Gerar Contrato"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Clique aqui para gerar contrato"
                         >
                           <i class="bi bi-file-earmark-text"></i>
                         </a>
@@ -195,7 +211,10 @@
                     >
                       R$ 1.000,00
                     </td>
-                    <td class="text-center">
+                    <td
+                      class="text-center"
+                      sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
+                    >
                       <div class="action-buttons">
                         <a
                           th:href="@{/properties/edit/{id}(id=${prop.id})}"

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import imoveis.aluguel.dtos.RentalCorrectionDTO;
-import imoveis.aluguel.dtos.TenantDtoResponse;
+import imoveis.aluguel.dtos.RentalDtoCorrection;
+import imoveis.aluguel.entities.Tenant;
 import imoveis.aluguel.services.PropertyLogService;
 import imoveis.aluguel.services.PropertyService;
 import imoveis.aluguel.services.RentalCorrectionService;
@@ -29,15 +29,15 @@ public class InfoPageWebController {
 
         var property = propertyService.findById(id);
 
-        TenantDtoResponse tenant = null;
+        Tenant tenant = null;
 
-        if (property.tenant() != null) {
-            tenant = tenantService.findById(property.tenant().id());
+        if (property.getTenant() != null) {
+            tenant = tenantService.findById(property.getTenant().getId());
         }
 
-        var propertyLog = propertyLogService.findAllByPropertyId(property.id());
+        var propertyLog = propertyLogService.findAllByPropertyId(property.getId());
 
-        RentalCorrectionDTO rentalCorrection = rentalCorrectionService.calculateCorrectedRentalValue(property.id());
+        RentalDtoCorrection rentalCorrection = rentalCorrectionService.calculateCorrectedRentalValue(property.getId());
 
         model.addAttribute("property", property);
         model.addAttribute("tenant", tenant);

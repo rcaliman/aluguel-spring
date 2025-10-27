@@ -1,5 +1,6 @@
 package imoveis.aluguel.controllers.web;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
-import imoveis.aluguel.dtos.EnergyDtoRequest;
 import imoveis.aluguel.entities.CommercialEnergy;
 import imoveis.aluguel.entities.Energy;
 import imoveis.aluguel.entities.EnergyTitle;
-import imoveis.aluguel.mappers.CommercialEnergyMapper;
-import imoveis.aluguel.mappers.EnergyMapper;
 import imoveis.aluguel.services.CommercialEnergyService;
 import imoveis.aluguel.services.EnergyService;
 import imoveis.aluguel.services.EnergyTitleService;
@@ -27,10 +24,8 @@ public class EnergyWebController {
 
     private final EnergyService energyService;
     private final EnergyTitleService energyTitleService;
-    private final EnergyMapper energyMapper;
 
     private final CommercialEnergyService commercialEnergyService;
-    private final CommercialEnergyMapper commercialEnergyMapper;
 
     @GetMapping
     public String listEnergyReadings(Model model) {
@@ -54,6 +49,7 @@ public class EnergyWebController {
 
 
     @GetMapping("/new")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showCreateForm(Model model) {
 
         model.addAttribute("energy", new Energy());
@@ -64,6 +60,7 @@ public class EnergyWebController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showEditForm(@PathVariable Long id, Model model) {
 
         var energy = energyService.findById(id);
@@ -76,9 +73,8 @@ public class EnergyWebController {
     }
 
     @PostMapping("/save")
-    public String saveEnergy(@ModelAttribute EnergyDtoRequest dtoRequest) {
-
-        var energy = energyMapper.toEnergy(dtoRequest);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
+    public String saveEnergy(@ModelAttribute Energy energy) {
 
         if (energy.getId() == null) {
             energyService.calculate(energy);
@@ -101,6 +97,7 @@ public class EnergyWebController {
     }
 
     @PostMapping("/savetitle")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String saveEnergyTitle(@ModelAttribute EnergyTitle energyTitle) {
 
         energyTitleService.save(energyTitle);
@@ -110,6 +107,7 @@ public class EnergyWebController {
     }
 
     @GetMapping("/new-commercial")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showCreateFormCommercial(Model model) {
 
         model.addAttribute("commercialEnergy", new CommercialEnergy());
@@ -120,9 +118,8 @@ public class EnergyWebController {
     }
 
     @PostMapping("/save-commercial")
-    public String saveCommercialEnergy(@ModelAttribute CommercialEnergyDtoRequest dtoRequest) {
-
-        var commercialEnergy = commercialEnergyMapper.toEntity(dtoRequest);
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
+    public String saveCommercialEnergy(@ModelAttribute CommercialEnergy commercialEnergy) {
 
         if (commercialEnergy.getId() == null) {
             commercialEnergyService.calculate(commercialEnergy);
@@ -135,6 +132,7 @@ public class EnergyWebController {
     }
 
     @GetMapping("/edit-commercial/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")
     public String showEditFormCommercial(@PathVariable Long id, Model model) {
 
         var commercialEnergy = commercialEnergyService.findById(id);
@@ -145,6 +143,5 @@ public class EnergyWebController {
         return "energy/commercial-form";
 
     }
-
 
 }

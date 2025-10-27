@@ -1,36 +1,78 @@
-<!DOCTYPE html>
-<html lang="pt-br"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!doctype html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">
-        Aluguel de Imóveis
+      Aluguel de Imóveis
     </title>
 
     <!-- Bootstrap CSS -->
-    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link
+      th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap Icons -->
-    <link th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}" rel="stylesheet">
+    <link
+      th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.css}"
+      rel="stylesheet"
+    />
 
     <!-- Custom CSS -->
-    <link href="/css/style.css" rel="stylesheet">
-</head>
+    <link href="/css/style.css" rel="stylesheet" />
+  </head>
 
-<body>
+  <body>
     <!-- Header -->
     <header th:replace="~{fragments/header :: cabecalho}"></header>
 
+    <!-- Flash Messages -->
+    <div
+      class="container mt-3"
+      th:if="${successMessage != null or errorMessage != null}"
+    >
+      <div
+        class="alert alert-success alert-dismissible fade show"
+        role="alert"
+        th:if="${successMessage != null}"
+      >
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${successMessage}">Mensagem de sucesso</span>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div
+        class="alert alert-danger alert-dismissible fade show"
+        role="alert"
+        th:if="${errorMessage != null}"
+      >
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${errorMessage}">Mensagem de erro</span>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+
     <!-- Main Content -->
     <main role="main" class="container">
-        <div layout:fragment="content">
-            <p>Conteúdo padrão que será substituído.</p>
-        </div>
+      <div layout:fragment="content">
+        <p>Conteúdo padrão que será substituído.</p>
+      </div>
     </main>
 
     <!-- Footer -->
@@ -40,13 +82,16 @@
     <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
 
     <!-- Bootstrap Bundle JS -->
-    <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"></script>
+    <script
+      th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}"
+    ></script>
 
     <!-- jQuery Mask Plugin -->
-    <script th:src="@{/webjars/jquery-mask-plugin/1.14.16/dist/jquery.mask.min.js}"></script>
+    <script
+      th:src="@{/webjars/jquery-mask-plugin/1.14.16/dist/jquery.mask.min.js}"
+    ></script>
 
     <!-- Custom JavaScript -->
     <script src="/js/script.js"></script>
-</body>
-
+  </body>
 </html>

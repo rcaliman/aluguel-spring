@@ -158,7 +158,7 @@
 			<version>3.7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.webjars.bower</groupId>
+			<groupId>org.webjars.npm</groupId>
 			<artifactId>jquery-mask-plugin</artifactId>
 			<version>1.14.16</version>
 		</dependency>

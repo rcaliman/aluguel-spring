@@ -80,10 +80,11 @@ class LandlordWebControllerTest {
     @DisplayName("GET /landlords - Deve exibir a lista de locadores")
     void listLandlords_ShouldReturnListView() throws Exception {
 
-        imoveis.aluguel.dtos.LandlordDtoResponse landlordDtoResponse = new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Maria Souza",
-                null, null, null, null, null, null, null, null, null, null, true);
+        Landlord landlord = new Landlord();
+        landlord.setId(1L);
+        landlord.setName("Maria Souza");
 
-        when(landlordService.list(Sort.by("name"))).thenReturn(List.of(landlordDtoResponse));
+        when(landlordService.list(Sort.by("name"))).thenReturn(List.of(landlord));
 
         mockMvc.perform(get("/landlords")).andExpect(status().isOk()).andExpect(view().name("landlord/list"))
                 .andExpect(model().attributeExists("landlords")).andExpect(model().attribute("landlords", hasSize(1)))
@@ -107,7 +108,11 @@ class LandlordWebControllerTest {
     @DisplayName("POST /landlords/save - Deve criar um novo locador e redirecionar")
     void saveLandlord_ForCreate_ShouldCallServiceAndRedirect() throws Exception {
 
-        when(landlordService.create(any(Landlord.class))).thenReturn(new imoveis.aluguel.dtos.LandlordDtoResponse(1L, "Novo Locador", null, null, null, null, null, null, null, null, null, null, true));
+        Landlord landlord = new Landlord();
+        landlord.setId(1L);
+        landlord.setName("Novo Locador");
+
+        when(landlordService.create(any(Landlord.class))).thenReturn(landlord);
 
         mockMvc.perform(
                 post("/landlords/save").with(csrf()).param("name", "Novo Locador").param("cpfCnpj", "111.222.333-44"))

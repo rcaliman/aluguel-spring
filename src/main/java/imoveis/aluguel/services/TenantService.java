@@ -2,23 +2,107 @@ package imoveis.aluguel.services;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
-import imoveis.aluguel.dtos.TenantDtoResponse;
 import imoveis.aluguel.entities.Tenant;
+import imoveis.aluguel.exceptions.NotFoundException;
+import imoveis.aluguel.mappers.TenantMapper;
+import imoveis.aluguel.repositories.TenantRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
-public interface TenantService {
+@Service
+@RequiredArgsConstructor
+public class TenantService {
 
-    TenantDtoResponse create(Tenant tenant);
+    private final TenantRepository tenantRepository;
+    private final TenantMapper tenantMapper;
 
-    TenantDtoResponse findByCpfCnpj(String cpfCnpj);
+    @Transactional
+    @CacheEvict(value = "tenants", allEntries = true)
+    public Tenant create(Tenant tenant) {
 
-    TenantDtoResponse findById(Long id);
+        if (tenant.getContacts() != null) {
 
-    TenantDtoResponse update(Long id, Tenant tenant);
+            tenant.getContacts().forEach(contact -> {
+                contact.setId(null);
+                contact.setLandlord(null);
+                contact.setTenant(tenant);
+            });
 
-    List<TenantDtoResponse> list(Sort sort);
+        }
 
-    void deleteById(Long id);
+        return tenantRepository.save(tenant);
+
+    }
+
+    @Cacheable(value = "tenants", key = "'cpfCnpj-' + #cpfCnpj")
+    public Tenant findByCpfCnpj(String cpfCnpj) {
+
+        return tenantRepository.findByCpfCnpj(cpfCnpj)
+                .orElseThrow(() -> new NotFoundException(String.format("CPF/CNPJ %s não encontrado", cpfCnpj)));
+
+    }
+
+    @Cacheable(value = "tenants", key = "#id")
+    public Tenant findById(Long id) {
+
+        return tenantRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Inquilino de id %d não encontrada", id)));
+
+    }
+
+    @Transactional
+    @CacheEvict(value = { "tenants", "properties" }, allEntries = true)
+    public Tenant update(Long id, Tenant updatedTenant) {
+
+        Tenant tenant = tenantRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(String.format("Inquilino de id %d não encontrada", id)));
+
+        tenant.getContacts().clear();
+        tenantRepository.flush();
+
+        if (updatedTenant.getContacts() != null) {
+
+            updatedTenant.getContacts().forEach(contact -> {
+
+                contact.setId(null);
+                contact.setLandlord(null);
+
+                contact.setTenant(tenant);
+                tenant.getContacts().add(contact);
+
+            });
+
+        }
+
+        tenantMapper.updateEntity(updatedTenant, tenant);
+
+        return tenantRepository.save(tenant);
+
+    }
+
+    @Cacheable(value = "tenants", key = "'list-' + #sort.toString()")
+    public List<Tenant> list(Sort sort) {
+
+        // Usando query customizada para carregar properties e evitar
+        // LazyInitializationException
+        return tenantRepository.findAllWithProperties();
+
+    }
+
+    @Transactional
+    @CacheEvict(value = { "tenants", "properties" }, allEntries = true)
+    public void deleteById(Long id) {
+
+        var tenant = tenantRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(String.format("Inquilino de id %d não encontrada.", id)));
+
+        tenantRepository.delete(tenant);
+
+    }
 
 }

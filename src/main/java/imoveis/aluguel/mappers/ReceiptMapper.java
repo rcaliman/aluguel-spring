@@ -1,9 +1,7 @@
 package imoveis.aluguel.mappers;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import imoveis.aluguel.dtos.ReceiptDtoRequest;
 import imoveis.aluguel.dtos.ReceiptDtoResponse;
 import imoveis.aluguel.entities.Receipt;
 import imoveis.aluguel.utils.NumberToWordsConverter;
@@ -28,18 +26,5 @@ public interface ReceiptMapper {
                     receipt.getTenantContact()
                     );
     }
-
-    @Mapping(target = "landlord", ignore = true)
-    @Mapping(target = "propertyNumber", ignore = true)
-    @Mapping(target = "propertyType", ignore = true)
-    @Mapping(target = "tenant", ignore = true)
-    @Mapping(target = "tenantContact", ignore = true)
-    @Mapping(target = "value", ignore = true)
-    @Mapping(target = "day", ignore = true)
-    @Mapping(target = "locale", ignore = true)
-    @Mapping(target = "nextMonth", ignore = true)
-    @Mapping(target = "nextYear", ignore = true)
-    @Mapping(target = "observation", ignore = true)
-    Receipt toReceipt(ReceiptDtoRequest receiptDto);
 
 }

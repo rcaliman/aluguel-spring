@@ -1,94 +1,126 @@
-<!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!doctype html>
+<html
+  lang="pt-br"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-</head>
-
-<body>
+  <body>
     <!-- ========================================================================
          Fragment: Header / Cabeçalho do Sistema
          ======================================================================== -->
     <header th:fragment="cabecalho">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <!-- Brand / Logo -->
-                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
-                    <i class="bi bi-house-heart me-2"></i>
-                    <span>Aluguel</span>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <!-- Brand / Logo -->
+          <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <i class="bi bi-house-heart me-2"></i>
+            <span>Aluguel</span>
+          </a>
+
+          <!-- Mobile Toggle Button -->
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Navigation Menu -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Main Navigation (hidden on home page) -->
+            <th:block th:unless="${currentPage == 'home'}">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                  <a class="nav-link" th:href="@{/properties}">
+                    <i class="bi bi-buildings me-1"></i> Imóveis
+                  </a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                  <a class="nav-link" th:href="@{/tenants}">
+                    <i class="bi bi-people me-1"></i> Inquilinos
+                  </a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                  <a class="nav-link" th:href="@{/landlords}">
+                    <i class="bi bi-person-badge me-1"></i> Locadores
+                  </a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                  <a class="nav-link" th:href="@{/energies}">
+                    <i class="bi bi-lightning-charge me-1"></i> Energia
+                  </a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                  <a class="nav-link" th:href="@{/users}">
+                    <i class="bi bi-person-gear me-1"></i> Usuários
+                  </a>
+                </li>
+              </ul>
+            </th:block>
+
+            <!-- Spacer for home page -->
+            <div th:if="${currentPage == 'home'}" class="me-auto"></div>
+
+            <!-- User Menu -->
+            <ul class="navbar-nav">
+              <!-- Login Button (for anonymous users) -->
+              <li class="nav-item" sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="nav-link" title="Entrar">
+                  login&nbsp;<i
+                    class="bi bi-box-arrow-in-right"
+                    style="font-size: 1.5rem"
+                  ></i>
                 </a>
+              </li>
 
-                <!-- Mobile Toggle Button -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Navigation Menu -->
-                <div class="collapse navbar-collapse" id="navbarNav">
-
-                    <!-- Main Navigation (hidden on home page) -->
-                    <th:block th:unless="${currentPage == 'home'}">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li class="nav-item" sec:authorize="isAuthenticated()">
-                                <a class="nav-link" th:href="@{/properties}">
-                                    <i class="bi bi-buildings me-1"></i> Imóveis
-                                </a>
-                            </li>
-                            <li class="nav-item" sec:authorize="isAuthenticated()">
-                                <a class="nav-link" th:href="@{/tenants}">
-                                    <i class="bi bi-people me-1"></i> Inquilinos
-                                </a>
-                            </li>
-                            <li class="nav-item" sec:authorize="isAuthenticated()">
-                                <a class="nav-link" th:href="@{/landlords}">
-                                    <i class="bi bi-person-badge me-1"></i> Locadores
-                                </a>
-                            </li>
-                            <li class="nav-item" sec:authorize="isAuthenticated()">
-                                <a class="nav-link" th:href="@{/energies}">
-                                    <i class="bi bi-lightning-charge me-1"></i> Energia
-                                </a>
-                            </li>
-                            <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
-                                <a class="nav-link" th:href="@{/users}">
-                                    <i class="bi bi-person-gear me-1"></i> Usuários
-                                </a>
-                            </li>
-                        </ul>
-                    </th:block>
-
-                    <!-- Spacer for home page -->
-                    <div th:if="${currentPage == 'home'}" class="me-auto"></div>
-
-                    <!-- User Menu -->
-                    <ul class="navbar-nav">
-                        <!-- Login Button (for anonymous users) -->
-                        <li class="nav-item" sec:authorize="isAnonymous()">
-                            <a th:href="@{/login}" class="nav-link" title="Entrar">
-                                login&nbsp;<i class="bi bi-box-arrow-in-right" style="font-size: 1.5rem;"></i>
-                            </a>
-                        </li>
-
-                        <!-- User Dropdown (for authenticated users) -->
-                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                            <ul>
-                                <li>
-                                    <form th:action="@{/logout}" method="post" class="m-0">
-                                        <button type="submit" class="nav-link">
-                                            <span class="d-none d-lg-inline" th:text="${#authentication.name}"></span>&nbsp;
-                                            <i class="bi bi-box-arrow-right"></i>
-                                            &nbsp;sair
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+              <!-- User Menu (for authenticated users) -->
+              <li
+                class="nav-item d-flex align-items-center"
+                sec:authorize="isAuthenticated()"
+              >
+                <span
+                  class="text-white d-none d-lg-inline me-2"
+                  style="cursor: default"
+                  th:text="${#authentication.name}"
+                  >username</span
+                >
+                <a
+                  th:href="@{/password/form}"
+                  class="nav-link p-2"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="bottom"
+                  title="Alterar senha"
+                >
+                  <i class="bi bi-key" style="font-size: 1.3rem"></i>
+                </a>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                  <button
+                    type="submit"
+                    class="nav-link p-2 border-0 bg-transparent"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Fazer logoff"
+                  >
+                    <i
+                      class="bi bi-box-arrow-right"
+                      style="font-size: 1.3rem"
+                    ></i>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
-</body>
-
+  </body>
 </html>

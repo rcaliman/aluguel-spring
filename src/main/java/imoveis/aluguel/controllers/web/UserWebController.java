@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import imoveis.aluguel.dtos.UserDtoRequest;
 import imoveis.aluguel.entities.User;
 import imoveis.aluguel.enums.RoleEnum;
-import imoveis.aluguel.mappers.UserMapper;
 import imoveis.aluguel.services.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class UserWebController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @ModelAttribute
     public User emptyUser() {
@@ -55,12 +52,10 @@ public class UserWebController {
     }
 
     @PostMapping
-    public String saveForm(@ModelAttribute UserDtoRequest dtoRequest) {
+    public String saveForm(@ModelAttribute User user) {
 
-        User user = userMapper.toUser(dtoRequest);
-
-        if (dtoRequest.id() != null) {
-            userService.update(user, dtoRequest.id());
+        if (user.getId() != null) {
+            userService.update(user, user.getId());
         } else {
             userService.create(user);
         }
@@ -78,6 +73,15 @@ public class UserWebController {
         model.addAttribute("currentPage", "users");
 
         return "user/list";
+
+    }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+
+        userService.delete(id);
+
+        return "redirect:/users";
 
     }
 

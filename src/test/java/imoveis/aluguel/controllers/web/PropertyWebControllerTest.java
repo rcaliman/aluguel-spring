@@ -25,7 +25,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import imoveis.aluguel.dtos.PropertyDtoResponse;
 import imoveis.aluguel.entities.Property;
 import imoveis.aluguel.repositories.PropertyRepository;
 import imoveis.aluguel.services.LandlordService;
@@ -75,8 +74,9 @@ public class PropertyWebControllerTest {
     @Test
     public void testSaveProperty_New() throws Exception {
         Property newProperty = new Property();
-        PropertyDtoResponse dtoResponse = new PropertyDtoResponse(1L, null, null, null, null, null, null, null, null, null, null, null, null);
-        when(propertyService.create(any(Property.class))).thenReturn(dtoResponse);
+        Property savedProperty = new Property();
+        savedProperty.setId(1L);
+        when(propertyService.create(any(Property.class))).thenReturn(savedProperty);
 
         mockMvc.perform(post("/properties/save").with(csrf()).flashAttr("property", newProperty))
                 .andExpect(status().is3xxRedirection())
@@ -87,8 +87,9 @@ public class PropertyWebControllerTest {
     public void testSaveProperty_Update() throws Exception {
         Property existingProperty = new Property();
         existingProperty.setId(1L);
-        PropertyDtoResponse dtoResponse = new PropertyDtoResponse(1L, null, null, null, null, null, null, null, null, null, null, null, null);
-        when(propertyService.update(anyLong(), any(Property.class))).thenReturn(dtoResponse);
+        Property updatedProperty = new Property();
+        updatedProperty.setId(1L);
+        when(propertyService.update(anyLong(), any(Property.class))).thenReturn(updatedProperty);
 
         mockMvc.perform(post("/properties/save").with(csrf()).flashAttr("property", existingProperty))
                 .andExpect(status().is3xxRedirection())

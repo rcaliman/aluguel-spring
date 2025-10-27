@@ -1,0 +1,31 @@
+/**
+ * ============================================================================
+ * contract-form.css - Estilos para o formulário de geração de contrato
+ * ============================================================================
+ */
+
+.contract-form input[readonly].form-control {
+  color: #6c6f85;
+  background-color: #eff1f5;
+}
+
+.contract-form .editable-field {
+  background-color: rgba(223, 142, 29, 0.2);
+  font-weight: 500;
+}
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  border: 1px solid #ccd0da;
+  border-radius: 0px;
+  color: #4c4f69;
+  line-height: 1.6;
+}
+
+.info-box i {
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}

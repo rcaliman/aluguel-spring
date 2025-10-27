@@ -7,11 +7,11 @@
  * ============================================================================
  */
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   // Elementos do editor
-  const boldButton = document.getElementById('boldButton');
-  const italicButton = document.getElementById('italicButton');
-  const underlineButton = document.getElementById('underlineButton');
+  const boldButton = document.getElementById("boldButton");
+  const italicButton = document.getElementById("italicButton");
+  const underlineButton = document.getElementById("underlineButton");
 
   /**
    * Aplica um comando de formatação ao texto selecionado
@@ -34,15 +34,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // Registrar event listeners para os botões de formatação
   // Usamos mousedown ao invés de click para prevenir perda de foco do editor
 
-  boldButton.addEventListener('mousedown', (e) => {
-    handleButtonClick(e, 'bold');
+  boldButton.addEventListener("mousedown", (e) => {
+    handleButtonClick(e, "bold");
   });
 
-  italicButton.addEventListener('mousedown', (e) => {
-    handleButtonClick(e, 'italic');
+  italicButton.addEventListener("mousedown", (e) => {
+    handleButtonClick(e, "italic");
   });
 
-  underlineButton.addEventListener('mousedown', (e) => {
-    handleButtonClick(e, 'underline');
+  underlineButton.addEventListener("mousedown", (e) => {
+    handleButtonClick(e, "underline");
   });
 });

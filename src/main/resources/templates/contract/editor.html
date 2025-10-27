@@ -1,321 +1,414 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorate="~{layout}"
 >
-<head>
+  <head>
     <title>Editor de Contrato</title>
+    <link href="/css/contract-editor.css" rel="stylesheet" />
     <script th:src="@{/js/contract-editor.js}"></script>
-    <style>
-      @page {
-        size: A4;
-        margin-top: 3cm;
-        margin-left: 3cm;
-        margin-bottom: 2cm;
-        margin-right: 2cm;
-      }
-      .toolbar { background-color: #f8f9fa; padding: 0.75rem; border: 1px solid #dee2e6; border-radius: 0px; margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
-      .toolbar .ms-auto { margin-left: auto !important; }
-      .container-contrato {
-        background: white;
-        border: 1px solid #ddd;
-        padding: 2rem 2.5rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 12pt;
-        line-height: 1.5;
-        text-align: justify;
-        color: #000;
-      }
-      .titulo-contrato {
-        text-align: center;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 12pt;
-        margin-bottom: 1cm;
-      }
-      .paragrafo-contrato, .subparagrafo-contrato {
-        text-align: justify;
-        margin-bottom: 0;
-        text-indent: 1.25cm;
-        font-size: 12pt;
-      }
-      .subparagrafo-contrato { padding-left: 2rem; margin-top: 0; }
-      .clausula-contrato {
-        text-align: justify;
-        margin-top: 0.55cm;
-        margin-bottom: 0;
-        text-indent: 0;
-        font-size: 12pt;
-      }
-      .destacar { font-weight: bold; }
-      .paragrafo-contrato-data {
-        text-align: center;
-        margin-top: 1.2cm;
-        text-indent: 0;
-        font-size: 12pt;
-      }
-      .paragrafo-contrato-assinatura {
-        text-align: center;
-        margin-top: 1cm;
-        text-indent: 0;
-        font-size: 12pt;
-      }
-      .paragrafo-contrato-assinatura-dados {
-        text-align: center;
-        font-weight: normal;
-        text-indent: 0;
-        font-size: 12pt;
-      }
-      .testemunhas-container {
-        margin-top: 1cm;
-        display: flex;
-        justify-content: space-between;
-        gap: 1cm;
-      }
-      .testemunha {
-        flex: 1;
-        text-align: center;
-      }
-      .testemunha-assinatura {
-        border-top: 1px solid #000;
-        margin-top: 0.8cm;
-        padding-top: 0.2cm;
-        font-size: 10pt;
-      }
-      .testemunha-dados {
-        font-size: 10pt;
-        margin-top: 0.3cm;
-      }
-      @media (max-width: 768px) {
-        .toolbar {
-          flex-direction: column;
-          align-items: stretch !important;
-        }
-        .toolbar .ms-auto {
-          margin-left: 0 !important;
-          margin-top: 0.5rem;
-        }
-        .toolbar button {
-          width: 100%;
-        }
-        .page-header {
-          flex-direction: column;
-          gap: 1rem;
-        }
-        .page-header > div {
-          width: 100%;
-        }
-        .page-header .btn {
-          width: 100%;
-          margin-top: 0.5rem;
-        }
-        .testemunhas-container {
-          flex-direction: column;
-          gap: 1rem;
-        }
-      }
-      @media print {
-        body * { visibility: hidden; }
-        .no-print { display: none; }
-        #print-area, #print-area * { visibility: visible; }
-        #print-area {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          box-shadow: none;
-          border: none;
-        }
-        .container-contrato {
-          border: none;
-          box-shadow: none;
-          padding: 0;
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 12pt;
-          color: #000;
-        }
-        .titulo-contrato {
-          font-size: 12pt;
-        }
-        .paragrafo-contrato, .subparagrafo-contrato,
-        .paragrafo-contrato-data, .paragrafo-contrato-assinatura,
-        .paragrafo-contrato-assinatura-dados {
-          font-size: 12pt;
-        }
-        .testemunhas-container {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          gap: 1cm;
-        }
-      }
-    </style>
-</head>
+  </head>
 
-<body>
-<section layout:fragment="content">
-  <div class="page-header no-print d-flex justify-content-between align-items-center">
-    <div>
-      <h1 class="h3 mb-1">
-        <i class="bi bi-pencil-square me-2"></i> Editor de Contrato
-      </h1>
-      <p class="mb-0 opacity-75">Edite o texto e imprima</p>
-    </div>
-    <a th:href="@{/properties}" class="btn btn-secondary">
-      <i class="bi bi-arrow-left"></i> Voltar
-    </a>
-  </div>
-
-  <div class="toolbar no-print">
-      <button id="boldButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-bold"></i> Negrito</button>
-      <button id="italicButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-italic"></i> Itálico</button>
-      <button id="underlineButton" class="btn btn-sm btn-secondary"><i class="bi bi-type-underline"></i> Sublinhado</button>
-      <div class="ms-auto">
-        <button onclick="window.print();" class="btn btn-primary">
-          <i class="bi bi-printer"></i> Imprimir Contrato
-        </button>
+  <body>
+    <section layout:fragment="content">
+      <div
+        class="page-header no-print d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <h1 class="h3 mb-1">
+            <i class="bi bi-pencil-square me-2"></i> Editor de Contrato
+          </h1>
+          <p class="mb-0 opacity-75">Edite o texto e imprima</p>
+        </div>
+        <a th:href="@{/properties}" class="btn btn-secondary">
+          <i class="bi bi-arrow-left"></i> Voltar
+        </a>
       </div>
-  </div>
-  
-  <div id="print-area">
-    <div id='textoContrato' class="container-contrato" contentEditable='true'>
-        <div class="titulo-contrato">CONTRATO DE LOCAÇÃO DE IMÓVEL</div>
-        <div class="paragrafo-contrato">
-            <span class='destacar'>LOCADOR(A):</span> <span class='destacar' th:text="${#strings.toUpperCase(landlord.name)}"></span>, <span th:text="${#strings.toLowerCase(landlord.nationality)}"></span>, <span th:text="${#strings.toLowerCase(landlord.maritalStatus.getDisplayName())}"></span>, portador(a) do RG nº <th:block th:if="${landlord.document != null and !landlord.document.isEmpty()}"><span th:text="${landlord.document}"></span></th:block><th:block th:unless="${landlord.document != null and !landlord.document.isEmpty()}"><span>[RG]</span></th:block> e do CPF nº <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span>, residente e domiciliado na cidade de <span th:text="${landlord.city + '-' + landlord.state}"></span>, doravante denominado simplesmente <span class='destacar'>LOCADOR(A)</span>.
-        </div>
-        <!-- Locatário Pessoa Física (CPF) -->
-        <div class="paragrafo-contrato" th:if="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 11}">
-            <span class='destacar'>LOCATÁRIO(A):</span> <span class='destacar' th:text="${#strings.toUpperCase(tenant.name)}"></span>,
-            <th:block th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span th:text="${#strings.toLowerCase(tenant.nationality)}"></span></th:block><th:block th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span>[nacionalidade]</span></th:block>,
-            <th:block th:if="${tenant.maritalStatus != null}"><span th:text="${#strings.toLowerCase(tenant.maritalStatus.getDisplayName())}"></span></th:block><th:block th:unless="${tenant.maritalStatus != null}"><span>[estado civil]</span></th:block>,
-            portador(a) do RG nº <th:block th:if="${tenant.document != null and !tenant.document.isEmpty()}"><span th:text="${tenant.document}"></span></th:block><th:block th:unless="${tenant.document != null and !tenant.document.isEmpty()}"><span>[RG]</span></th:block> e do CPF nº <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span>,
-            residente e domiciliado na cidade de <th:block th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span th:text="${tenant.city + '-' + tenant.state}"></span></th:block><th:block th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span>[cidade-estado]</span></th:block>,
-            doravante denominado simplesmente <span class='destacar'>LOCATÁRIO(A)</span>.
-        </div>
 
-        <!-- Locatário Pessoa Jurídica (CNPJ) -->
-        <div class="paragrafo-contrato" th:if="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14}">
-            <span class='destacar'>LOCATÁRIO(A):</span> <span class='destacar' th:text="${#strings.toUpperCase(tenant.name)}"></span>, pessoa jurídica de direito privado, inscrita no CNPJ sob o nº <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span>, com sede em <th:block th:if="${tenant.address != null and !tenant.address.isEmpty() and tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span th:text="${tenant.address + ', ' + tenant.city + '-' + tenant.state}"></span></th:block><th:block th:unless="${tenant.address != null and !tenant.address.isEmpty() and tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span>[endereço completo da sede]</span></th:block>, neste ato representada por seu representante legal, <span>[nome completo do representante]</span>, <span>[nacionalidade]</span>, <span>[estado civil]</span>, <span>[profissão]</span>, portador(a) do RG nº <span>[número do RG]</span> e do CPF nº <span>[número do CPF do representante]</span>, doravante denominada simplesmente <span class='destacar'>LOCATÁRIO(A)</span>.
+      <div class="toolbar no-print">
+        <button id="boldButton" class="btn btn-sm btn-secondary">
+          <i class="bi bi-type-bold"></i> Negrito
+        </button>
+        <button id="italicButton" class="btn btn-sm btn-secondary">
+          <i class="bi bi-type-italic"></i> Itálico
+        </button>
+        <button id="underlineButton" class="btn btn-sm btn-secondary">
+          <i class="bi bi-type-underline"></i> Sublinhado
+        </button>
+        <div class="ms-auto">
+          <button onclick="window.print();" class="btn btn-primary">
+            <i class="bi bi-printer"></i> Imprimir Contrato
+          </button>
         </div>
+      </div>
 
-        <!-- Locatário sem CPF/CNPJ preenchido -->
-        <div class="paragrafo-contrato" th:if="${tenant.cpfCnpj == null or tenant.cpfCnpj.isEmpty()}">
-            <span class='destacar'>LOCATÁRIO(A):</span> <span class='destacar' th:text="${#strings.toUpperCase(tenant.name)}"></span>,
-            <th:block th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span th:text="${#strings.toLowerCase(tenant.nationality)}"></span></th:block><th:block th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"><span>[nacionalidade]</span></th:block>,
-            <th:block th:if="${tenant.maritalStatus != null}"><span th:text="${#strings.toLowerCase(tenant.maritalStatus.getDisplayName())}"></span></th:block><th:block th:unless="${tenant.maritalStatus != null}"><span>[estado civil]</span></th:block>,
-            portador(a) do RG nº <th:block th:if="${tenant.document != null and !tenant.document.isEmpty()}"><span th:text="${tenant.document}"></span></th:block><th:block th:unless="${tenant.document != null and !tenant.document.isEmpty()}"><span>[RG]</span></th:block> e do CPF nº <span>[cpf]</span>,
-            residente e domiciliado na cidade de <th:block th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span th:text="${tenant.city + '-' + tenant.state}"></span></th:block><th:block th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"><span>[cidade-estado]</span></th:block>,
-            doravante denominado simplesmente <span class='destacar'>LOCATÁRIO(A)</span>.
-        </div>
-        <div class="paragrafo-contrato">
-            Os signatários que contratam nas qualidades indicadas neste instrumento têm entre si justo e contratado o presente instrumento, mediante as cláusulas e condições que seguem:
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA PRIMEIRA - DO OBJETO E PRAZO DE LOCAÇÃO:</span> O(A) LOCADOR(A), sendo legítimo(a) possuidor(a) do imóvel para fins <span th:text="${property.useType == T(imoveis.aluguel.enums.PropertyUseTypeEnum).RESIDENCIAL ? 'residenciais' : 'comerciais'}"></span> de número <span th:text="${property.number}"></span>, localizado(a) na <span th:text="${property.address}"></span>, na cidade de <span th:text="${property.city + '-' + property.state}"></span>, o dá em locação ao(à) LOCATÁRIO(A) pelo prazo de <span th:text="${period.get('months')}"></span> meses, a contar de <span th:text="${period.get('start')}"></span> até <span th:text="${period.get('stop')}"></span>.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO PRIMEIRO: O objeto da presente locação destina-se exclusivamente a
-            <th:block th:switch="${property.useType.name()}">
-                <span th:case="'RESIDENCIAL'">fins residenciais.</span>
-                <span th:case="'COMERCIAL'">fins comerciais.</span>
-            </th:block>
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO SEGUNDO: O presente contrato poderá ser prorrogado mediante acordo prévio entre as partes. Caso o(a) LOCATÁRIO(A) permaneça no imóvel após o término do prazo contratual, sem oposição expressa do(a) LOCADOR(A), a locação considerar-se-á prorrogada por tempo indeterminado, nos termos do art. 46, §1º da Lei nº 8.245/91.
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA SEGUNDA - DO VALOR MENSAL DO ALUGUEL:</span> A contraprestação pela locação do imóvel será de <span th:text="${#numbers.formatCurrency(property.value)}"></span> (<span th:text="${valorPorExtenso}"></span>), a ser paga mensalmente até o dia <span th:text="${property.paymentDay}"></span> de cada mês, ficando a cargo do(a) LOCATÁRIO(A), além do aluguel, as despesas de energia elétrica.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO ÚNICO: O aluguel será reajustado anualmente, observada a menor periodicidade permitida por lei, conforme a variação acumulada do IPCA (Índice Nacional de Preços ao Consumidor Amplo) no período.
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA TERCEIRA - DA VISTORIA E CONSERVAÇÃO DO IMÓVEL:</span> O(A) LOCATÁRIO(A) declara ter procedido à vistoria no imóvel locado, recebendo-o em perfeito estado de conservação, obrigando-se a mantê-lo no mais perfeito estado de conservação e limpeza, para assim restituí-lo ao(à) LOCADOR(A) quando finda ou rescindida a locação, correndo por sua exclusiva conta as despesas necessárias para este fim, sem direito a qualquer ressarcimento.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO ÚNICO: A locação somente se considerará encerrada após a entrega formal das chaves ao(à) LOCADOR(A) e a realização da vistoria final do imóvel, bem como a quitação integral de todos os valores devidos pelo(a) LOCATÁRIO(A).
-        </div>
-        <div class="clausula-contrato">
-            <span class="destacar">CLÁUSULA QUARTA - DAS BENFEITORIAS:</span> O(A) LOCATÁRIO(A) obriga-se a não fazer instalação, adaptação, obra ou benfeitoria, sem prévia obtenção de autorização expressa do(a) LOCADOR(A), caso contrário ficará sujeito à aceitação ou não do(a) LOCADOR(A), sendo que em caso de não aceitação, o(a) LOCATÁRIO(A) obriga-se a devolver o imóvel da mesma forma que o recebeu. As benfeitorias necessárias darão direito à indenização ou retenção conforme os artigos 35 e 36 da Lei nº 8.245/91, enquanto as benfeitorias úteis e voluptuárias não autorizadas não conferem ao(à) LOCATÁRIO(A) direito de retenção ou indenização.
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA QUINTA - DAS PROIBIÇÕES:</span> É expressamente vedado ao(à) LOCATÁRIO(A):
-        </div>
-        <div class="subparagrafo-contrato">
-            a) Transferir este contrato, sublocar, ceder ou emprestar o imóvel, total ou parcialmente, sob qualquer pretexto, sob pena de rescisão imediata do contrato e aplicação das penalidades previstas nas cláusulas contratuais.
-        </div>
-        <div class="subparagrafo-contrato">
-            b) Alterar a destinação da locação estabelecida na Cláusula Primeira, sob pena de rescisão imediata do contrato.
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA SEXTA - DA RESCISÃO E ENCERRAMENTO:</span> A infração de qualquer das obrigações consignadas neste contrato é considerada de natureza grave, acarretando a rescisão contratual e a consequente desocupação do imóvel.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO PRIMEIRO: O presente contrato poderá ser rescindido por qualquer das partes mediante notificação expressa e por escrito, com antecedência mínima de 60 (sessenta) dias.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO SEGUNDO: Caso o(a) LOCATÁRIO(A) deseje rescindir o contrato antes do prazo final, deverá pagar multa proporcional ao período de cumprimento do contrato, até o limite máximo de 3 (três) meses de aluguel, conforme o art. 4º da Lei nº 8.245/91.
-        </div>
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA SÉTIMA - DAS PENALIDADES:</span> Em caso de atraso no pagamento dos aluguéis e encargos, ficará o(a) LOCATÁRIO(A) obrigado(a) ao pagamento do valor principal, acrescido de juros de mora de 1% (um por cento) ao mês e multa de 2% (dois por cento), sem prejuízo dos demais acréscimos e penalidades.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO ÚNICO: As partes obrigam-se a respeitar o presente contrato em todas as suas cláusulas e condições, incorrendo a parte que infringir qualquer disposição contratual em multa no valor de 2 (dois) aluguéis mensais, a ser paga integralmente à parte inocente, sem que isso exima a parte infratora do cumprimento da obrigação principal ou afaste o direito da parte inocente de requerer a rescisão contratual sem prejuízo das penalidades específicas previstas neste contrato.
-        </div>
-
-        <div class="clausula-contrato">
-            <span class='destacar'>CLÁUSULA OITAVA - DA LEGISLAÇÃO APLICÁVEL E DISPOSIÇÕES FINAIS:</span> A presente locação será sempre sujeita ao regime do Código Civil Brasileiro e à Lei nº 8.245 de 1991 (Lei do Inquilinato), ficando assegurados às partes todos os direitos e vantagens conferidas pela legislação em vigor.
-        </div>
-        <div class="paragrafo-contrato">
-            PARÁGRAFO ÚNICO: Fica eleito o foro da Comarca de Colatina, Estado do Espírito Santo, para dirimir quaisquer controvérsias oriundas deste contrato, com renúncia a qualquer outro, por mais privilegiado que seja.
-        </div>
-
-
-        <div class="paragrafo-contrato" style="margin-top: 0.75cm;">
-            E assim, por estarem justos e acordados, firmam o presente CONTRATO DE LOCAÇÃO, em 2 (duas) vias de igual forma e teor, na presença de 2 (duas) testemunhas, para que produza seus jurídicos e legais efeitos.
-        </div>
+      <div id="print-area">
         <div
+          id="textoContrato"
+          class="container-contrato"
+          contenteditable="true"
+        >
+          <div class="titulo-contrato">CONTRATO DE LOCAÇÃO DE IMÓVEL</div>
+          <div class="paragrafo-contrato">
+            <span class="destacar">LOCADOR(A):</span>
+            <span
+              class="destacar"
+              th:text="${#strings.toUpperCase(landlord.name)}"
+            ></span
+            >,
+            <span th:text="${#strings.toLowerCase(landlord.nationality)}"></span
+            >,
+            <span
+              th:text="${#strings.toLowerCase(landlord.maritalStatus.getDisplayName())}"
+            ></span
+            >, portador(a) do RG nº
+            <th:block
+              th:if="${landlord.document != null and !landlord.document.isEmpty()}"
+              ><span th:text="${landlord.document}"></span></th:block
+            ><th:block
+              th:unless="${landlord.document != null and !landlord.document.isEmpty()}"
+              ><span>[RG]</span></th:block
+            >
+            e do CPF nº
+            <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span
+            >, residente e domiciliado na cidade de
+            <span th:text="${landlord.city + '-' + landlord.state}"></span>,
+            doravante denominado simplesmente
+            <span class="destacar">LOCADOR(A)</span>.
+          </div>
+          <!-- Locatário Pessoa Física (CPF) -->
+          <div
+            class="paragrafo-contrato"
+            th:if="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 11}"
+          >
+            <span class="destacar">LOCATÁRIO(A):</span>
+            <span
+              class="destacar"
+              th:text="${#strings.toUpperCase(tenant.name)}"
+            ></span
+            >,
+            <th:block
+              th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"
+              ><span
+                th:text="${#strings.toLowerCase(tenant.nationality)}"
+              ></span></th:block
+            ><th:block
+              th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"
+              ><span>[nacionalidade]</span></th:block
+            >,
+            <th:block th:if="${tenant.maritalStatus != null}"
+              ><span
+                th:text="${#strings.toLowerCase(tenant.maritalStatus.getDisplayName())}"
+              ></span></th:block
+            ><th:block th:unless="${tenant.maritalStatus != null}"
+              ><span>[estado civil]</span></th:block
+            >, portador(a) do RG nº
+            <th:block
+              th:if="${tenant.document != null and !tenant.document.isEmpty()}"
+              ><span th:text="${tenant.document}"></span></th:block
+            ><th:block
+              th:unless="${tenant.document != null and !tenant.document.isEmpty()}"
+              ><span>[RG]</span></th:block
+            >
+            e do CPF nº
+            <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span>,
+            residente e domiciliado na cidade de
+            <th:block
+              th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span
+                th:text="${tenant.city + '-' + tenant.state}"
+              ></span></th:block
+            ><th:block
+              th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span>[cidade-estado]</span></th:block
+            >, doravante denominado simplesmente
+            <span class="destacar">LOCATÁRIO(A)</span>.
+          </div>
+
+          <!-- Locatário Pessoa Jurídica (CNPJ) -->
+          <div
+            class="paragrafo-contrato"
+            th:if="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14}"
+          >
+            <span class="destacar">LOCATÁRIO(A):</span>
+            <span
+              class="destacar"
+              th:text="${#strings.toUpperCase(tenant.name)}"
+            ></span
+            >, pessoa jurídica de direito privado, inscrita no CNPJ sob o nº
+            <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span>,
+            com sede em
+            <th:block
+              th:if="${tenant.address != null and !tenant.address.isEmpty() and tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span
+                th:text="${tenant.address + ', ' + tenant.city + '-' + tenant.state}"
+              ></span></th:block
+            ><th:block
+              th:unless="${tenant.address != null and !tenant.address.isEmpty() and tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span>[endereço completo da sede]</span></th:block
+            >, neste ato representada por seu representante legal,
+            <span>[nome completo do representante]</span>,
+            <span>[nacionalidade]</span>, <span>[estado civil]</span>,
+            <span>[profissão]</span>, portador(a) do RG nº
+            <span>[número do RG]</span> e do CPF nº
+            <span>[número do CPF do representante]</span>, doravante denominada
+            simplesmente <span class="destacar">LOCATÁRIO(A)</span>.
+          </div>
+
+          <!-- Locatário sem CPF/CNPJ preenchido -->
+          <div
+            class="paragrafo-contrato"
+            th:if="${tenant.cpfCnpj == null or tenant.cpfCnpj.isEmpty()}"
+          >
+            <span class="destacar">LOCATÁRIO(A):</span>
+            <span
+              class="destacar"
+              th:text="${#strings.toUpperCase(tenant.name)}"
+            ></span
+            >,
+            <th:block
+              th:if="${tenant.nationality != null and !tenant.nationality.isEmpty()}"
+              ><span
+                th:text="${#strings.toLowerCase(tenant.nationality)}"
+              ></span></th:block
+            ><th:block
+              th:unless="${tenant.nationality != null and !tenant.nationality.isEmpty()}"
+              ><span>[nacionalidade]</span></th:block
+            >,
+            <th:block th:if="${tenant.maritalStatus != null}"
+              ><span
+                th:text="${#strings.toLowerCase(tenant.maritalStatus.getDisplayName())}"
+              ></span></th:block
+            ><th:block th:unless="${tenant.maritalStatus != null}"
+              ><span>[estado civil]</span></th:block
+            >, portador(a) do RG nº
+            <th:block
+              th:if="${tenant.document != null and !tenant.document.isEmpty()}"
+              ><span th:text="${tenant.document}"></span></th:block
+            ><th:block
+              th:unless="${tenant.document != null and !tenant.document.isEmpty()}"
+              ><span>[RG]</span></th:block
+            >
+            e do CPF nº <span>[cpf]</span>, residente e domiciliado na cidade de
+            <th:block
+              th:if="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span
+                th:text="${tenant.city + '-' + tenant.state}"
+              ></span></th:block
+            ><th:block
+              th:unless="${tenant.city != null and !tenant.city.isEmpty() and tenant.state != null and !tenant.state.isEmpty()}"
+              ><span>[cidade-estado]</span></th:block
+            >, doravante denominado simplesmente
+            <span class="destacar">LOCATÁRIO(A)</span>.
+          </div>
+          <div class="paragrafo-contrato">
+            Os signatários que contratam nas qualidades indicadas neste
+            instrumento têm entre si justo e contratado o presente instrumento,
+            mediante as cláusulas e condições que seguem:
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar"
+              >CLÁUSULA PRIMEIRA - DO OBJETO E PRAZO DE LOCAÇÃO:</span
+            >
+            O(A) LOCADOR(A), sendo legítimo(a) possuidor(a) do imóvel para fins
+            <span
+              th:text="${property.useType.name() == 'RESIDENCIAL' ? 'residenciais' : 'comerciais'}"
+            ></span>
+            de número <span th:text="${property.number}"></span>, localizado(a)
+            na <span th:text="${property.address}"></span>, na cidade de
+            <span th:text="${property.city + '-' + property.state}"></span>, o
+            dá em locação ao(à) LOCATÁRIO(A) pelo prazo de
+            <span th:text="${period.get('months')}"></span> meses, a contar de
+            <span th:text="${period.get('start')}"></span> até
+            <span th:text="${period.get('stop')}"></span>.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO PRIMEIRO: O objeto da presente locação destina-se
+            exclusivamente a
+            <th:block th:switch="${property.useType.name()}">
+              <span th:case="'RESIDENCIAL'">fins residenciais.</span>
+              <span th:case="'COMERCIAL'">fins comerciais.</span>
+            </th:block>
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO SEGUNDO: O presente contrato poderá ser prorrogado
+            mediante acordo prévio entre as partes. Caso o(a) LOCATÁRIO(A)
+            permaneça no imóvel após o término do prazo contratual, sem oposição
+            expressa do(a) LOCADOR(A), a locação considerar-se-á prorrogada por
+            tempo indeterminado, nos termos do art. 46, §1º da Lei nº 8.245/91.
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar"
+              >CLÁUSULA SEGUNDA - DO VALOR MENSAL DO ALUGUEL:</span
+            >
+            A contraprestação pela locação do imóvel será de
+            <span th:text="${#numbers.formatCurrency(property.value)}"></span>
+            (<span th:text="${valorPorExtenso}"></span>), a ser paga mensalmente
+            até o dia <span th:text="${property.paymentDay}"></span> de cada
+            mês, ficando a cargo do(a) LOCATÁRIO(A), além do aluguel, as
+            despesas de energia elétrica.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: O aluguel será reajustado anualmente, observada a
+            menor periodicidade permitida por lei, conforme a variação acumulada
+            do IPCA (Índice Nacional de Preços ao Consumidor Amplo) no período.
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar"
+              >CLÁUSULA TERCEIRA - DA VISTORIA E CONSERVAÇÃO DO IMÓVEL:</span
+            >
+            O(A) LOCATÁRIO(A) declara ter procedido à vistoria no imóvel locado,
+            recebendo-o em perfeito estado de conservação, obrigando-se a
+            mantê-lo no mais perfeito estado de conservação e limpeza, para
+            assim restituí-lo ao(à) LOCADOR(A) quando finda ou rescindida a
+            locação, correndo por sua exclusiva conta as despesas necessárias
+            para este fim, sem direito a qualquer ressarcimento.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: A locação somente se considerará encerrada após a
+            entrega formal das chaves ao(à) LOCADOR(A) e a realização da
+            vistoria final do imóvel, bem como a quitação integral de todos os
+            valores devidos pelo(a) LOCATÁRIO(A).
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar">CLÁUSULA QUARTA - DAS BENFEITORIAS:</span>
+            O(A) LOCATÁRIO(A) obriga-se a não fazer instalação, adaptação, obra
+            ou benfeitoria, sem prévia obtenção de autorização expressa do(a)
+            LOCADOR(A), caso contrário ficará sujeito à aceitação ou não do(a)
+            LOCADOR(A), sendo que em caso de não aceitação, o(a) LOCATÁRIO(A)
+            obriga-se a devolver o imóvel da mesma forma que o recebeu. As
+            benfeitorias necessárias darão direito à indenização ou retenção
+            conforme os artigos 35 e 36 da Lei nº 8.245/91, enquanto as
+            benfeitorias úteis e voluptuárias não autorizadas não conferem ao(à)
+            LOCATÁRIO(A) direito de retenção ou indenização.
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar">CLÁUSULA QUINTA - DAS PROIBIÇÕES:</span> É
+            expressamente vedado ao(à) LOCATÁRIO(A):
+          </div>
+          <div class="subparagrafo-contrato">
+            a) Transferir este contrato, sublocar, ceder ou emprestar o imóvel,
+            total ou parcialmente, sob qualquer pretexto, sob pena de rescisão
+            imediata do contrato e aplicação das penalidades previstas nas
+            cláusulas contratuais.
+          </div>
+          <div class="subparagrafo-contrato">
+            b) Alterar a destinação da locação estabelecida na Cláusula
+            Primeira, sob pena de rescisão imediata do contrato.
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar"
+              >CLÁUSULA SEXTA - DA RESCISÃO E ENCERRAMENTO:</span
+            >
+            A infração de qualquer das obrigações consignadas neste contrato é
+            considerada de natureza grave, acarretando a rescisão contratual e a
+            consequente desocupação do imóvel.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO PRIMEIRO: O presente contrato poderá ser rescindido por
+            qualquer das partes mediante notificação expressa e por escrito, com
+            antecedência mínima de 60 (sessenta) dias.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO SEGUNDO: Caso o(a) LOCATÁRIO(A) deseje rescindir o
+            contrato antes do prazo final, deverá pagar multa proporcional ao
+            período de cumprimento do contrato, até o limite máximo de 3 (três)
+            meses de aluguel, conforme o art. 4º da Lei nº 8.245/91.
+          </div>
+          <div class="clausula-contrato">
+            <span class="destacar">CLÁUSULA SÉTIMA - DAS PENALIDADES:</span> Em
+            caso de atraso no pagamento dos aluguéis e encargos, ficará o(a)
+            LOCATÁRIO(A) obrigado(a) ao pagamento do valor principal, acrescido
+            de juros de mora de 1% (um por cento) ao mês e multa de 2% (dois por
+            cento), sem prejuízo dos demais acréscimos e penalidades.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: As partes obrigam-se a respeitar o presente
+            contrato em todas as suas cláusulas e condições, incorrendo a parte
+            que infringir qualquer disposição contratual em multa no valor de 2
+            (dois) aluguéis mensais, a ser paga integralmente à parte inocente,
+            sem que isso exima a parte infratora do cumprimento da obrigação
+            principal ou afaste o direito da parte inocente de requerer a
+            rescisão contratual sem prejuízo das penalidades específicas
+            previstas neste contrato.
+          </div>
+
+          <div class="clausula-contrato">
+            <span class="destacar"
+              >CLÁUSULA OITAVA - DA LEGISLAÇÃO APLICÁVEL E DISPOSIÇÕES
+              FINAIS:</span
+            >
+            A presente locação será sempre sujeita ao regime do Código Civil
+            Brasileiro e à Lei nº 8.245 de 1991 (Lei do Inquilinato), ficando
+            assegurados às partes todos os direitos e vantagens conferidas pela
+            legislação em vigor.
+          </div>
+          <div class="paragrafo-contrato">
+            PARÁGRAFO ÚNICO: Fica eleito o foro da Comarca de Colatina, Estado
+            do Espírito Santo, para dirimir quaisquer controvérsias oriundas
+            deste contrato, com renúncia a qualquer outro, por mais privilegiado
+            que seja.
+          </div>
+
+          <div class="paragrafo-contrato" style="margin-top: 0.75cm">
+            E assim, por estarem justos e acordados, firmam o presente CONTRATO
+            DE LOCAÇÃO, em 2 (duas) vias de igual forma e teor, na presença de 2
+            (duas) testemunhas, para que produza seus jurídicos e legais
+            efeitos.
+          </div>
+          <div
             class="paragrafo-contrato-data"
             th:text="${dataAtualPorExtenso}"
-        ></div>
-        <div class="paragrafo-contrato-assinatura">
+          ></div>
+          <div class="paragrafo-contrato-assinatura">
             ___________________________________________________________________
-        </div>
-        <div class="paragrafo-contrato-assinatura-dados">
-            <span th:text="${landlord.name}"></span> - <span th:text="${landlord.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(landlord.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14 ? 'CNPJ' : 'CPF'}"></span>: <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span> - LOCADOR(A)
-        </div>
-        <div class="paragrafo-contrato-assinatura">
+          </div>
+          <div class="paragrafo-contrato-assinatura-dados">
+            <span th:text="${landlord.name}"></span> -
+            <span
+              th:text="${landlord.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(landlord.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14 ? 'CNPJ' : 'CPF'}"
+            ></span
+            >:
+            <span class="cpf-cnpj-display" th:text="${landlord.cpfCnpj}"></span>
+            - LOCADOR(A)
+          </div>
+          <div class="paragrafo-contrato-assinatura">
             ___________________________________________________________________
-        </div>
-        <div class="paragrafo-contrato-assinatura-dados">
-            <span th:text="${tenant.name}"></span> - <span th:text="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14 ? 'CNPJ' : 'CPF'}"></span>: <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span> - LOCATÁRIO(A)
-        </div>
+          </div>
+          <div class="paragrafo-contrato-assinatura-dados">
+            <span th:text="${tenant.name}"></span> -
+            <span
+              th:text="${tenant.cpfCnpj != null and #strings.replace(#strings.replace(#strings.replace(tenant.cpfCnpj, '.', ''), '-', ''), '/', '').length() == 14 ? 'CNPJ' : 'CPF'}"
+            ></span
+            >:
+            <span class="cpf-cnpj-display" th:text="${tenant.cpfCnpj}"></span> -
+            LOCATÁRIO(A)
+          </div>
 
-        <div class="testemunhas-container">
+          <div class="testemunhas-container">
             <div class="testemunha">
-                <div class="testemunha-assinatura">TESTEMUNHA</div>
-                <div class="testemunha-dados">
-                    Nome:__________________________________
-                </div>
-                <div class="testemunha-dados">
-                    CPF:___________________________________
-                </div>
+              <div class="testemunha-assinatura">TESTEMUNHA</div>
+              <div class="testemunha-dados">
+                Nome:__________________________________
+              </div>
+              <div class="testemunha-dados">
+                CPF:___________________________________
+              </div>
             </div>
             <div class="testemunha">
-                <div class="testemunha-assinatura">TESTEMUNHA</div>
-                <div class="testemunha-dados">
-                    Nome:__________________________________
-                </div>
-                <div class="testemunha-dados">
-                    CPF:___________________________________
-                </div>
+              <div class="testemunha-assinatura">TESTEMUNHA</div>
+              <div class="testemunha-dados">
+                Nome:__________________________________
+              </div>
+              <div class="testemunha-dados">
+                CPF:___________________________________
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-  </div>
-</section>
-</body>
+      </div>
+    </section>
+  </body>
 </html>

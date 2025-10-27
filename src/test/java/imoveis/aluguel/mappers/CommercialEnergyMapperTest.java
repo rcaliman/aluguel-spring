@@ -1,72 +1,95 @@
-
 package imoveis.aluguel.mappers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import imoveis.aluguel.dtos.CommercialEnergyDtoRequest;
 import imoveis.aluguel.dtos.CommercialEnergyDtoResponse;
 import imoveis.aluguel.entities.CommercialEnergy;
 
-public class CommercialEnergyMapperTest {
+@SpringBootTest
+class CommercialEnergyMapperTest {
 
-    private CommercialEnergyMapper commercialEnergyMapper;
-
-    @BeforeEach
-    public void setUp() {
-        commercialEnergyMapper = Mappers.getMapper(CommercialEnergyMapper.class);
-    }
+    @Autowired
+    private CommercialEnergyMapper mapper;
 
     @Test
-    public void testToEntity() {
-        CommercialEnergyDtoRequest dtoRequest = new CommercialEnergyDtoRequest(
-                1L, 100.5, 200.5, 300.5, 50.25, 150.75, LocalDate.now());
-
-        CommercialEnergy entity = commercialEnergyMapper.toEntity(dtoRequest);
-
-        assertNotNull(entity);
-        assertEquals(100.5, entity.getAmount1());
-        assertEquals(200.5, entity.getAmount2());
-        assertEquals(300.5, entity.getInternalCounter());
-        assertEquals(50.25, entity.getAccountValue());
-        assertEquals(150.75, entity.getAccountConsumption());
-        assertEquals(LocalDate.now(), entity.getDate());
-        assertNull(entity.getCalculatedConsumption1());
-        assertNull(entity.getCalculatedConsumption2());
-    }
-
-    @Test
-    public void testToDtoResponse() {
+    @DisplayName("Deve converter CommercialEnergy para CommercialEnergyDtoResponse corretamente")
+    void toDtoResponse_ShouldMapAllFieldsCorrectly() {
+        // Given
         CommercialEnergy entity = new CommercialEnergy();
         entity.setId(1L);
-        entity.setDate(LocalDate.now());
-        entity.setAmount1(100.5);
-        entity.setAmount2(200.5);
-        entity.setInternalCounter(300.5);
-        entity.setAccountValue(50.25);
-        entity.setAccountConsumption(150.75);
-        entity.setCalculatedConsumption1(50.0);
-        entity.setCalculatedConsumption2(100.0);
+        entity.setDate(LocalDate.of(2023, 10, 15));
+        entity.setAmount1(100.50);
+        entity.setAmount2(200.75);
+        entity.setInternalCounter(50.25);
+        entity.setAccountValue(350.00);
+        entity.setAccountConsumption(150.00);
+        entity.setCalculatedConsumption1(75.00);
+        entity.setCalculatedConsumption2(80.00);
 
-        CommercialEnergyDtoResponse dtoResponse = commercialEnergyMapper.toDtoResponse(entity, true);
+        Boolean isLast = true;
 
-        assertNotNull(dtoResponse);
-        assertEquals(1L, dtoResponse.id());
-        assertEquals(LocalDate.now(), dtoResponse.date());
-        assertEquals(100.5, dtoResponse.amount1());
-        assertEquals(200.5, dtoResponse.amount2());
-        assertEquals(300.5, dtoResponse.internalCounter());
-        assertEquals(50.25, dtoResponse.accountValue());
-        assertEquals(150.75, dtoResponse.accountConsumption());
-        assertEquals(50.0, dtoResponse.calculatedConsumption1());
-        assertEquals(100.0, dtoResponse.calculatedConsumption2());
-        assertEquals(true, dtoResponse.isLast());
+        // When
+        CommercialEnergyDtoResponse dto = mapper.toDtoResponse(entity, isLast);
+
+        // Then
+        assertNotNull(dto);
+        assertEquals(1L, dto.id());
+        assertEquals(LocalDate.of(2023, 10, 15), dto.date());
+        assertEquals(100.50, dto.amount1());
+        assertEquals(200.75, dto.amount2());
+        assertEquals(50.25, dto.internalCounter());
+        assertEquals(350.00, dto.accountValue());
+        assertEquals(150.00, dto.accountConsumption());
+        assertEquals(75.00, dto.calculatedConsumption1());
+        assertEquals(80.00, dto.calculatedConsumption2());
+        assertEquals(true, dto.isLast());
+    }
+
+    @Test
+    @DisplayName("Deve converter CommercialEnergy com isLast=false corretamente")
+    void toDtoResponse_WithIsLastFalse_ShouldMapCorrectly() {
+        // Given
+        CommercialEnergy entity = new CommercialEnergy();
+        entity.setId(2L);
+        entity.setDate(LocalDate.of(2023, 11, 20));
+        entity.setAmount1(150.00);
+
+        Boolean isLast = false;
+
+        // When
+        CommercialEnergyDtoResponse dto = mapper.toDtoResponse(entity, isLast);
+
+        // Then
+        assertNotNull(dto);
+        assertEquals(2L, dto.id());
+        assertEquals(LocalDate.of(2023, 11, 20), dto.date());
+        assertEquals(150.00, dto.amount1());
+        assertEquals(false, dto.isLast());
+    }
+
+    @Test
+    @DisplayName("Deve converter CommercialEnergy com campos nulos corretamente")
+    void toDtoResponse_WithNullFields_ShouldMapCorrectly() {
+        // Given
+        CommercialEnergy entity = new CommercialEnergy();
+        entity.setId(3L);
+
+        Boolean isLast = true;
+
+        // When
+        CommercialEnergyDtoResponse dto = mapper.toDtoResponse(entity, isLast);
+
+        // Then
+        assertNotNull(dto);
+        assertEquals(3L, dto.id());
+        assertEquals(true, dto.isLast());
     }
 }

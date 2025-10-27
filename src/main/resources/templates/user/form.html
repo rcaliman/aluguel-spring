@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -6,9 +6,7 @@
   layout:decorate="~{layout}"
 >
   <head>
-    <title
-      th:text="${user.id == null} ? 'Novo Usuário' : 'Editar Usuário'"
-    >
+    <title th:text="${user.id == null} ? 'Novo Usuário' : 'Editar Usuário'">
       Formulário de Usuário
     </title>
   </head>
@@ -44,11 +42,7 @@
               </div>
 
               <div class="card-custom-body">
-                <form
-                  th:action="@{/users}"
-                  th:object="${user}"
-                  method="post"
-                >
+                <form th:action="@{/users}" th:object="${user}" method="post">
                   <input type="hidden" th:field="*{id}" />
 
                   <h5 class="form-section-title">
@@ -57,7 +51,9 @@
 
                   <div class="row">
                     <div class="col-md-12 mb-3">
-                      <label for="username" class="form-label">Nome de Usuário</label>
+                      <label for="username" class="form-label"
+                        >Nome de Usuário</label
+                      >
                       <input
                         type="text"
                         class="form-control"
@@ -73,7 +69,9 @@
                     <div class="col-md-6 mb-3">
                       <label for="password" class="form-label">
                         Senha
-                        <span th:if="${user.id != null}" class="text-muted">(deixe em branco para não alterar)</span>
+                        <span th:if="${user.id != null}" class="text-muted"
+                          >(deixe em branco para não alterar)</span
+                        >
                       </label>
                       <input
                         type="password"
@@ -86,7 +84,12 @@
                     </div>
                     <div class="col-md-6 mb-3">
                       <label for="role" class="form-label">Perfil</label>
-                      <select class="form-select" id="role" th:field="*{role}" required>
+                      <select
+                        class="form-select"
+                        id="role"
+                        th:field="*{role}"
+                        required
+                      >
                         <option value="">Selecione...</option>
                         <option
                           th:each="roleOption : ${roles}"
