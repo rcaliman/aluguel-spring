@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html
   lang="pt-br"
   xmlns:th="http://www.thymeleaf.org"
@@ -74,6 +74,16 @@
                       >
                         <i class="bi bi-pencil"></i>
                       </a>
+
+                      <button
+                        disabled
+                        th:if="${user.role.name() == 'ADMIN'}"
+                        class="action-btn action-btn-delete"
+                        title="Proibido para o usuário logado"
+                      >
+                        <i class="bi bi-trash"></i>
+                      </button>
+
                       <form
                         th:if="${user.username != #authentication.name}"
                         th:action="@{/users/delete/{id}(id=${user.id})}"

@@ -31,7 +31,7 @@ public class EnergyWebController {
     public String listEnergyReadings(Model model) {
 
         var energiesReadings = energyService.listLasts();
-        
+
         var energyTitles = energyTitleService.findLast();
 
         model.addAttribute("energyReadings", energiesReadings);
@@ -45,8 +45,6 @@ public class EnergyWebController {
         return "energy/list";
 
     }
-
-
 
     @GetMapping("/new")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'OPERADOR')")

@@ -1,5 +1,7 @@
 package imoveis.aluguel.configs;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -14,8 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import imoveis.aluguel.entities.User;
 import imoveis.aluguel.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
 
         @Bean
         @Order(1)
@@ -47,7 +46,8 @@ public class SecurityConfig {
         public SecurityFilterChain webFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/", "/login", "/webjars/**", "/css/**", "/js/**")
+                                                .requestMatchers("/", "/login", "/webjars/**", "/css/**", "/js/**",
+                                                                "/manifest.json", "/sw.js", "/icons/**")
                                                 .permitAll()
                                                 .anyRequest().authenticated())
                                 .formLogin(form -> form

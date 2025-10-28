@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#212529" rx="64"/>
+  <g fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Casa -->
+    <path d="M128 256 L256 160 L384 256 L384 400 L320 400 L320 320 L192 320 L192 400 L128 400 Z"/>
+    <!-- Chave -->
+    <circle cx="360" cy="160" r="32"/>
+    <path d="M360 192 L360 240 M360 216 L380 216 M360 232 L380 232"/>
+    <!-- Cifrão -->
+    <text x="256" y="300" font-size="120" font-weight="bold" text-anchor="middle" fill="#ffffff">$</text>
+  </g>
+</svg>

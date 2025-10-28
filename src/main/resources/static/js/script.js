@@ -578,4 +578,21 @@ $(function () {
       $element.text(formatted);
     }
   });
+
+  // ========================================================================
+  // 8. CONFIRMAÇÃO DE LOGOFF
+  // ========================================================================
+
+  /**
+   * Intercepta o submit do formulário de logout para exibir confirmação
+   */
+  $('form[action$="/logout"]').on("submit", function (event) {
+    event.preventDefault();
+
+    const confirmed = confirm("Tem certeza de que deseja fazer logoff?");
+
+    if (confirmed) {
+      this.submit();
+    }
+  });
 });

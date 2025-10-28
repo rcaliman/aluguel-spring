@@ -19,5 +19,5 @@ public class RentalDtoCorrection {
     private Instant correctionDate;
     private Double accumulatedIpcaPercentage;
     private String detailedCalculation;
-
+    
 }

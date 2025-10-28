@@ -42,13 +42,14 @@ public class PasswordWebController {
 
     @PostMapping("/update")
     public String update(@RequestParam Long id,
-                        @RequestParam String password,
-                        @RequestParam String confirmPassword,
-                        RedirectAttributes redirectAttributes) {
+            @RequestParam String password,
+            @RequestParam String confirmPassword,
+            RedirectAttributes redirectAttributes) {
 
         // Validação: verificar se as senhas coincidem
         if (!password.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("errorMessage", "As senhas não coincidem. Por favor, tente novamente.");
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "As senhas não coincidem. Por favor, tente novamente.");
             return "redirect:/password/form";
         }
 

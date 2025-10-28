@@ -38,8 +38,7 @@ public class PropertyWebController {
 
     @GetMapping
     public String listProperties(Model model,
-                                    @RequestParam(defaultValue = "tenant.name") String sortField
-                                    ) {
+            @RequestParam(defaultValue = "tenant.name") String sortField) {
 
         int currentYear = LocalDate.now().getYear();
         List<Integer> years = IntStream.rangeClosed(currentYear - 5, currentYear + 2)
@@ -89,9 +88,8 @@ public class PropertyWebController {
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Property property = propertyRepository.findById(id).orElseThrow(
-            () -> new NotFoundException(String.format("Imóvel de id %d não encontrado.", id))
-        );
-        
+                () -> new NotFoundException(String.format("Imóvel de id %d não encontrado.", id)));
+
         model.addAttribute("property", property);
         model.addAttribute("tenants", tenantService.list(Sort.by("name")));
         model.addAttribute("propertyTypes", PropertyTypeEnum.values());

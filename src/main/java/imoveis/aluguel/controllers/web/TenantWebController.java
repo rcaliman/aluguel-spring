@@ -54,8 +54,7 @@ public class TenantWebController {
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Tenant tenant = tenantRepository.findById(id).orElseThrow(
-            () -> new NotFoundException(String.format("Inquilino de id %d não encontrado", id))
-        );
+                () -> new NotFoundException(String.format("Inquilino de id %d não encontrado", id)));
 
         model.addAttribute("tenant", tenant);
         model.addAttribute("maritalStatusOptions", MaritalStatusEnum.values());

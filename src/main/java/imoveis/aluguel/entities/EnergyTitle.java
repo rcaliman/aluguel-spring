@@ -33,5 +33,5 @@ public class EnergyTitle {
 
     @Column(name = "title_amount_5")
     private String titleAmount5;
-    
+
 }

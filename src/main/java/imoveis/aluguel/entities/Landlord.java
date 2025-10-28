@@ -88,5 +88,5 @@ public class Landlord {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-    
+
 }

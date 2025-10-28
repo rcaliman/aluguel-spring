@@ -54,8 +54,7 @@ public class LandlordWebController {
     public String showEditForm(@PathVariable Long id, Model model) {
 
         Landlord landlord = landlordRepository.findById(id).orElseThrow(
-            () -> new NotFoundException(String.format("Locador de id %d não encontrado", id))
-        );
+                () -> new NotFoundException(String.format("Locador de id %d não encontrado", id)));
 
         model.addAttribute("landlord", landlord);
         model.addAttribute("maritalStatusOptions", MaritalStatusEnum.values());

@@ -13,6 +13,14 @@
       Aluguel de Imóveis
     </title>
 
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#212529" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Aluguel" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
     <!-- Bootstrap CSS -->
     <link
       th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
@@ -93,5 +101,8 @@
 
     <!-- Custom JavaScript -->
     <script src="/js/script.js"></script>
+
+    <!-- PWA Registration -->
+    <script src="/js/pwa.js"></script>
   </body>
 </html>

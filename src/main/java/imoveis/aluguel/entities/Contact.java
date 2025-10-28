@@ -62,7 +62,7 @@ public class Contact {
     protected void onUpdate() {
         this.updatedAt = Instant.now();
     }
-    
+
     @Override
     public String toString() {
         return this.contact;
