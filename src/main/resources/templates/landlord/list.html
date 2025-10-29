@@ -42,10 +42,11 @@
             <table class="table table-hover table-striped mb-0 table-sm">
               <thead>
                 <tr>
-                  <th class="text-center th-col-main">Principal</th>
+                  <th class="text-center th-col-main hide-on-mobile">Principal</th>
                   <th>Nome</th>
-                  <th>CPF/CNPJ</th>
-                  <th>Cidade/Estado</th>
+                  <th class="hide-on-mobile">CPF/CNPJ</th>
+                  <th class="hide-on-mobile">Cidade/Estado</th>
+                  <th>Contatos</th>
                   <th
                     class="text-center th-col-actions"
                     sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
@@ -56,7 +57,7 @@
               </thead>
               <tbody>
                 <tr th:each="landlord : ${landlords}">
-                  <td class="text-center">
+                  <td class="text-center hide-on-mobile">
                     <span th:if="${landlord.main}">
                       <i
                         class="bi bi-check2-square text-ctp-lavender fs-5"
@@ -71,12 +72,21 @@
                   >
                     Nome do Locador
                   </td>
-                  <td th:text="${landlord.cpfCnpj}" class="cpf-cnpj-display">
+                  <td th:text="${landlord.cpfCnpj}" class="cpf-cnpj-display hide-on-mobile">
                     00.000.000/0000-00
                   </td>
                   <td
                     th:text="${landlord.city != null ? landlord.city + ' - ' + landlord.state : ''}"
+                    class="hide-on-mobile"
                   ></td>
+                  <td class="contact-cell">
+                    <div
+                      th:each="contact, iterStat : ${landlord.contacts}"
+                      class="contact-item"
+                    >
+                      <small th:text="${contact.contact}"></small>
+                    </div>
+                  </td>
                   <td
                     class="text-center"
                     sec:authorize="hasAnyAuthority('ADMIN', 'OPERADOR')"
@@ -113,6 +123,32 @@
           </div>
         </div>
       </div>
+
+      <script>
+        // Adicionar links tel: para números de telefone
+        document.addEventListener("DOMContentLoaded", function () {
+          const contactItems = document.querySelectorAll(".contact-item small");
+
+          contactItems.forEach(function (item) {
+            const text = item.textContent.trim();
+            // Verifica se o texto é principalmente números (telefone)
+            // Remove espaços, parênteses, hífens e +
+            const cleanText = text.replace(/[\s\(\)\-\+]/g, "");
+
+            // Se tiver pelo menos 8 dígitos, considera como telefone
+            if (cleanText.match(/^\d{8,}$/)) {
+              const phoneNumber = cleanText;
+              const link = document.createElement("a");
+              link.href = "tel:" + phoneNumber;
+              link.textContent = text;
+              link.title = "Ligar para " + text;
+
+              item.textContent = "";
+              item.appendChild(link);
+            }
+          });
+        });
+      </script>
     </section>
   </body>
 </html>

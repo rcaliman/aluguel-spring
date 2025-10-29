@@ -3,6 +3,7 @@ package imoveis.aluguel.dtos;
 import imoveis.aluguel.enums.PropertyTypeEnum;
 
 public record ReceiptDtoResponse(
+
                 String tenant,
                 String value,
                 PropertyTypeEnum propertyType,
@@ -16,4 +17,5 @@ public record ReceiptDtoResponse(
                 String nextYear,
                 String landlord,
                 String tenantContact) {
+                    
 }

@@ -86,11 +86,14 @@ public class TenantService {
     }
 
     @Cacheable(value = "tenants", key = "'list-' + #sort.toString()")
+    @Transactional
     public List<Tenant> list(Sort sort) {
 
-        // Usando query customizada para carregar properties e evitar
-        // LazyInitializationException
-        return tenantRepository.findAllWithProperties();
+        List<Tenant> tenants = tenantRepository.findAllWithProperties();
+
+        tenants.forEach(tenant -> tenant.getContacts().size());
+
+        return tenants;
 
     }
 

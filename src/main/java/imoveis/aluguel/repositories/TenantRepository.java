@@ -15,4 +15,7 @@ public interface TenantRepository extends JpaRepository<Tenant, Long> {
     @Query("SELECT DISTINCT t FROM Tenant t LEFT JOIN FETCH t.properties ORDER BY t.name ASC")
     List<Tenant> findAllWithProperties();
 
+    @Query("SELECT DISTINCT t FROM Tenant t LEFT JOIN FETCH t.contacts ORDER BY t.name ASC")
+    List<Tenant> findAllWithContacts();
+
 }

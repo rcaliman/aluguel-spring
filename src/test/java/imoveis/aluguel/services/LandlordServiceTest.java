@@ -74,7 +74,7 @@ class LandlordServiceTest {
     @Test
     @DisplayName("Deve listar todos os landlords")
     void list_ShouldReturnAll() {
-        when(landlordRepository.findAll(any(Sort.class))).thenReturn(List.of(new Landlord()));
+        when(landlordRepository.findAllWithContacts()).thenReturn(List.of(new Landlord()));
 
         List<Landlord> result = landlordService.list(Sort.by("name"));
 

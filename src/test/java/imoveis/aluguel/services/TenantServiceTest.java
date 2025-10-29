@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +74,10 @@ class TenantServiceTest {
     @Test
     @DisplayName("Deve listar todos os tenants")
     void list_ShouldReturnAll() {
-        when(tenantRepository.findAllWithProperties()).thenReturn(List.of(new Tenant()));
+        Tenant tenant = new Tenant();
+        tenant.setContacts(new ArrayList<>());
+        tenant.setProperties(new ArrayList<>());
+        when(tenantRepository.findAllWithProperties()).thenReturn(List.of(tenant));
 
         List<Tenant> result = tenantService.list(Sort.by("name"));
 

@@ -46,7 +46,6 @@ public class PasswordWebController {
             @RequestParam String confirmPassword,
             RedirectAttributes redirectAttributes) {
 
-        // Validação: verificar se as senhas coincidem
         if (!password.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "As senhas não coincidem. Por favor, tente novamente.");

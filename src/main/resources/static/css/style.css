@@ -744,6 +744,33 @@ tr.table-active:hover {
   border-bottom-color: #4c4f69 !important;
 }
 
+/* 6.4 Estilização de contatos */
+.contact-cell {
+  text-align: right;
+}
+
+.contact-item {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item a {
+  color: var(--ctp-text);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.9rem;
+  pointer-events: none;
+  cursor: default;
+}
+
+.contact-item a:hover {
+  color: var(--ctp-mauve);
+}
+
 /* 7. RESPONSIVIDADE */
 @media (max-width: 768px) {
   .page-header {
@@ -755,5 +782,46 @@ tr.table-active:hover {
   }
   .card-custom-body {
     padding: 1.5rem;
+  }
+
+  /* Ocultar colunas específicas no mobile */
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  /* Estilização de contatos com quebra de linha */
+  .contact-cell {
+    max-width: 150px;
+    text-align: right;
+  }
+
+  .contact-item {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact-item small {
+    display: inline-block;
+    max-width: 20ch; /* Limita a 20 caracteres */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .contact-item a {
+    color: var(--ctp-text);
+    text-decoration: underline;
+    transition: all 0.2s ease-in-out;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .contact-item a:hover {
+    color: var(--ctp-mauve);
+    text-decoration: underline;
   }
 }

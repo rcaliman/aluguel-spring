@@ -1,6 +1,7 @@
 package imoveis.aluguel.dtos;
 
 public record ContractDtoRequest(
+
                 Long propertyId,
                 Long landlordId,
                 String nationality,
@@ -8,4 +9,5 @@ public record ContractDtoRequest(
                 String startYear,
                 String endMonth,
                 String endYear) {
+                    
 }

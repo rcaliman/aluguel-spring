@@ -49,6 +49,7 @@ public class NumberToWordsConverter {
     private static String convertPart(long n) {
         if (n == 0)
             return "";
+
         if (n == 100)
             return "cem";
 
@@ -58,11 +59,7 @@ public class NumberToWordsConverter {
             String milharStr = (milhar == 1) ? "mil" : convertPart(milhar) + " mil";
 
             if (resto > 0) {
-                // Debug: descomentar para verificar
-                // System.out.println("DEBUG - n: " + n + ", resto: " + resto + ", resto <= 100: " + (resto <= 100) + ", resto % 100 == 0: " + (resto % 100 == 0));
-                
-                // Se resto <= 100 OU se o resto é uma centena exata (200, 300, etc.)
-                // Usa "e" para conectar
+
                 boolean useE = (resto <= 100) || (resto % 100 == 0);
                 
                 if (useE) {
@@ -71,19 +68,25 @@ public class NumberToWordsConverter {
                     return milharStr + " " + convertPart(resto);
                 }
             }
+
             return milharStr;
+
         }
 
         if (n >= 100) {
+
             long centena = n / 100;
             long resto = n % 100;
             return CENTENAS[(int) centena] + (resto > 0 ? " e " + convertPart(resto) : "");
+
         }
 
         if (n >= 20) {
+
             long dezena = n / 10;
             long resto = n % 10;
             return DEZENAS[(int) dezena] + (resto > 0 ? " e " + convertPart(resto) : "");
+
         }
 
         if (n >= 10) {

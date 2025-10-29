@@ -59,7 +59,6 @@ public class BacenService {
             return 0.0;
         }
 
-        // Cálculo do índice acumulado: (1 + i1/100) * (1 + i2/100) * ... - 1
         double accumulatedIndex = 1.0;
 
         for (BacenIpcaDtoResponse ipca : ipcaData) {
@@ -69,7 +68,6 @@ public class BacenService {
             }
         }
 
-        // Retorna a variação percentual acumulada
         double accumulatedPercentage = (accumulatedIndex - 1) * 100;
 
         log.info("IPCA acumulado de {} a {}: {:.2f}%", startDate, endDate, accumulatedPercentage);

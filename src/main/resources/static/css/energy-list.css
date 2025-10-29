@@ -209,6 +209,18 @@ dl.mt-2.p-2.m-2.no-print {
   border-radius: 0px;
 }
 
+/* Tornar método de cálculo fixo (sticky) em dispositivos móveis */
+@media (max-width: 768px) {
+  dl.mt-2.p-2.m-2.no-print {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    background-color: #fbfcfd;
+    border-top: 2px solid #4c4f69;
+    box-shadow: 0 -4px 12px rgba(76, 79, 105, 0.15);
+  }
+}
+
 /* Cor dos ícones de editar título no thead - mesma cor dos botões de editar */
 table thead a {
   color: #7287fd !important;

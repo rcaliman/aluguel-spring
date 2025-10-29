@@ -90,7 +90,7 @@ public class LandlordService {
     @Cacheable(value = "landlords", key = "'list-' + #sort.toString()")
     public List<Landlord> list(Sort sort) {
 
-        return landlordRepository.findAll(sort);
+        return landlordRepository.findAllWithContacts();
 
     }
 

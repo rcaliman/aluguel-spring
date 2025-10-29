@@ -1,5 +1,6 @@
 package imoveis.aluguel.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,5 +16,8 @@ public interface LandlordRepository extends JpaRepository<Landlord, Long> {
     @Modifying
     @Query("UPDATE Landlord l SET l.main = false")
     void setAllMainToFalse();
+
+    @Query("SELECT DISTINCT l FROM Landlord l LEFT JOIN FETCH l.contacts ORDER BY l.name")
+    List<Landlord> findAllWithContacts();
 
 }
