@@ -59,8 +59,8 @@ class ReceiptWebControllerTest {
     void generateReceipts_ShouldReturnListView_WhenDataIsValid() throws Exception {
 
         Receipt receipt = Receipt.builder().tenant("Inquilino Teste").build();
-        ReceiptDtoResponse dtoResponse = new ReceiptDtoResponse("Inquilino Teste", null, PropertyTypeEnum.APARTAMENTO, null, null, null, null,
-                null, null, null, null, null, null);
+        ReceiptDtoResponse dtoResponse = new ReceiptDtoResponse("Inquilino Teste", null, null, PropertyTypeEnum.APARTAMENTO, null, null, null, null,
+                null, null,null, null, null, null, null);
 
         when(receiptService.receipts(any(ReceiptDtoRequest.class))).thenReturn(List.of(receipt));
         when(receiptMapper.dtoResponse(any(Receipt.class))).thenReturn(dtoResponse);
