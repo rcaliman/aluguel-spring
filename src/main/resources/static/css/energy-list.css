@@ -8,7 +8,7 @@
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1cm 0.8cm;
+    margin: 1.5cm 1cm;
   }
 
   body * {
@@ -22,9 +22,10 @@
 
   #print-area {
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
+    left: 1cm;
+    top: 1.5cm;
+    right: 1cm;
+    width: auto;
   }
 
   .printable-page {
@@ -40,35 +41,35 @@
   .print-only-calc {
     display: block !important;
     margin-top: 1.5rem;
-    padding: 1rem;
+    padding: 0.8rem;
     border: 1px solid #dce0e8;
     background-color: #eff1f5;
-    font-size: 9pt;
+    font-size: 8pt;
   }
 
   .print-only-calc dt {
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
   .print-only-calc dd {
-    margin-left: 1rem;
-    margin-bottom: 0.3rem;
+    margin-left: 0.8rem;
+    margin-bottom: 0.25rem;
   }
 
   /* Estilos para as tabelas na impressão */
   .card-custom {
     border: none;
     box-shadow: none;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   .card-custom-header {
     display: block !important;
     background-color: #4c4f69 !important;
     color: #eff1f5 !important;
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    margin-bottom: 0.4rem;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -89,8 +90,9 @@
 
   table {
     width: 100%;
-    font-size: 7pt;
+    font-size: 6pt;
     border-collapse: collapse;
+    table-layout: fixed;
   }
 
   table thead {
@@ -102,11 +104,13 @@
 
   table th,
   table td {
-    padding: 0.15rem 0.1rem;
+    padding: 2px;
     border: 1px solid #dce0e8;
     text-align: right;
     white-space: nowrap;
-    font-size: 6.5pt;
+    font-size: 5.5pt;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   table th:first-child,
@@ -115,21 +119,39 @@
   }
 
   /* Ajustes específicos para a primeira tabela (quitinetes) com 8 colunas */
-  #table-residentials th,
-  #table-residentials td {
-    max-width: 11%;
+  #table-residentials th:nth-child(1),
+  #table-residentials td:nth-child(1) {
+    width: 10%;
   }
 
-  #table-residentials th:first-child,
-  #table-residentials td:first-child {
-    max-width: 9%;
+  #table-residentials th:nth-child(2),
+  #table-residentials td:nth-child(2) {
+    width: 11%;
+  }
+
+  #table-residentials th:nth-child(3),
+  #table-residentials td:nth-child(3),
+  #table-residentials th:nth-child(4),
+  #table-residentials td:nth-child(4),
+  #table-residentials th:nth-child(5),
+  #table-residentials td:nth-child(5) {
+    width: 10%;
+  }
+
+  #table-residentials th:nth-child(6),
+  #table-residentials td:nth-child(6),
+  #table-residentials th:nth-child(7),
+  #table-residentials td:nth-child(7),
+  #table-residentials th:nth-child(8),
+  #table-residentials td:nth-child(8) {
+    width: 19.66%;
   }
 
   /* Aumentar fonte das últimas 3 colunas da tabela de quitinetes (valores rateados) */
   #table-residentials td:nth-child(6),
   #table-residentials td:nth-child(7),
   #table-residentials td:nth-child(8) {
-    font-size: 8pt !important;
+    font-size: 9pt !important;
   }
 
   /* Negrito apenas na última linha da tabela de quitinetes */
@@ -139,21 +161,46 @@
     font-weight: bold !important;
   }
 
-  /* Ajustes específicos para a segunda tabela (pontos) com 8 colunas */
-  #table-commercials th,
-  #table-commercials td {
-    max-width: 11%;
+  /* Sublinhar valores em reais da última linha da tabela de quitinetes */
+  #table-residentials tbody tr:last-child td:nth-child(6) > span:first-child,
+  #table-residentials tbody tr:last-child td:nth-child(7) > span:first-child,
+  #table-residentials tbody tr:last-child td:nth-child(8) > span:first-child {
+    text-decoration: underline !important;
   }
 
-  #table-commercials th:first-child,
-  #table-commercials td:first-child {
-    max-width: 9%;
+  /* Ajustes específicos para a segunda tabela (pontos) com 8 colunas */
+  #table-commercials th:nth-child(1),
+  #table-commercials td:nth-child(1) {
+    width: 10%;
+  }
+
+  #table-commercials th:nth-child(2),
+  #table-commercials td:nth-child(2),
+  #table-commercials th:nth-child(3),
+  #table-commercials td:nth-child(3),
+  #table-commercials th:nth-child(4),
+  #table-commercials td:nth-child(4) {
+    width: 11%;
+  }
+
+  #table-commercials th:nth-child(5),
+  #table-commercials td:nth-child(5),
+  #table-commercials th:nth-child(6),
+  #table-commercials td:nth-child(6) {
+    width: 10%;
+  }
+
+  #table-commercials th:nth-child(7),
+  #table-commercials td:nth-child(7),
+  #table-commercials th:nth-child(8),
+  #table-commercials td:nth-child(8) {
+    width: 24%;
   }
 
   /* Aumentar fonte das últimas 2 colunas da tabela de pontos (valores rateados) */
   #table-commercials td:nth-child(7),
   #table-commercials td:nth-child(8) {
-    font-size: 8pt !important;
+    font-size: 9pt !important;
   }
 
   /* Negrito apenas na última linha da tabela de pontos */
@@ -162,14 +209,20 @@
     font-weight: bold !important;
   }
 
+  /* Sublinhar valores em reais da última linha da tabela de pontos */
+  #table-commercials tbody tr:last-child td:nth-child(7) > span:first-child,
+  #table-commercials tbody tr:last-child td:nth-child(8) > span:first-child {
+    text-decoration: underline !important;
+  }
+
   /* Reduzir tamanho de texto em células específicas */
   .font-monospace {
-    font-size: 6pt !important;
+    font-size: 5.5pt !important;
   }
 
   /* Abreviar textos dos cabeçalhos na impressão */
   table th {
-    font-size: 6pt;
+    font-size: 5.5pt;
     line-height: 1.1;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -186,14 +239,14 @@
 
   /* Ocultar porcentagens pequenas para economizar espaço */
   small.text-muted {
-    font-size: 5pt !important;
+    font-size: 4.5pt !important;
   }
 
   /* Título da tabela visível na impressão */
   .print-table-title {
-    font-size: 12pt;
+    font-size: 11pt;
     font-weight: bold;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     color: #4c4f69;
   }
 }
@@ -223,7 +276,7 @@ dl.mt-2.p-2.m-2.no-print {
 
 /* Cor dos ícones de editar título no thead - mesma cor dos botões de editar */
 table thead a {
-  color: #7287fd !important;
+  color: #dc8a78 !important;
   opacity: 1 !important;
 }
 

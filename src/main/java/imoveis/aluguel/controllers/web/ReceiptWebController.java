@@ -39,6 +39,7 @@ public class ReceiptWebController {
         model.addAttribute("receipts", receipts);
         model.addAttribute("currentPage", "receipts");
 
+        System.out.println(receipts);
         return "receipt/list";
 
     }

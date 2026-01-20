@@ -146,7 +146,7 @@
                         <span
                           th:text="${#numbers.formatCurrency(reading.amount1)}"
                           >R$ 150,00</span
-                        >
+                        ><br th:if="${reading.billAmount != null and reading.billAmount > 0}" />
                         <span
                           th:if="${reading.billAmount != null and reading.billAmount > 0}"
                           class="text-muted small"
@@ -162,7 +162,7 @@
                         <span
                           th:text="${#numbers.formatCurrency(reading.amount2)}"
                           >R$ 150,00</span
-                        >
+                        ><br th:if="${reading.billAmount != null and reading.billAmount > 0}" />
                         <span
                           th:if="${reading.billAmount != null and reading.billAmount > 0}"
                           class="text-muted small"
@@ -178,7 +178,7 @@
                         <span
                           th:text="${#numbers.formatCurrency(reading.amount3)}"
                           >R$ 200,00</span
-                        >
+                        ><br th:if="${reading.billAmount != null and reading.billAmount > 0}" />
                         <span
                           th:if="${reading.billAmount != null and reading.billAmount > 0}"
                           class="text-muted small"
@@ -367,7 +367,7 @@
                         >
                         <span th:if="${commercialReading.amount1 == null}"
                           >-</span
-                        >
+                        ><br th:if="${commercialReading.amount1 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}" />
                         <span
                           th:if="${commercialReading.amount1 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}"
                           class="text-muted small"
@@ -387,7 +387,7 @@
                         >
                         <span th:if="${commercialReading.amount2 == null}"
                           >-</span
-                        >
+                        ><br th:if="${commercialReading.amount2 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}" />
                         <span
                           th:if="${commercialReading.amount2 != null and commercialReading.accountValue != null and commercialReading.accountValue > 0}"
                           class="text-muted small"
