@@ -5,6 +5,7 @@ import imoveis.aluguel.enums.PropertyTypeEnum;
 public record ReceiptDtoResponse(
 
                 String tenant,
+                String tenantDocument,
                 String value,
                 PropertyTypeEnum propertyType,
                 String propertyNumber,
@@ -16,6 +17,7 @@ public record ReceiptDtoResponse(
                 String year,
                 String nextYear,
                 String landlord,
+                String landlordCpf,
                 String tenantContact) {
                     
 }

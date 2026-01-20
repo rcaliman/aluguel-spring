@@ -58,7 +58,7 @@
                 <div class="receipt-body">
                   <p>
                     Recebi, de
-                    <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                    <strong><th:block th:text="${receipt.tenant} + (${#strings.isEmpty(receipt.tenantDocument)} ? '' : ' (' + ${receipt.tenantDocument} + ')')" /></strong>, a
                     importância de
                     <strong th:text="${receipt.value}"></strong>
                     referente ao aluguel do(a)
@@ -79,7 +79,7 @@
                 ></p>
                 <div class="signature-line">
                   _______________________________________________<br />
-                  <strong th:text="${receipt.landlord}"></strong><br />
+                  <strong th:text="${receipt.landlord} + (${#strings.isEmpty(receipt.landlordCpf)} ? '' : ' (' + ${receipt.landlordCpf} + ')')"></strong><br />
                   <span>(Locador/Procurador)</span>
                 </div>
                 <div
@@ -106,7 +106,7 @@
                 <div class="receipt-body">
                   <p>
                     Recebi, de
-                    <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                    <strong><th:block th:text="${receipt.tenant} + (${#strings.isEmpty(receipt.tenantDocument)} ? '' : ' (' + ${receipt.tenantDocument} + ')')" /></strong>, a
                     importância de
                     <strong th:text="${receipt.value}"></strong>
 
@@ -129,7 +129,7 @@
 
                 <div class="signature-line">
                   _______________________________________________<br />
-                  <strong th:text="${receipt.landlord}"></strong><br />
+                  <strong th:text="${receipt.landlord} + (${#strings.isEmpty(receipt.landlordCpf)} ? '' : ' (' + ${receipt.landlordCpf} + ')')"></strong><br />
                   <span>(Locador/Procurador)</span>
                 </div>
 
@@ -165,7 +165,7 @@
                 <div class="receipt-body">
                   <p>
                     Recebi, de
-                    <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                    <strong><th:block th:text="${receipt.tenant} + (${#strings.isEmpty(receipt.tenantDocument)} ? '' : ' (' + ${receipt.tenantDocument} + ')')" /></strong>, a
                     importância de
                     <strong th:text="${receipt.value}"></strong>
 
@@ -192,7 +192,7 @@
                 ></p>
                 <div class="signature-line">
                   _______________________________________________<br />
-                  <strong th:text="${receipt.landlord}"></strong><br />
+                  <strong th:text="${receipt.landlord} + (${#strings.isEmpty(receipt.landlordCpf)} ? '' : ' (' + ${receipt.landlordCpf} + ')')"></strong><br />
                   <span>(ou procurador)</span>
                 </div>
                 <div
@@ -219,7 +219,7 @@
                 <div class="receipt-body">
                   <p>
                     Recebi, de
-                    <strong><th:block th:text="${receipt.tenant}" /></strong>, a
+                    <strong><th:block th:text="${receipt.tenant} + (${#strings.isEmpty(receipt.tenantDocument)} ? '' : ' (' + ${receipt.tenantDocument} + ')')" /></strong>, a
                     importância de
                     <strong th:text="${receipt.value}"></strong>
 
@@ -246,7 +246,7 @@
                 ></p>
                 <div class="signature-line">
                   _______________________________________________<br />
-                  <strong th:text="${receipt.landlord}"></strong><br />
+                  <strong th:text="${receipt.landlord} + (${#strings.isEmpty(receipt.landlordCpf)} ? '' : ' (' + ${receipt.landlordCpf} + ')')"></strong><br />
                   <span>(ou procurador)</span>
                 </div>
                 <div
